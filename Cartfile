@@ -1,0 +1,5 @@
+github "younata/FutureHTTP" "master"
+github "antitypical/Result"
+github "tid-kijyun/Kanna"
+github "cbguder/CBGPromise" "master"
+github "swinject/swinject"

@@ -1,21 +1,36 @@
-//
-//  AppDelegate.swift
-//  Second Brain
-//
-//  Created by Rachel Brindle on 3/29/19.
-//  Copyright © 2019 Rachel Brindle. All rights reserved.
-//
-
 import UIKit
+import Swinject
+import SBKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
 
+    private lazy var injector: Container = {
+        let container = Container()
+        SBKit.register(container)
+        Second_Brain.register(container)
+        return container
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
+        window.makeKeyAndVisible()
+
+        guard !isTest() else {
+            window.rootViewController = UIViewController()
+            return true
+        }
+
+        guard let bookURLString = Bundle.main.infoDictionary?["BookURL"] as? String,
+            let bookURL = URL(string: bookURLString) else {
+                window.rootViewController = UIViewController()
+                return true
+        }
+
+        window.rootViewController = self.injector.resolve(ChapterViewController.self, argument: bookURL)
+
         return true
     }
 
