@@ -30,7 +30,7 @@
                     </constraints>
                 </view>
                 <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ULL-Xv-eu2">
-                    <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <wkWebViewConfiguration key="configuration">
                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -46,7 +46,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ULL-Xv-eu2" secondAttribute="bottom" id="Tvx-zb-N3S"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ULL-Xv-eu2" secondAttribute="trailing" id="VfC-pB-hMa"/>
                 <constraint firstItem="n3Z-Ka-fHN" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="cWt-UN-8EI"/>
-                <constraint firstItem="ULL-Xv-eu2" firstAttribute="top" secondItem="n3Z-Ka-fHN" secondAttribute="bottom" id="goA-0g-aIS"/>
+                <constraint firstItem="ULL-Xv-eu2" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="kC7-eG-M9b"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="55.200000000000003" y="48.125937031484263"/>

@@ -91,6 +91,9 @@
 		89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */; };
 		89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */; };
 		89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */; };
+		89F263B72251A48F00B6991F /* WKWebView+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B62251A48F00B6991F /* WKWebView+SpecHelper.m */; };
+		89F263B92251A4F900B6991F /* WKWebView_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B82251A4F900B6991F /* WKWebView_SpecHelperSpec.swift */; };
+		89F263BC2251A78800B6991F /* content.html in Resources */ = {isa = PBXBuildFile; fileRef = 89F263BB2251A78800B6991F /* content.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +265,10 @@
 		89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SpecHelper.m"; sourceTree = "<group>"; };
 		89F263B122518F1700B6991F /* PCKMethodRedirector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCKMethodRedirector.h; sourceTree = "<group>"; };
 		89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewControllerSpec.swift; sourceTree = "<group>"; };
+		89F263B52251A48F00B6991F /* WKWebView+SpecHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebView+SpecHelper.h"; sourceTree = "<group>"; };
+		89F263B62251A48F00B6991F /* WKWebView+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+SpecHelper.m"; sourceTree = "<group>"; };
+		89F263B82251A4F900B6991F /* WKWebView_SpecHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_SpecHelperSpec.swift; sourceTree = "<group>"; };
+		89F263BB2251A78800B6991F /* content.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = content.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +394,7 @@
 		891E68DE224F32CC009F076A /* Second BrainTests */ = {
 			isa = PBXGroup;
 			children = (
+				89F263BA2251A77900B6991F /* Assets */,
 				89F263AA22518CE700B6991F /* Helpers */,
 				891E68E1224F32CC009F076A /* Info.plist */,
 				897B3CD922508008007F2E84 /* WarningViewSpec.swift */,
@@ -504,8 +512,11 @@
 			isa = PBXGroup;
 			children = (
 				89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */,
+				89F263B82251A4F900B6991F /* WKWebView_SpecHelperSpec.swift */,
 				89F263AE22518DC500B6991F /* UIViewController+SpecHelper.h */,
 				89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */,
+				89F263B52251A48F00B6991F /* WKWebView+SpecHelper.h */,
+				89F263B62251A48F00B6991F /* WKWebView+SpecHelper.m */,
 				89F263B122518F1700B6991F /* PCKMethodRedirector.h */,
 				89F263AD22518DC500B6991F /* Second BrainTests-Bridging-Header.h */,
 			);
@@ -519,6 +530,14 @@
 				897B3CE622512450007F2E84 /* TreeTableDeleSourceSpec.swift */,
 			);
 			path = "Chapter List";
+			sourceTree = "<group>";
+		};
+		89F263BA2251A77900B6991F /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				89F263BB2251A78800B6991F /* content.html */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -727,6 +746,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F263BC2251A78800B6991F /* content.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -850,10 +870,12 @@
 			files = (
 				897B3CDA22508008007F2E84 /* WarningViewSpec.swift in Sources */,
 				89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */,
+				89F263B72251A48F00B6991F /* WKWebView+SpecHelper.m in Sources */,
 				891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */,
 				89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */,
 				897B3CD62250730F007F2E84 /* factories.swift in Sources */,
 				897B3CE722512450007F2E84 /* TreeTableDeleSourceSpec.swift in Sources */,
+				89F263B92251A4F900B6991F /* WKWebView_SpecHelperSpec.swift in Sources */,
 				89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */,
 				897B3CD3225071E0007F2E84 /* FakeBookService.swift in Sources */,
 			);

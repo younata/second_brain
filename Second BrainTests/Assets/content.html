@@ -1,0 +1,104 @@
+<a class="header" href="#how-this-is-setup" id="how-this-is-setup"><h1>How This is Setup</h1></a>
+<p>This is setup using <a href="https://github.com/rust-lang-nursery/mdBook">mdBook</a>. It’s hosted as a <a href="https://github.com/younata/personal_knowledge">repository on github</a>. I set up a pipeline in <a href="https://concourse-ci.org">concourse</a> to build, check that things work, and then push new versions once things are set up.</p>
+<a class="header" href="#repository-layout" id="repository-layout"><h2>Repository Layout</h2></a>
+<p>This is a simple mdbook, the actual content files is under <code class="hljs">src/</code>. <code class="hljs">SUMMARY.md</code> is missing, because I have <a href="https://github.com/younata/mdbook-generate-summary">tooling to automatically generate one automatically</a>.</p>
+<a class="header" href="#pipeline" id="pipeline"><h2>Pipeline</h2></a>
+<p>The pipeline<sup class="footnote-reference"><a href="#pipeline">1</a></sup> is relatively simple:</p>
+<ul>
+<li>Check for new pushes to master</li>
+<li>Generate a SUMMARY.md for the book.</li>
+<li>Build the book (using <a href="https://hub.docker.com/r/hrektts/mdbook">this mdbook docker image</a>)</li>
+<li>Test that the generated book isn’t broken (mostly verify the links work) using <a href="https://github.com/gjtorikian/html-proofer">html-proofer</a>, via <a href="https://hub.docker.com/r/18fgsa/html-proofer">this docker image</a>.</li>
+<li>rsync the updated book to the server hosting the contents.</li>
+</ul>
+<a class="header" href="#server-setup" id="server-setup"><h2>Server Setup</h2></a>
+<p>The server hosting this is a <a href="https://linode.com">linode</a> VPS. It gets deployed to/managed via an ansible playbook. The current setup is pretty bad/full of bad patterns, but needless to say that playbook manages setting up nginx, getting letsencrypt set up, and configuring nginx to serve the static files for this repository.</p>
+<p>On Sol, the repository containing this playbook is located at <code class="hljs">~/workspace/Apps</code>.</p>
+<a class="header" href="#offlinedevelopment-setup" id="offlinedevelopment-setup"><h2>Offline/Development Setup</h2></a>
+<p>For making changes and doing a local preview (or just simply running locally), the following setup is recommended/required:</p>
+<ul>
+<li>Rust/Cargo: Install <a href="https://rustup.rs">rustup</a></li>
+<li>mdbook-generate-summary: <code class="hljs">cargo install mdbook-generate-summary</code> will get you an out-of-date version. The CI uses a dockerimage for this, but that docker image is not yet set up for local usage. The “best” way to get an up-to-date version is to download the source, run <code class="hljs">cargo build --release</code>, and place the generated binary (from <code class="hljs">target/release/mdbook-generate-summary</code>) in a directory on your <code class="hljs">$PATH</code>. Which is a pretty shitty way to distribute software. 🤷🏻‍♀️</li>
+<li>mdbook: <code class="hljs">cargo install mdbook</code></li>
+</ul>
+<p>Running:</p>
+<p><code class="hljs">mdbook watch</code> will build your sources, watch for any changes to the <code class="hljs">src/</code> directory, and serve up the book on localhost:3000.</p>
+<p>I do this for my work repository, which I want to keep separate from my personal stuff.</p>
+<div class="footnote-definition" id="pipeline"><sup class="footnote-definition-label">1</sup>
+<p>The pipeline definition looks like this:</p>
+</div>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-yaml hljs"><span class="hljs-attr">resource_types:</span>
+<span class="hljs-attr">- name:</span> <span class="hljs-string">rsync-resource</span>
+<span class="hljs-attr">  type:</span> <span class="hljs-string">docker-image</span>
+<span class="hljs-attr">  source:</span>
+<span class="hljs-attr">    repository:</span> <span class="hljs-string">mrsixw/concourse-rsync-resource</span>
+<span class="hljs-attr">    tag:</span> <span class="hljs-string">latest</span>
+
+<span class="hljs-attr">resources:</span>
+  <span class="hljs-comment"># Knowledge Wiki</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">knowledge_source</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">git</span>
+<span class="hljs-attr">    source:</span>
+<span class="hljs-attr">      uri:</span> <span class="hljs-attr">https:/github.com/younata/personal_knowledge.git</span>
+<span class="hljs-attr">      branch:</span> <span class="hljs-string">master</span>
+  <span class="hljs-comment"># Task info</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">tasks</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">git</span>
+<span class="hljs-attr">    source:</span>
+<span class="hljs-attr">      uri:</span> <span class="hljs-attr">https://github.com/younata/concourse_tasks.git</span>
+<span class="hljs-attr">      branch:</span> <span class="hljs-string">master</span>
+  <span class="hljs-comment"># Book Server</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">book_server</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">rsync-resource</span>
+<span class="hljs-attr">    source:</span>
+<span class="hljs-attr">      server:</span> <span class="hljs-string">{{book_server}}</span>
+<span class="hljs-attr">      base_dir:</span> <span class="hljs-string">/usr/local/var/www/knowledge/</span>
+<span class="hljs-attr">      user:</span> <span class="hljs-string">you</span>
+<span class="hljs-attr">      disable_version_path:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">      private_key:</span> <span class="hljs-string">{{BOOK_SERVER_PRIVATE_KEY}}</span>
+    
+<span class="hljs-attr">jobs:</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">build_knowledge</span>
+<span class="hljs-attr">    plan:</span>
+<span class="hljs-attr">      - aggregate:</span>
+<span class="hljs-attr">        - get:</span> <span class="hljs-string">knowledge_source</span>
+<span class="hljs-attr">          trigger:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">        - get:</span> <span class="hljs-string">tasks</span>
+<span class="hljs-attr">      - task:</span> <span class="hljs-string">generate_summary</span>
+<span class="hljs-attr">        config:</span>
+<span class="hljs-attr">          platform:</span> <span class="hljs-string">linux</span>
+<span class="hljs-attr">          image_resource:</span>
+<span class="hljs-attr">            type:</span> <span class="hljs-string">docker-image</span>
+<span class="hljs-attr">            source:</span>
+<span class="hljs-attr">              repository:</span> <span class="hljs-string">younata/mdbook-generate-summary</span>
+<span class="hljs-attr">              tag:</span> <span class="hljs-string">latest</span>
+<span class="hljs-attr">          run:</span>
+<span class="hljs-attr">            path:</span> <span class="hljs-string">sh</span>
+<span class="hljs-attr">            args:</span>
+<span class="hljs-bullet">            -</span> <span class="hljs-bullet">-c</span>
+<span class="hljs-bullet">            -</span> <span class="hljs-string">|
+              #!/bin/bash
+              cd knowledge_source
+              mdbook-generate-summary src/ -v
+              cp -r * ../generated/
+</span><span class="hljs-attr">            dir:</span> <span class="hljs-string">""</span>
+<span class="hljs-attr">          inputs:</span>
+<span class="hljs-attr">          - name:</span> <span class="hljs-string">knowledge_source</span>
+<span class="hljs-attr">          outputs:</span>
+<span class="hljs-attr">          - name:</span> <span class="hljs-string">generated</span>
+<span class="hljs-attr">      - task:</span> <span class="hljs-string">mdbook</span>
+<span class="hljs-attr">        file:</span> <span class="hljs-string">tasks/tasks/mdbook.yml</span>
+<span class="hljs-attr">        input_mapping:</span> 
+<span class="hljs-attr">          code:</span> <span class="hljs-string">generated</span>
+<span class="hljs-attr">          concourse:</span> <span class="hljs-string">tasks</span>
+<span class="hljs-attr">        output_mapping:</span>
+<span class="hljs-attr">          book:</span> <span class="hljs-string">book</span>
+<span class="hljs-attr">      - task:</span> <span class="hljs-string">test</span>
+<span class="hljs-attr">        file:</span> <span class="hljs-string">tasks/tasks/html_proofer.yml</span>
+<span class="hljs-attr">        input_mapping:</span>
+<span class="hljs-attr">          code:</span> <span class="hljs-string">book</span>
+<span class="hljs-attr">          concourse:</span> <span class="hljs-string">tasks</span>
+<span class="hljs-attr">        params:</span> <span class="hljs-string">{DOMAIN:</span> <span class="hljs-string">"https://knowledge.rachelbrindle.com"</span><span class="hljs-string">}</span>
+<span class="hljs-attr">      - put:</span> <span class="hljs-string">book_server</span>
+<span class="hljs-attr">        params:</span> <span class="hljs-string">{sync_dir:</span> <span class="hljs-string">book}</span>
+</code></pre>

@@ -176,5 +176,57 @@ final class NetworkBookServiceSpec: QuickSpec {
 
             itBehavesLikeResolvingWithAnError { return future }
         }
+
+        describe("-content(of:)") {
+            var future: Future<Result<String, ServiceError>>!
+
+            let chapter = Chapter(title: "", contentURL: URL(string: "https://example.com/foo.html")!, subchapters: [])
+
+            beforeEach {
+                future = subject.content(of: chapter)
+            }
+
+            it("makes a GET request to the chapter's url") {
+                expect(client.requests).to(haveCount(1))
+                expect(client).to(haveReceivedRequest(URLRequest(url: chapter.contentURL)))
+            }
+
+            describe("when the request succeeds with http 200") {
+                beforeEach {
+                    guard let url = Bundle(for: self.classForCoder).url(forResource: "index", withExtension: "html") else {
+                        fail("Unable to get url for book's index.html")
+                        return
+                    }
+                    guard let data = try? Data(contentsOf: url) else {
+                        fail("Unable to read contents of index.html")
+                        return
+                    }
+
+                    client.requestPromises.last?.resolve(.success(HTTPResponse(
+                        body: data,
+                        status: .ok,
+                        mimeType: "text/html",
+                        headers: [:]
+                    )))
+                    queue.runNextOperation()
+                }
+
+                it("resolves the future with the parsed title") {
+                    expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
+                    expect(future.value?.error).to(beNil())
+                    guard let value = future.value?.value else { return }
+
+                    let expectedContent = """
+<a class="header" href="#introduction" id="introduction"><h1>Introduction</h1></a>
+<p>Some Content</p>
+<p>Another paragraph of content</p>
+""".trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    expect(value.trimmingCharacters(in: .whitespacesAndNewlines)).to(equal(expectedContent))
+                }
+            }
+
+            itBehavesLikeResolvingWithAnError { return future }
+        }
     }
 }

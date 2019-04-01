@@ -66,6 +66,22 @@ final class NetworkBookServiceSpec: QuickSpec {
             }
         }
 
+        describe("-content(of:)") {
+            it("successfully fetches from the network and parses the content") {
+                let expectation = self.expectation(description: "ContentFuture")
+
+                let chapter = Chapter(title: "", contentURL: bookURL.appendingPathComponent("astronomy/index.html"), subchapters: [])
+
+                subject.content(of: chapter).then { result in
+                    parse(result: result, expectation: expectation) { content in
+                        expect(content).to(contain("Equatorial Mount"))
+                    }
+                }
+
+                self.waitForExpectations(timeout: 10, handler: nil)
+            }
+        }
+
         func parse<T>(result: Result<T, ServiceError>, expectation: XCTestExpectation, callback: (T) -> Void) {
             switch result {
             case .success(let value):

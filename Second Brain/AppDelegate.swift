@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         splitController.viewControllers = [
             UINavigationController(rootViewController: self.injector.resolve(ChapterListViewController.self, argument: bookURL)!)
         ]
+        splitController.preferredDisplayMode = .allVisible
 
         window.rootViewController = splitController
 
