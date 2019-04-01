@@ -32,8 +32,8 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
             self.shownItems = self.items
         }
     }
-
     private var shownItems: [Item] = []
+    private(set) var onSelect: ((Item) -> Void)?
 
     private(set) var tableView: UITableView!
 
@@ -44,8 +44,9 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
         self.tableView.reloadData()
     }
 
-    func register(tableView: UITableView) {
+    func register(tableView: UITableView, onSelect: @escaping (Item) -> Void) {
         self.tableView = tableView
+        self.onSelect = onSelect
 
         tableView.register(
             UINib(nibName: "TreeTableCell", bundle: Bundle(for: TreeTableCell.self)),
@@ -127,5 +128,11 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
         }
 
         self.tableView.deleteRows(at: indexPaths, with: .none)
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+
+        self.onSelect?(self.item(at: indexPath))
     }
 }

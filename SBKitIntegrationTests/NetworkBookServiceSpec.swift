@@ -13,9 +13,18 @@ final class NetworkBookServiceSpec: QuickSpec {
         var client: URLSession!
         var queueJumper: OperationQueueJumper!
 
-        guard let bookURLString = Bundle.main.infoDictionary?["BookURL"] as? String,
-            let bookURL = URL(string: bookURLString) else {
-                return
+        guard let bookURLString = Bundle(for: self.classForCoder).infoDictionary?["BookURL"] as? String else {
+            it("is missing the BookURL") {
+                fail("Unable to get BookURL from SBKitIntegrationTest's info.plist")
+            }
+            return
+        }
+
+        guard let bookURL = URL(string: bookURLString) else {
+            it("is improperly configured") {
+                fail("Unable to convert bookURLString to a url, got \(bookURLString)")
+            }
+            return
         }
 
         beforeEach {
@@ -33,23 +42,43 @@ final class NetworkBookServiceSpec: QuickSpec {
                 let expectation = self.expectation(description: "ChaptersFuture")
 
                 subject.chapters().then { result in
-                    switch result {
-                    case .success(let chapters):
+                    parse(result: result, expectation: expectation) { chapters in
                         expect(chapters.count).to(beGreaterThan(1), description: "Expected to have received some chapters, got no chapters.")
                         expect(chapters.filter { $0.subchapters.count > 0 }.count).to(beGreaterThan(1), description: "Expected some chapters to have subchapters, none had subchapters.")
-                    case .failure(.parse):
-                        fail("Ran into issue parsing the returned contents")
-                    case .failure(.network(.http(let status))):
-                        fail("Received http error \(String(describing: status)) trying to receive data")
-                    default:
-                        print("Received error, but it's likely spurious")
-                        print("contents are: \(String(describing: result.error))")
                     }
-                    expectation.fulfill()
                 }
 
                 self.waitForExpectations(timeout: 10, handler: nil)
             }
+        }
+
+        describe("-title()") {
+            it("successfully fetches from the network and parses the title") {
+                let expectation = self.expectation(description: "TitleFuture")
+
+                subject.title().then { result in
+                    parse(result: result, expectation: expectation) { title in
+                        expect(title).to(equal("Knowledge Repository"))
+                    }
+                }
+
+                self.waitForExpectations(timeout: 10, handler: nil)
+            }
+        }
+
+        func parse<T>(result: Result<T, ServiceError>, expectation: XCTestExpectation, callback: (T) -> Void) {
+            switch result {
+            case .success(let value):
+                callback(value)
+            case .failure(.parse):
+                fail("Ran into issue parsing the returned contents")
+            case .failure(.network(.http(let status))):
+                fail("Received http error \(String(describing: status)) trying to receive data")
+            default:
+                print("Received error, but it's likely spurious")
+                print("contents are: \(String(describing: result.error))")
+            }
+            expectation.fulfill()
         }
     }
 }

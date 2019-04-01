@@ -9,4 +9,11 @@ final class FakeBookService: BookService {
         self.chaptersPromises.append(promise)
         return promise.future
     }
+
+    private(set) var titlePromises: [Promise<Result<String, ServiceError>>] = []
+    func title() -> Future<Result<String, ServiceError>> {
+        let promise = Promise<Result<String, ServiceError>>()
+        self.titlePromises.append(promise)
+        return promise.future
+    }
 }

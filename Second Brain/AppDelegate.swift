@@ -25,11 +25,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard let bookURLString = Bundle.main.infoDictionary?["BookURL"] as? String,
             let bookURL = URL(string: bookURLString) else {
+                dump(Bundle.main.infoDictionary)
                 window.rootViewController = UIViewController()
+                let alert = UIAlertController(title: "No book url specified", message: "Unable to load book", preferredStyle: .alert)
+                window.rootViewController?.present(alert, animated: true, completion: nil)
                 return true
         }
 
-        window.rootViewController = self.injector.resolve(ChapterViewController.self, argument: bookURL)
+        let splitController = UISplitViewController()
+        splitController.viewControllers = [
+            UINavigationController(rootViewController: self.injector.resolve(ChapterListViewController.self, argument: bookURL)!)
+        ]
+
+        window.rootViewController = splitController
 
         return true
     }

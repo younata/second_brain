@@ -47,9 +47,9 @@
 		891E6949224F37A0009F076A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68FD224F35ED009F076A /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		891E694A224F37A0009F076A /* FutureHTTP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68FB224F35E9009F076A /* FutureHTTP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		891E694B224F37A0009F076A /* CBGPromise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68F9224F35E3009F076A /* CBGPromise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		891E694E224F3852009F076A /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E694C224F3852009F076A /* ChapterViewController.swift */; };
-		891E694F224F3852009F076A /* ChapterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 891E694D224F3852009F076A /* ChapterViewController.xib */; };
-		891E6951224F3869009F076A /* ChapterViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6950224F3869009F076A /* ChapterViewControllerSpec.swift */; };
+		891E694E224F3852009F076A /* ChapterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E694C224F3852009F076A /* ChapterListViewController.swift */; };
+		891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 891E694D224F3852009F076A /* ChapterListViewController.xib */; };
+		891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */; };
 		891E6953224F3A02009F076A /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6952224F3A02009F076A /* BookService.swift */; };
 		897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA7224FF076007F2E84 /* Matchers.swift */; };
@@ -85,6 +85,12 @@
 		897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CE822512F86007F2E84 /* TreeTableCell.swift */; };
 		897B3CEB22512F86007F2E84 /* TreeTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 897B3CE922512F86007F2E84 /* TreeTableCell.xib */; };
 		897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */; };
+		89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263A322517E6000B6991F /* ChapterViewController.swift */; };
+		89F263A622517E6000B6991F /* ChapterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89F263A422517E6000B6991F /* ChapterViewController.xib */; };
+		89F263A9225182F800B6991F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 89F263A8225182F800B6991F /* index.html */; };
+		89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */; };
+		89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */; };
+		89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,9 +229,9 @@
 		891E6922224F3771009F076A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		891E6927224F3771009F076A /* SBKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SBKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		891E6930224F3771009F076A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		891E694C224F3852009F076A /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
-		891E694D224F3852009F076A /* ChapterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterViewController.xib; sourceTree = "<group>"; };
-		891E6950224F3869009F076A /* ChapterViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewControllerSpec.swift; sourceTree = "<group>"; };
+		891E694C224F3852009F076A /* ChapterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterListViewController.swift; sourceTree = "<group>"; };
+		891E694D224F3852009F076A /* ChapterListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterListViewController.xib; sourceTree = "<group>"; };
+		891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterListViewControllerSpec.swift; sourceTree = "<group>"; };
 		891E6952224F3A02009F076A /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
 		897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CA7224FF076007F2E84 /* Matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
@@ -247,6 +253,15 @@
 		897B3CE822512F86007F2E84 /* TreeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTableCell.swift; sourceTree = "<group>"; };
 		897B3CE922512F86007F2E84 /* TreeTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeTableCell.xib; sourceTree = "<group>"; };
 		897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		89F263A322517E6000B6991F /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
+		89F263A422517E6000B6991F /* ChapterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterViewController.xib; sourceTree = "<group>"; };
+		89F263A8225182F800B6991F /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_SpecHelperSpec.swift; sourceTree = "<group>"; };
+		89F263AD22518DC500B6991F /* Second BrainTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Second BrainTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		89F263AE22518DC500B6991F /* UIViewController+SpecHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SpecHelper.h"; sourceTree = "<group>"; };
+		89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SpecHelper.m"; sourceTree = "<group>"; };
+		89F263B122518F1700B6991F /* PCKMethodRedirector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCKMethodRedirector.h; sourceTree = "<group>"; };
+		89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewControllerSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,11 +372,11 @@
 				897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */,
 				897B3CDF22508CA0007F2E84 /* InjectorModule.swift */,
 				897B3CD722507856007F2E84 /* WarningView.swift */,
-				891E694C224F3852009F076A /* ChapterViewController.swift */,
-				891E694D224F3852009F076A /* ChapterViewController.xib */,
-				897B3CDB2250887F007F2E84 /* TreeTableDeleSource.swift */,
-				897B3CE822512F86007F2E84 /* TreeTableCell.swift */,
-				897B3CE922512F86007F2E84 /* TreeTableCell.xib */,
+				891E694C224F3852009F076A /* ChapterListViewController.swift */,
+				891E694D224F3852009F076A /* ChapterListViewController.xib */,
+				89F263A322517E6000B6991F /* ChapterViewController.swift */,
+				89F263A422517E6000B6991F /* ChapterViewController.xib */,
+				89F263A222517E0800B6991F /* Tree Table */,
 				891E68D1224F32CC009F076A /* Assets.xcassets */,
 				891E68D3224F32CC009F076A /* LaunchScreen.storyboard */,
 				891E68D6224F32CC009F076A /* Info.plist */,
@@ -372,10 +387,11 @@
 		891E68DE224F32CC009F076A /* Second BrainTests */ = {
 			isa = PBXGroup;
 			children = (
+				89F263AA22518CE700B6991F /* Helpers */,
 				891E68E1224F32CC009F076A /* Info.plist */,
-				891E6950224F3869009F076A /* ChapterViewControllerSpec.swift */,
 				897B3CD922508008007F2E84 /* WarningViewSpec.swift */,
-				897B3CE622512450007F2E84 /* TreeTableDeleSourceSpec.swift */,
+				89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */,
+				89F263B22251A05500B6991F /* Chapter List */,
 			);
 			path = "Second BrainTests";
 			sourceTree = "<group>";
@@ -422,6 +438,7 @@
 		891E692D224F3771009F076A /* SBKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				89F263A7225182C600B6991F /* Assets */,
 				897B3CCF22507186007F2E84 /* Helpers */,
 				897B3CA7224FF076007F2E84 /* Matchers.swift */,
 				897B3CE422508E24007F2E84 /* OperationQueueJumperSpec.swift */,
@@ -465,6 +482,45 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		89F263A222517E0800B6991F /* Tree Table */ = {
+			isa = PBXGroup;
+			children = (
+				897B3CDB2250887F007F2E84 /* TreeTableDeleSource.swift */,
+				897B3CE822512F86007F2E84 /* TreeTableCell.swift */,
+				897B3CE922512F86007F2E84 /* TreeTableCell.xib */,
+			);
+			path = "Tree Table";
+			sourceTree = "<group>";
+		};
+		89F263A7225182C600B6991F /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				89F263A8225182F800B6991F /* index.html */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		89F263AA22518CE700B6991F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */,
+				89F263AE22518DC500B6991F /* UIViewController+SpecHelper.h */,
+				89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */,
+				89F263B122518F1700B6991F /* PCKMethodRedirector.h */,
+				89F263AD22518DC500B6991F /* Second BrainTests-Bridging-Header.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		89F263B22251A05500B6991F /* Chapter List */ = {
+			isa = PBXGroup;
+			children = (
+				891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */,
+				897B3CE622512450007F2E84 /* TreeTableDeleSourceSpec.swift */,
+			);
+			path = "Chapter List";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -488,6 +544,7 @@
 				891E68C5224F32CA009F076A /* Resources */,
 				891E6905224F367B009F076A /* Embed Carthage Frameworks */,
 				891E6939224F3771009F076A /* Embed Frameworks */,
+				897B3CEE22517503007F2E84 /* Insert BookURL into info.plist */,
 			);
 			buildRules = (
 			);
@@ -582,6 +639,7 @@
 				897B3CB522506EE5007F2E84 /* Frameworks */,
 				897B3CB622506EE5007F2E84 /* Resources */,
 				897B3CC322506EF1007F2E84 /* Embed Frameworks */,
+				897B3CEF2251756B007F2E84 /* Copy BookURL into info.plist */,
 			);
 			buildRules = (
 			);
@@ -657,7 +715,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				891E694F224F3852009F076A /* ChapterViewController.xib in Resources */,
+				89F263A622517E6000B6991F /* ChapterViewController.xib in Resources */,
+				891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */,
 				891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */,
 				897B3CEB22512F86007F2E84 /* TreeTableCell.xib in Resources */,
 				891E68D2224F32CC009F076A /* Assets.xcassets in Resources */,
@@ -689,6 +748,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F263A9225182F800B6991F /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +790,42 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\n/usr/local/bin/carthage copy-frameworks\n";
 		};
+		897B3CEE22517503007F2E84 /* Insert BookURL into info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Insert BookURL into info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT\"/scripts/copy_book.sh\n";
+		};
+		897B3CEF2251756B007F2E84 /* Copy BookURL into info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy BookURL into info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT\"/scripts/copy_book.sh\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -737,9 +833,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */,
 				897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */,
 				897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */,
-				891E694E224F3852009F076A /* ChapterViewController.swift in Sources */,
+				891E694E224F3852009F076A /* ChapterListViewController.swift in Sources */,
 				891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */,
 				897B3CE022508CA0007F2E84 /* InjectorModule.swift in Sources */,
 				897B3CD822507856007F2E84 /* WarningView.swift in Sources */,
@@ -752,9 +849,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				897B3CDA22508008007F2E84 /* WarningViewSpec.swift in Sources */,
-				891E6951224F3869009F076A /* ChapterViewControllerSpec.swift in Sources */,
+				89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */,
+				891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */,
+				89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */,
 				897B3CD62250730F007F2E84 /* factories.swift in Sources */,
 				897B3CE722512450007F2E84 /* TreeTableDeleSourceSpec.swift in Sources */,
+				89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */,
 				897B3CD3225071E0007F2E84 /* FakeBookService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1026,6 +1126,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-BrainTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1053,6 +1154,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-BrainTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";

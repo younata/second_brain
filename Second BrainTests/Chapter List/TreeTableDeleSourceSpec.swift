@@ -34,11 +34,14 @@ final class TreeTableDeleSourceSpec: QuickSpec {
             ]),
         ]
 
+        var callbacks: [TreeItem] = []
+
         beforeEach {
+            callbacks = []
             tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 320, height: 560))
 
             subject = TreeTableDeleSource()
-            subject.register(tableView: tableView)
+            subject.register(tableView: tableView, onSelect: { item in callbacks.append(item) })
             subject.update(items: items)
         }
 
@@ -69,6 +72,21 @@ final class TreeTableDeleSourceSpec: QuickSpec {
                     let leadingEdgeOfTitleLabel = cell?.titleLabel.frame.minX ?? 0
                     let calculatedIndentLevel = Int((leadingEdgeOfTitleLabel - 8) / 8)
                     expect(calculatedIndentLevel).to(equal(indentAmount))
+                }
+
+                describe("tapping the cell") {
+                    beforeEach {
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                        tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+                    }
+
+                    it("calls the callback with the tapped item.") {
+                        expect(callbacks).to(equal([item]))
+                    }
+
+                    it("deselects the row") {
+                        expect(tableView.indexPathsForSelectedRows ?? []).to(beEmpty())
+                    }
                 }
 
                 if item.children.isEmpty {
@@ -107,12 +125,12 @@ final class TreeTableDeleSourceSpec: QuickSpec {
 
                         describe("tapping the expand button again") {
                             beforeEach {
-                                RunLoop.main.run(until: Date(timeIntervalSinceNow: 1e-3)) // needs to spin the runloop for the completion block to be called.
+                                RunLoop.main.run(until: Date(timeIntervalSinceNow: 1e-2)) // needs to spin the runloop for the completion block to be called.
                                 cell?.expandButton.tap()
                             }
 
                             it("rotates the expand button again to indicate it's contracted") {
-                                expect(cell?.expandButton.layer.transform).to(equal(CATransform3DIdentity))
+                                expect(cell?.expandButton.layer.transform).toEventually(equal(CATransform3DIdentity))
                             }
 
                             it("removes the children from the tableview") {

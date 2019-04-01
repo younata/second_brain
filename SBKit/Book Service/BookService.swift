@@ -1,12 +1,7 @@
+import Kanna
 import Result
 import CBGPromise
 import FutureHTTP
-
-public struct Book: Equatable {
-    public let title: String
-    public let url: URL
-    public let chapters: [Chapter]
-}
 
 public struct Chapter: Equatable {
     public let title: String
@@ -26,6 +21,8 @@ public enum NetworkError: Error, Equatable {
 
 public protocol BookService {
     func chapters() -> Future<Result<[Chapter], ServiceError>>
+    func title() -> Future<Result<String, ServiceError>>
+//    func content(of chapter: Chapter) -> Future<Result<String, ServiceError>>
 }
 
 struct NetworkBookService: BookService {
@@ -50,6 +47,19 @@ struct NetworkBookService: BookService {
         })
     }
 
+    func title() -> Future<Result<String, ServiceError>> {
+        return self.queueJumper.jump(self.client.request(URLRequest(url: self.bookURL)).map { result -> Result<String, ServiceError> in
+            switch result {
+            case .success(let response):
+                return response.map(expectedStatus: .ok).flatMap {
+                    return self.parsePageTitle(data: $0.body, url: self.bookURL)
+                }
+            case .failure:
+                return .failure(.unknown)
+            }
+        })
+    }
+
     private func parseChapters(data: Data) -> Result<[Chapter], ServiceError> {
         let bookChapters: [BookChapter]
         do {
@@ -60,6 +70,17 @@ struct NetworkBookService: BookService {
             return .failure(.parse)
         }
         return .success(bookChapters.map { return Chapter($0, baseURL: self.bookURL) })
+    }
+
+    private func parsePageTitle(data: Data, url: URL) -> Result<String, ServiceError> {
+        guard let doc = try? HTML(html: data, url: url.absoluteString, encoding: .utf8) else {
+            return .failure(.parse)
+        }
+        if let title = doc.css(".menu-title").first?.text {
+            return .success(title)
+        }
+        return .failure(.parse)
+
     }
 }
 
