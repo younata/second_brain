@@ -70,7 +70,7 @@ final class TreeTableDeleSourceSpec: QuickSpec {
 
                 it("indents the cell if needed") {
                     let leadingEdgeOfTitleLabel = cell?.titleLabel.frame.minX ?? 0
-                    let calculatedIndentLevel = Int((leadingEdgeOfTitleLabel - 8) / 8)
+                    let calculatedIndentLevel = Int((leadingEdgeOfTitleLabel - 8) / 16)
                     expect(calculatedIndentLevel).to(equal(indentAmount))
                 }
 

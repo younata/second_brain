@@ -100,8 +100,11 @@ final class ChapterListViewControllerSpec: QuickSpec {
                             subject.tableDelesource.onSelect?(chapters[2])
                         }
 
-                        it("shows a content view controller") {
-                            expect(subject.detail).to(beAKindOf(ChapterViewController.self))
+                        it("shows a chapter view controller inside of a UINavigationController") {
+                            expect(subject.detail).to(beAKindOf(UINavigationController.self))
+
+                            guard let navController = subject.detail as? UINavigationController else { return }
+                            expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
                             expect(presentedChapters).to(equal([chapters[2]]))
                         }
                     }

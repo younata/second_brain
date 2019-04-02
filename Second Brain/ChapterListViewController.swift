@@ -65,7 +65,8 @@ class ChapterListViewController: UIViewController {
     }
 
     private func show(chapter: Chapter) {
-        self.showDetailViewController(self.chapterViewControllerFactory(chapter), sender: nil)
+        let navController = UINavigationController(rootViewController: self.chapterViewControllerFactory(chapter))
+        self.showDetailViewController(navController, sender: nil)
     }
 }
 

@@ -32,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return true
         }
 
+        applyTheme()
+
         let splitController = UISplitViewController()
         splitController.viewControllers = [
             UINavigationController(rootViewController: self.injector.resolve(ChapterListViewController.self, argument: bookURL)!)
@@ -64,7 +66,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+}
 
+func applyTheme() {
+    guard let navColor = UIColor(named: "Ayu Navigation"),
+        let navButtonColor = UIColor(named: "Ayu NavColor"),
+        let textColor = UIColor(named: "Ayu Text")
+        else { return }
+    UINavigationBar.appearance().barTintColor = navColor
+    UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: textColor]
+    UINavigationBar.appearance().tintColor = navButtonColor
 
+    UIApplication.shared.statusBarStyle = .lightContent
 }
 

@@ -51,6 +51,7 @@
 		891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 891E694D224F3852009F076A /* ChapterListViewController.xib */; };
 		891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */; };
 		891E6953224F3A02009F076A /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6952224F3A02009F076A /* BookService.swift */; };
+		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA7224FF076007F2E84 /* Matchers.swift */; };
 		897B3CAA224FF459007F2E84 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */; };
@@ -236,6 +237,7 @@
 		891E694D224F3852009F076A /* ChapterListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterListViewController.xib; sourceTree = "<group>"; };
 		891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterListViewControllerSpec.swift; sourceTree = "<group>"; };
 		891E6952224F3A02009F076A /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
+		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CA7224FF076007F2E84 /* Matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
 		897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/iOS/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */,
 				891E6934224F3771009F076A /* SBKit.framework in Frameworks */,
 				891E6902224F3606009F076A /* CBGPromise.framework in Frameworks */,
 				891E6901224F3602009F076A /* FutureHTTP.framework in Frameworks */,
@@ -416,6 +419,7 @@
 		891E68F8224F35E3009F076A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8958C5CC225308660081B6E0 /* WebKit.framework */,
 				897B3CB122500026007F2E84 /* Kanna.framework */,
 				897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */,
 				891E6912224F372A009F076A /* Foundation_PivotalSpecHelper.framework */,

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,20 +31,23 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4b-fv-cpZ">
                         <rect key="frame" x="9" y="4" width="231" height="35.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" name="Ayu Text"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1T-qe-A33">
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1T-qe-A33">
                         <rect key="frame" x="248" y="0.0" width="64" height="43.5"/>
                         <constraints>
+                            <constraint firstAttribute="height" priority="999" constant="44" id="QNc-sp-1RF"/>
                             <constraint firstAttribute="width" constant="64" id="U0o-4G-khj"/>
                         </constraints>
+                        <color key="tintColor" name="Ayu Text"/>
                         <state key="normal" image="DownChevron"/>
                         <connections>
                             <action selector="didTapExpandButton" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8wt-3W-sZc"/>
                         </connections>
                     </button>
                 </subviews>
+                <color key="backgroundColor" name="Ayu Background"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="b1T-qe-A33" secondAttribute="bottom" id="7m6-kC-ceO"/>
                     <constraint firstItem="lRD-Cu-JNq" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9bO-Er-0Ot"/>
@@ -62,9 +66,16 @@
                 <outlet property="identConstraint" destination="lfG-HW-HlX" id="f7n-Ix-wMJ"/>
                 <outlet property="titleLabel" destination="h4b-fv-cpZ" id="vFb-hi-knb"/>
             </connections>
+            <point key="canvasLocation" x="56" y="48.575712143928037"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="DownChevron" width="24" height="24"/>
+        <namedColor name="Ayu Background">
+            <color red="0.058823529411764705" green="0.078431372549019607" blue="0.098039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Ayu Text">
+            <color red="0.77254901960784317" green="0.77254901960784317" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

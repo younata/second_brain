@@ -13,11 +13,16 @@ class TreeTableCell: UITableViewCell {
         super.awakeFromNib()
     }
 
+    private var forwardExpandCalls = true
     @objc @IBAction
     func didTapExpandButton() {
+        guard self.forwardExpandCalls else { return }
+        self.forwardExpandCalls = false
         self.expandCallback?(self, !self.isExpanded)
 
-        self.set(expanded: !self.isExpanded, animated: true)
+        self.set(expanded: !self.isExpanded, animated: true) {
+            self.forwardExpandCalls = true
+        }
     }
 
     func configure(title: String, childrenCount: Int, isExpanded: Bool, indentLevel: Int,
@@ -25,29 +30,47 @@ class TreeTableCell: UITableViewCell {
         self.titleLabel.text = title
         self.expandButton.isHidden = childrenCount == 0
 
-        self.identConstraint.constant = CGFloat(8 * indentLevel)
+        self.identConstraint.constant = CGFloat(16 * indentLevel)
 
         self.expandCallback = expandCallback
-        self.set(expanded: isExpanded, animated: false)
+        self.set(expanded: isExpanded, animated: false) {}
     }
 
-    private func set(expanded: Bool, animated: Bool) {
-        let transform: CATransform3D
+    private func set(expanded: Bool, animated: Bool, finishCallback: @escaping () -> Void) {
+        guard self.isExpanded != expanded else { return }
+        let rotation: CGFloat
         if expanded {
-            transform = CATransform3DMakeRotation(.pi, 1, 0, 0)
+            rotation = .pi
         } else {
-            transform = CATransform3DIdentity
+            rotation = 0
         }
-
+        let transform = CATransform3DMakeRotation(rotation, 1, 0, 0)
         let shouldAnimate = !isTest() && animated
+        let animationDuration: TimeInterval = shouldAnimate ? 0.25 : 0
 
-        CATransaction.begin()
-        CATransaction.setDisableActions(!shouldAnimate)
-        CATransaction.setAnimationDuration(shouldAnimate ? 0.25 : 0)
-        CATransaction.setCompletionBlock {
+        let completionHandler: (Bool) -> Void = { _ in
+            self.expandButton.layer.transform = transform
             self.isExpanded = expanded
+            finishCallback()
         }
-        self.expandButton.layer.transform = transform
-        CATransaction.commit()
+
+        if shouldAnimate {
+            let animation = CABasicAnimation(keyPath: "transform.rotation.x")
+            animation.toValue = rotation
+            animation.duration = animationDuration
+            let animationDelegate = BlockAnimationDelegate()
+            animationDelegate.onComplete = completionHandler
+            animation.delegate = animationDelegate
+            self.expandButton.layer.add(animation, forKey: "rotation")
+        } else {
+            completionHandler(true)
+        }
+    }
+}
+
+class BlockAnimationDelegate: NSObject, CAAnimationDelegate {
+    var onComplete: ((Bool) -> Void)? = nil
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        self.onComplete?(flag)
     }
 }

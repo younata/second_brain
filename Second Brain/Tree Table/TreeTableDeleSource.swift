@@ -54,6 +54,7 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
         )
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.estimatedRowHeight = 44
     }
 
     private func item(at indexPath: IndexPath) -> Item {
