@@ -39,24 +39,28 @@ class TreeTableCell: UITableViewCell {
     private func set(expanded: Bool, animated: Bool, finishCallback: @escaping () -> Void) {
         guard self.isExpanded != expanded else { return }
         let rotation: CGFloat
+        let initialRotation: CGFloat
         if expanded {
             rotation = .pi
+            initialRotation = 0
         } else {
             rotation = 0
+            initialRotation = .pi
         }
         let transform = CATransform3DMakeRotation(rotation, 1, 0, 0)
         let shouldAnimate = !isTest() && animated
         let animationDuration: TimeInterval = shouldAnimate ? 0.25 : 0
 
         let completionHandler: (Bool) -> Void = { _ in
-            self.expandButton.layer.transform = transform
             self.isExpanded = expanded
             finishCallback()
         }
 
+        self.expandButton.layer.transform = transform
         if shouldAnimate {
             let animation = CABasicAnimation(keyPath: "transform.rotation.x")
             animation.toValue = rotation
+            animation.fromValue = initialRotation
             animation.duration = animationDuration
             let animationDelegate = BlockAnimationDelegate()
             animationDelegate.onComplete = completionHandler

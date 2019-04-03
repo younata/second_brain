@@ -116,7 +116,7 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
 
         self.shownItems.insert(contentsOf: children, at: indexPath.row + 1)
 
-        self.tableView.insertRows(at: indexPaths, with: .none) // will be a custom animation... later
+        self.tableView.insertRows(at: indexPaths, with: .top) // will be a custom animation... later
     }
 
     private func removeChildren(indexPath: IndexPath, item: Item) {
@@ -128,7 +128,7 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
             self.shownItems.remove(at: index)
         }
 
-        self.tableView.deleteRows(at: indexPaths, with: .none)
+        self.tableView.deleteRows(at: indexPaths, with: .top)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

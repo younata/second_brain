@@ -20,9 +20,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRD-Cu-JNq" userLabel="Indent Spacer">
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRD-Cu-JNq" userLabel="Indent Spacer">
                         <rect key="frame" x="9" y="22" width="0.0" height="0.0"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" id="hXx-xH-CSn"/>
                             <constraint firstAttribute="width" id="lfG-HW-HlX"/>
@@ -60,6 +60,7 @@
                     <constraint firstAttribute="bottom" secondItem="h4b-fv-cpZ" secondAttribute="bottom" constant="4" id="zWT-rm-xVB"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" name="Ayu Background"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="expandButton" destination="b1T-qe-A33" id="9H0-wK-OWq"/>

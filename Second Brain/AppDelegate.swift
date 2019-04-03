@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.makeKeyAndVisible()
+        window.backgroundColor = UIColor(named: "Ayu Background")
 
         guard !isTest() else {
             window.rootViewController = UIViewController()
