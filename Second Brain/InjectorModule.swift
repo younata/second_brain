@@ -14,7 +14,12 @@ func register(_ container: Container) {
     container.register(ChapterViewController.self) { (r: Resolver, url: URL, chapter: Chapter) in
         return ChapterViewController(
             bookService: r.resolve(BookService.self, argument: url)!,
+            htmlWrapper: r.resolve(HTMLWrapper.self)!,
             chapter: chapter
         )
     }
+
+    container.register(HTMLWrapper.self) { _ in
+        return BundleHTMLWrapper()
+    }.inObjectScope(.container)
 }

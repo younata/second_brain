@@ -4,13 +4,15 @@ import WebKit
 
 class ChapterViewController: UIViewController {
     private let bookService: BookService
+    private let htmlWrapper: HTMLWrapper
     private let chapter: Chapter
 
     @IBOutlet weak var warningView: WarningView!
     @IBOutlet weak var webView: WKWebView!
 
-    init(bookService: BookService, chapter: Chapter) {
+    init(bookService: BookService, htmlWrapper: HTMLWrapper, chapter: Chapter) {
         self.bookService = bookService
+        self.htmlWrapper = htmlWrapper
         self.chapter = chapter
 
         super.init(nibName: "ChapterViewController", bundle: Bundle.main)
@@ -40,6 +42,6 @@ class ChapterViewController: UIViewController {
     }
 
     private func display(html: String, url: URL) {
-        self.webView.loadHTMLString("<html><body>\(html)</body></html>", baseURL: url)
+        self.webView.loadHTMLString(self.htmlWrapper.wrap(html: html), baseURL: url)
     }
 }

@@ -66,6 +66,8 @@ class ChapterListViewController: UIViewController {
 
     private func show(chapter: Chapter) {
         let navController = UINavigationController(rootViewController: self.chapterViewControllerFactory(chapter))
+        navController.hidesBarsOnSwipe = true
+        navController.hidesBarsOnTap = true
         self.showDetailViewController(navController, sender: nil)
     }
 }

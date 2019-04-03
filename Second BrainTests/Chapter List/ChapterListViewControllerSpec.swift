@@ -19,7 +19,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
             presentedChapters = []
             subject = ChapterListViewController(bookService: bookService, chapterViewControllerFactory: { chapter in
                 presentedChapters.append(chapter)
-                return ChapterViewController(bookService: bookService, chapter: chapter)
+                return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), chapter: chapter)
             })
         }
 
@@ -105,6 +105,8 @@ final class ChapterListViewControllerSpec: QuickSpec {
 
                             guard let navController = subject.detail as? UINavigationController else { return }
                             expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
+                            expect(navController.hidesBarsOnSwipe).to(beTruthy())
+                            expect(navController.hidesBarsOnTap).to(beTruthy())
                             expect(presentedChapters).to(equal([chapters[2]]))
                         }
                     }

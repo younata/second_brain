@@ -52,6 +52,10 @@
 		891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */; };
 		891E6953224F3A02009F076A /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6952224F3A02009F076A /* BookService.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
+		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
+		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
+		8958C5DA22546DE80081B6E0 /* font-awesome.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D922546DE80081B6E0 /* font-awesome.css */; };
+		8958C5DC22546E830081B6E0 /* SimpleHTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */; };
 		897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA7224FF076007F2E84 /* Matchers.swift */; };
 		897B3CAA224FF459007F2E84 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */; };
@@ -238,6 +242,10 @@
 		891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterListViewControllerSpec.swift; sourceTree = "<group>"; };
 		891E6952224F3A02009F076A /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
+		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
+		8958C5D922546DE80081B6E0 /* font-awesome.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "font-awesome.css"; sourceTree = "<group>"; };
+		8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleHTMLWrapper.swift; sourceTree = "<group>"; };
 		897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CA7224FF076007F2E84 /* Matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
 		897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/iOS/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
@@ -382,11 +390,8 @@
 				897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */,
 				897B3CDF22508CA0007F2E84 /* InjectorModule.swift */,
 				897B3CD722507856007F2E84 /* WarningView.swift */,
-				891E694C224F3852009F076A /* ChapterListViewController.swift */,
-				891E694D224F3852009F076A /* ChapterListViewController.xib */,
-				89F263A322517E6000B6991F /* ChapterViewController.swift */,
-				89F263A422517E6000B6991F /* ChapterViewController.xib */,
-				89F263A222517E0800B6991F /* Tree Table */,
+				8958C5DF22546F540081B6E0 /* Chapter List Screen */,
+				8958C5DE22546F410081B6E0 /* Chapter View Screen */,
 				891E68D1224F32CC009F076A /* Assets.xcassets */,
 				891E68D3224F32CC009F076A /* LaunchScreen.storyboard */,
 				891E68D6224F32CC009F076A /* Info.plist */,
@@ -401,7 +406,7 @@
 				89F263AA22518CE700B6991F /* Helpers */,
 				891E68E1224F32CC009F076A /* Info.plist */,
 				897B3CD922508008007F2E84 /* WarningViewSpec.swift */,
-				89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */,
+				8958C5DD22546F1A0081B6E0 /* Chapter View */,
 				89F263B22251A05500B6991F /* Chapter List */,
 			);
 			path = "Second BrainTests";
@@ -458,6 +463,44 @@
 				891E6930224F3771009F076A /* Info.plist */,
 			);
 			path = SBKitTests;
+			sourceTree = "<group>";
+		};
+		8958C5CE22546C610081B6E0 /* HTML Assets */ = {
+			isa = PBXGroup;
+			children = (
+				8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */,
+				8958C5D522546DD80081B6E0 /* general.css */,
+				8958C5D922546DE80081B6E0 /* font-awesome.css */,
+			);
+			path = "HTML Assets";
+			sourceTree = "<group>";
+		};
+		8958C5DD22546F1A0081B6E0 /* Chapter View */ = {
+			isa = PBXGroup;
+			children = (
+				89F263B32251A06300B6991F /* ChapterViewControllerSpec.swift */,
+			);
+			path = "Chapter View";
+			sourceTree = "<group>";
+		};
+		8958C5DE22546F410081B6E0 /* Chapter View Screen */ = {
+			isa = PBXGroup;
+			children = (
+				89F263A322517E6000B6991F /* ChapterViewController.swift */,
+				89F263A422517E6000B6991F /* ChapterViewController.xib */,
+				8958C5CE22546C610081B6E0 /* HTML Assets */,
+			);
+			path = "Chapter View Screen";
+			sourceTree = "<group>";
+		};
+		8958C5DF22546F540081B6E0 /* Chapter List Screen */ = {
+			isa = PBXGroup;
+			children = (
+				891E694C224F3852009F076A /* ChapterListViewController.swift */,
+				891E694D224F3852009F076A /* ChapterListViewController.xib */,
+				89F263A222517E0800B6991F /* Tree Table */,
+			);
+			path = "Chapter List Screen";
 			sourceTree = "<group>";
 		};
 		897B3CA5224FEF28007F2E84 /* Book Service */ = {
@@ -523,6 +566,7 @@
 				89F263B62251A48F00B6991F /* WKWebView+SpecHelper.m */,
 				89F263B122518F1700B6991F /* PCKMethodRedirector.h */,
 				89F263AD22518DC500B6991F /* Second BrainTests-Bridging-Header.h */,
+				8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -738,7 +782,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8958C5D622546DD80081B6E0 /* general.css in Resources */,
 				89F263A622517E6000B6991F /* ChapterViewController.xib in Resources */,
+				8958C5DA22546DE80081B6E0 /* font-awesome.css in Resources */,
 				891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */,
 				891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */,
 				897B3CEB22512F86007F2E84 /* TreeTableCell.xib in Resources */,
@@ -859,6 +905,7 @@
 			files = (
 				89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */,
 				897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */,
+				8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */,
 				897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */,
 				891E694E224F3852009F076A /* ChapterListViewController.swift in Sources */,
 				891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */,
@@ -878,6 +925,7 @@
 				891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */,
 				89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */,
 				897B3CD62250730F007F2E84 /* factories.swift in Sources */,
+				8958C5DC22546E830081B6E0 /* SimpleHTMLWrapper.swift in Sources */,
 				897B3CE722512450007F2E84 /* TreeTableDeleSourceSpec.swift in Sources */,
 				89F263B92251A4F900B6991F /* WKWebView_SpecHelperSpec.swift in Sources */,
 				89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */,

@@ -10,13 +10,15 @@ final class ChapterViewControllerSpec: QuickSpec {
         var subject: ChapterViewController!
 
         var bookService: FakeBookService!
+        var htmlWrapper: SimpleHTMLWrapper!
 
         let chapter = Chapter(title: "My Title", contentURL: URL(string: "https://example.com/chapter.html")!, subchapters: [])
 
         beforeEach {
             bookService = FakeBookService()
+            htmlWrapper = SimpleHTMLWrapper()
 
-            subject = ChapterViewController(bookService: bookService, chapter: chapter)
+            subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, chapter: chapter)
         }
 
         describe("when the view loads") {
@@ -54,6 +56,7 @@ final class ChapterViewControllerSpec: QuickSpec {
                     let expectedString = "<html><body>\(htmlString)</body></html>"
 
                     expect(subject.webView.lastHTMLStringLoaded).to(equal(expectedString))
+                    expect(htmlWrapper.wrapCalls).to(equal([htmlString]))
                 }
             }
 
