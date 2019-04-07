@@ -12,6 +12,8 @@ public struct Chapter: Equatable {
 public enum ServiceError: Error, Equatable {
     case parse
     case unknown
+    case cache
+    case notFound
     case network(NetworkError)
 }
 
@@ -39,7 +41,7 @@ struct NetworkBookService: BookService {
             switch result {
             case .success(let response):
                 return response.map(expectedStatus: .ok).flatMap {
-                    return self.parseChapters(data: $0.body)
+                    return parseChapters(data: $0.body, bookURL: self.bookURL)
                 }
             case .failure:
                 return .failure(.unknown)
@@ -73,18 +75,6 @@ struct NetworkBookService: BookService {
         })
     }
 
-    private func parseChapters(data: Data) -> Result<[Chapter], ServiceError> {
-        let bookChapters: [BookChapter]
-        do {
-            let decoder = JSONDecoder()
-            bookChapters = try decoder.decode(Array<BookChapter>.self, from: data)
-        } catch let error {
-            dump(error)
-            return .failure(.parse)
-        }
-        return .success(bookChapters.map { return Chapter($0, baseURL: self.bookURL) })
-    }
-
     private func parsePageTitle(data: Data, url: URL) -> Result<String, ServiceError> {
         guard let doc = try? HTML(html: data, url: url.absoluteString, encoding: .utf8) else {
             return .failure(.parse)
@@ -104,6 +94,18 @@ struct NetworkBookService: BookService {
         }
         return .failure(.parse)
     }
+}
+
+func parseChapters(data: Data, bookURL: URL) -> Result<[Chapter], ServiceError> {
+    let bookChapters: [BookChapter]
+    do {
+        let decoder = JSONDecoder()
+        bookChapters = try decoder.decode(Array<BookChapter>.self, from: data)
+    } catch let error {
+        dump(error)
+        return .failure(.parse)
+    }
+    return .success(bookChapters.map { return Chapter($0, baseURL: bookURL) })
 }
 
 private struct BookChapter: Decodable, Equatable {
@@ -128,5 +130,12 @@ extension HTTPResponse {
             return .failure(.network(.http(self.status)))
         }
         return .success(self)
+    }
+
+    func map(expectedStatuses: Set<HTTPStatus>) -> Result<(HTTPResponse, HTTPStatus), ServiceError> {
+        guard let status = self.status, expectedStatuses.contains(status) else {
+            return .failure(.network(.http(self.status)))
+        }
+        return .success((self, status))
     }
 }

@@ -51,11 +51,20 @@
 		891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 891E694D224F3852009F076A /* ChapterListViewController.xib */; };
 		891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */; };
 		891E6953224F3A02009F076A /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6952224F3A02009F076A /* BookService.swift */; };
+		892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */; };
+		892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC02256EFE100C8A069 /* FakeSyncService.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
 		8958C5DA22546DE80081B6E0 /* font-awesome.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D922546DE80081B6E0 /* font-awesome.css */; };
 		8958C5DC22546E830081B6E0 /* SimpleHTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */; };
+		8958C5E2225581550081B6E0 /* BookModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5E0225581550081B6E0 /* BookModel.xcdatamodeld */; };
+		8958C5E5225584700081B6E0 /* CoreDataBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5E4225584700081B6E0 /* CoreDataBookService.swift */; };
+		8958C5E72255A6C60081B6E0 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5E62255A6C60081B6E0 /* SyncService.swift */; };
+		8958C5E92255C4AC0081B6E0 /* SyncServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */; };
+		8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */; };
+		8958C5ED225696AD0081B6E0 /* NetworkSyncServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */; };
+		8958C5EF2256977B0081B6E0 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EE2256977B0081B6E0 /* helpers.swift */; };
 		897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA7224FF076007F2E84 /* Matchers.swift */; };
 		897B3CAA224FF459007F2E84 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */; };
@@ -241,11 +250,20 @@
 		891E694D224F3852009F076A /* ChapterListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterListViewController.xib; sourceTree = "<group>"; };
 		891E6950224F3869009F076A /* ChapterListViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterListViewControllerSpec.swift; sourceTree = "<group>"; };
 		891E6952224F3A02009F076A /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
+		892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBookServiceSpec.swift; sourceTree = "<group>"; };
+		892A9CC02256EFE100C8A069 /* FakeSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSyncService.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
 		8958C5D922546DE80081B6E0 /* font-awesome.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "font-awesome.css"; sourceTree = "<group>"; };
 		8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleHTMLWrapper.swift; sourceTree = "<group>"; };
+		8958C5E1225581550081B6E0 /* BookModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookModel.xcdatamodel; sourceTree = "<group>"; };
+		8958C5E4225584700081B6E0 /* CoreDataBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBookService.swift; sourceTree = "<group>"; };
+		8958C5E62255A6C60081B6E0 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
+		8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceSpec.swift; sourceTree = "<group>"; };
+		8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sharedBehavior.swift; sourceTree = "<group>"; };
+		8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSyncServiceSpec.swift; sourceTree = "<group>"; };
+		8958C5EE2256977B0081B6E0 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 		897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CA7224FF076007F2E84 /* Matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
 		897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/iOS/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
@@ -447,6 +465,7 @@
 				891E6921224F3771009F076A /* SBKit.h */,
 				891E6922224F3771009F076A /* Info.plist */,
 				897B3CE122508DA8007F2E84 /* OperationQueueJumper.swift */,
+				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
 			);
 			path = SBKit;
@@ -459,6 +478,7 @@
 				897B3CCF22507186007F2E84 /* Helpers */,
 				897B3CA7224FF076007F2E84 /* Matchers.swift */,
 				897B3CE422508E24007F2E84 /* OperationQueueJumperSpec.swift */,
+				8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */,
 				897B3CA5224FEF28007F2E84 /* Book Service */,
 				891E6930224F3771009F076A /* Info.plist */,
 			);
@@ -503,10 +523,19 @@
 			path = "Chapter List Screen";
 			sourceTree = "<group>";
 		};
+		8958C5E3225582F30081B6E0 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				8958C5E0225581550081B6E0 /* BookModel.xcdatamodeld */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		897B3CA5224FEF28007F2E84 /* Book Service */ = {
 			isa = PBXGroup;
 			children = (
 				897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */,
+				892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */,
 			);
 			path = "Book Service";
 			sourceTree = "<group>";
@@ -515,6 +544,8 @@
 			isa = PBXGroup;
 			children = (
 				891E6952224F3A02009F076A /* BookService.swift */,
+				8958C5E4225584700081B6E0 /* CoreDataBookService.swift */,
+				8958C5E62255A6C60081B6E0 /* SyncService.swift */,
 			);
 			path = "Book Service";
 			sourceTree = "<group>";
@@ -523,7 +554,9 @@
 			isa = PBXGroup;
 			children = (
 				897B3CBC22506EE5007F2E84 /* Info.plist */,
+				8958C5EE2256977B0081B6E0 /* helpers.swift */,
 				897B3CCC22506F34007F2E84 /* NetworkBookServiceSpec.swift */,
+				8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */,
 			);
 			path = SBKitIntegrationTests;
 			sourceTree = "<group>";
@@ -533,6 +566,8 @@
 			children = (
 				897B3CD022507190007F2E84 /* FakeBookService.swift */,
 				897B3CD42250730B007F2E84 /* factories.swift */,
+				8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */,
+				892A9CC02256EFE100C8A069 /* FakeSyncService.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -946,7 +981,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				897B3CE322508E15007F2E84 /* OperationQueueJumper.swift in Sources */,
+				8958C5E5225584700081B6E0 /* CoreDataBookService.swift in Sources */,
+				8958C5E72255A6C60081B6E0 /* SyncService.swift in Sources */,
 				891E6953224F3A02009F076A /* BookService.swift in Sources */,
+				8958C5E2225581550081B6E0 /* BookModel.xcdatamodeld in Sources */,
 				897B3CDE22508C76007F2E84 /* InjectorModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -956,7 +994,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */,
+				892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */,
+				8958C5E92255C4AC0081B6E0 /* SyncServiceSpec.swift in Sources */,
+				892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */,
 				897B3CE522508E24007F2E84 /* OperationQueueJumperSpec.swift in Sources */,
+				8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */,
 				897B3CD2225071DF007F2E84 /* FakeBookService.swift in Sources */,
 				897B3CD52250730B007F2E84 /* factories.swift in Sources */,
 				897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */,
@@ -967,7 +1009,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8958C5ED225696AD0081B6E0 /* NetworkSyncServiceSpec.swift in Sources */,
 				897B3CCD22506F34007F2E84 /* NetworkBookServiceSpec.swift in Sources */,
+				8958C5EF2256977B0081B6E0 /* helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1506,6 +1550,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8958C5E0225581550081B6E0 /* BookModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8958C5E1225581550081B6E0 /* BookModel.xcdatamodel */,
+			);
+			currentVersion = 8958C5E1225581550081B6E0 /* BookModel.xcdatamodel */;
+			path = BookModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 891E68BF224F32CA009F076A /* Project object */;
 }

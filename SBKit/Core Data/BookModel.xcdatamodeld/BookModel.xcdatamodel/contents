@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.98" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CoreDataBook" representedClassName="CoreDataBook" syncable="YES" codeGenerationType="class">
+        <attribute name="etag" attributeType="String" syncable="YES"/>
+        <attribute name="iconData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" attributeType="URI" syncable="YES"/>
+        <relationship name="chapters" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CoreDataChapter" inverseName="book" inverseEntity="CoreDataChapter" syncable="YES"/>
+        <fetchIndex name="byPropertyIndex">
+            <fetchIndexElement property="url" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CoreDataChapter" representedClassName="CoreDataChapter" syncable="YES" codeGenerationType="class">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contentURL" attributeType="URI" syncable="YES"/>
+        <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataBook" inverseName="chapters" inverseEntity="CoreDataBook" syncable="YES"/>
+        <relationship name="parentChapter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataChapter" inverseName="subchapters" inverseEntity="CoreDataChapter" syncable="YES"/>
+        <relationship name="subchapters" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CoreDataChapter" inverseName="parentChapter" inverseEntity="CoreDataChapter" syncable="YES"/>
+        <fetchIndex name="byPropertyIndex">
+            <fetchIndexElement property="contentURL" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <elements>
+        <element name="CoreDataBook" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CoreDataChapter" positionX="-54" positionY="-9" width="128" height="150"/>
+    </elements>
+</model>

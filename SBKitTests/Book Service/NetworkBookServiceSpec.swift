@@ -33,46 +33,6 @@ final class NetworkBookServiceSpec: QuickSpec {
             return bookURL.appendingPathComponent(path)
         }
 
-        func itBehavesLikeResolvingWithAnError<T>(futureFactory: @escaping () -> Future<Result<T, ServiceError>>) {
-            context("when the request succeeds without actually succeeding") {
-                context("with an http 400-level error") {
-                    beforeEach {
-                        client.requestPromises.last?.resolve(.success(HTTPResponse(
-                            body: "Bad Data".data(using: .utf8)!,
-                            status: .badRequest,
-                            mimeType: "text/plain",
-                            headers: [:]
-                        )))
-                    }
-
-                    it("resolves the future with a failure") {
-                        queue.runNextOperation()
-                        let future = futureFactory()
-                        expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                        expect(future.value?.error).to(equal(.network(.http(.badRequest))))
-                    }
-                }
-
-                context("with an http 500-level error") {
-                    beforeEach {
-                        client.requestPromises.last?.resolve(.success(HTTPResponse(
-                            body: "Bad Data".data(using: .utf8)!,
-                            status: .internalServerError,
-                            mimeType: "text/plain",
-                            headers: [:]
-                        )))
-                    }
-
-                    it("resolves the future with a failure") {
-                        queue.runNextOperation()
-                        let future = futureFactory()
-                        expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                        expect(future.value?.error).to(equal(.network(.http(.internalServerError))))
-                    }
-                }
-            }
-        }
-
         describe("-chapters()") {
             var future: Future<Result<[Chapter], ServiceError>>!
 
@@ -132,7 +92,7 @@ final class NetworkBookServiceSpec: QuickSpec {
                 }
             }
 
-            itBehavesLikeResolvingWithAnError { return future }
+            itBehavesLikeResolvingWithAnError { return (client, queue, future) }
         }
 
         describe("-title()") {
@@ -174,7 +134,7 @@ final class NetworkBookServiceSpec: QuickSpec {
                 }
             }
 
-            itBehavesLikeResolvingWithAnError { return future }
+            itBehavesLikeResolvingWithAnError { return (client, queue, future) }
         }
 
         describe("-content(of:)") {
@@ -226,7 +186,7 @@ final class NetworkBookServiceSpec: QuickSpec {
                 }
             }
 
-            itBehavesLikeResolvingWithAnError { return future }
+            itBehavesLikeResolvingWithAnError { return (client, queue, future) }
         }
     }
 }
