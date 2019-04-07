@@ -39,39 +39,61 @@ final class CoreDataBookService: BookService {
     }
 
     func title() -> Future<Result<String, ServiceError>> {
-        return Promise<Result<String, ServiceError>>().future
+        return Future<Result<String, ServiceError>>.resolved(.success("Fake Title"))
     }
 
     func content(of chapter: Chapter) -> Future<Result<String, ServiceError>> {
-        return Promise<Result<String, ServiceError>>().future
+        return self.queueJumper.jump(self.chapter(from: chapter).map { (chapterResult: Result<CoreDataChapter, ServiceError>) -> Future<Result<String, ServiceError>> in
+            switch chapterResult {
+            case .success(let coreDataChapter):
+                if let etag = coreDataChapter.etag {
+                    return self.chapterContent(url: chapter.contentURL, etag: etag, objectIdentifier: coreDataChapter.objectID)
+                } else {
+                    return self.chapterContentNoCache(url: chapter.contentURL, objectIdentifier: coreDataChapter.objectID)
+                }
+            case .failure(let error):
+                return Future<Result<String, ServiceError>>.resolved(.failure(error))
+            }
+        })
     }
 
+    // MARK: Getting chapter tree
     private lazy var chapterURL: URL = { return bookURL.appendingPathComponent("api/chapters.json", isDirectory: false) }()
     private func chapters(with book: CoreDataBook) -> Future<Result<[Chapter], ServiceError>> {
-        let existingChapters = self.chapters(of: book)
+        guard let etag = book.etag else {
+            return self.chaptersNoCache()
+        }
         let bookIdentifier: NSManagedObjectID = book.objectID
+
+        let getExistingChapters: () -> Future<Result<[Chapter], ServiceError>> = {
+            return self.object(with: bookIdentifier).map { (result: Result<CoreDataBook, ServiceError>) -> Result<[Chapter], ServiceError> in
+                return result.map { cdBook in
+                    return self.chapters(of: cdBook)
+                }
+            }
+        }
 
         // we already have chapter information cached. No matter what, return that data.
 
-        return self.syncService.check(url: self.chapterURL, etag: book.etag!).map { (syncResult: Result<SyncJudgement, ServiceError>) in
+        return self.syncService.check(url: self.chapterURL, etag: etag).map { (syncResult: Result<SyncJudgement, ServiceError>) in
             switch syncResult {
             case .success(.updateAvailable(content: let data, etag: let etag)):
                 switch parseChapters(data: data, bookURL: self.bookURL) {
                 case .success(let chapters):
                     return self.upsert(chapters: chapters, etag: etag, objectId: bookIdentifier)
-                        .map {(result: Result<[Chapter], ServiceError>) -> Result<[Chapter], ServiceError> in
+                        .map {(result: Result<[Chapter], ServiceError>) -> Future<Result<[Chapter], ServiceError>> in
                             switch result {
                             case .success(let value):
-                                return .success(value)
+                                return Future<Result<[Chapter], ServiceError>>.resolved(.success(value))
                             case .failure:
-                                return .success(existingChapters)
+                                return getExistingChapters()
                             }
                         }
                 case .failure:
-                    return Future<Result<[Chapter], ServiceError>>.resolved(.success(existingChapters))
+                    return getExistingChapters()
                 }
             case .success(.noNewContent), .failure:
-                return Future<Result<[Chapter], ServiceError>>.resolved(.success(existingChapters))
+                return getExistingChapters()
             }
         }
     }
@@ -104,20 +126,35 @@ final class CoreDataBookService: BookService {
         let context = self.managedObjectContext()
         context.perform {
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CoreDataBook")
-            let contents: [CoreDataBook]
+            fetchRequest.predicate = NSPredicate(format: "url.absoluteString = %@", self.bookURL.absoluteString)
+            fetchRequest.fetchLimit = 1
+            let coreDataBook: CoreDataBook?
             do {
-                contents = try context.fetch(fetchRequest) as? [CoreDataBook] ?? []
+                coreDataBook = try context.fetch(fetchRequest).first as? CoreDataBook
             } catch let error {
                 dump(error)
                 promise.resolve(.failure(.cache))
                 return
             }
-            guard let book = contents.first(where: { $0.url == self.bookURL }) else {
+            guard let book = coreDataBook else {
                 promise.resolve(.failure(.cache))
                 return
             }
             promise.resolve(.success(book))
             return
+        }
+        return promise.future
+    }
+
+    private func object<T: NSManagedObject>(with id: NSManagedObjectID) -> Future<Result<T, ServiceError>> {
+        let promise = Promise<Result<T, ServiceError>>()
+        let context = self.managedObjectContext()
+        context.perform {
+            guard let object = context.object(with: id) as? T else {
+                promise.resolve(.failure(.cache))
+                return
+            }
+            promise.resolve(.success(object))
         }
         return promise.future
     }
@@ -190,6 +227,99 @@ final class CoreDataBookService: BookService {
         }
 
         return createdChapter
+    }
+
+    // MARK: Getting Chapter Content
+    private func chapter(from chapter: Chapter) -> Future<Result<CoreDataChapter, ServiceError>> {
+        let promise = Promise<Result<CoreDataChapter, ServiceError>>()
+        let context = self.managedObjectContext()
+        context.perform {
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CoreDataChapter")
+            fetchRequest.predicate = NSPredicate(format: "contentURL.absoluteString = %@", chapter.contentURL.absoluteString)
+            fetchRequest.fetchLimit = 1
+            let coreDataChapter: CoreDataChapter?
+            do {
+                coreDataChapter = try context.fetch(fetchRequest).first as? CoreDataChapter
+            } catch let error {
+                dump(error)
+                promise.resolve(.failure(.cache))
+                return
+            }
+            guard let cdChapter = coreDataChapter else {
+                promise.resolve(.failure(.cache))
+                return
+            }
+            promise.resolve(.success(cdChapter))
+            return
+        }
+        return promise.future
+    }
+
+    private func chapterContent(url: URL, etag originalEtag: String, objectIdentifier: NSManagedObjectID) -> Future<Result<String, ServiceError>> {
+        let getExistingContent: () -> Future<Result<String, ServiceError>> = {
+            return self.object(with: objectIdentifier).map { (result: Result<CoreDataChapter, ServiceError>) -> Result<String, ServiceError> in
+                return result.flatMap {
+                    guard let content = $0.content else {
+                        return .failure(.cache)
+                    }
+                    return .success(content)
+                }
+            }
+        }
+
+        return self.syncService.check(url: url, etag: originalEtag).map { (syncResult: Result<SyncJudgement, ServiceError>) in
+            switch syncResult {
+            case .success(.updateAvailable(content: let data, etag: let etag)):
+                guard let html = String(data: data, encoding: .utf8) else {
+                    return getExistingContent()
+                }
+
+                return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
+            case .success(.noNewContent), .failure:
+                return getExistingContent()
+            }
+        }
+    }
+
+    private func chapterContentNoCache(url: URL, objectIdentifier: NSManagedObjectID) -> Future<Result<String, ServiceError>> {
+        return self.syncService.check(url: url, etag: "").map { (syncResult: Result<SyncJudgement, ServiceError>) in
+            switch syncResult {
+            case .success(.updateAvailable(content: let data, etag: let etag)):
+                guard let html = String(data: data, encoding: .utf8) else {
+                    return Future<Result<String, ServiceError>>.resolved(.failure(.parse))
+                }
+
+                return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
+            case .success(.noNewContent):
+                return Future<Result<String, ServiceError>>.resolved(.failure(.cache))
+            case .failure(let error):
+                return Future<Result<String, ServiceError>>.resolved(.failure(error))
+            }
+        }
+    }
+
+    private func upsert(content: String, etag: String, objectId: NSManagedObjectID) -> Future<Result<String, ServiceError>> {
+        let promise = Promise<Result<String, ServiceError>>()
+        let context = self.managedObjectContext()
+        context.perform {
+            guard let chapter = context.object(with: objectId) as? CoreDataChapter else {
+                promise.resolve(.failure(.cache))
+                return
+            }
+            chapter.etag = etag
+            chapter.content = content
+
+            do {
+                try context.save()
+            } catch let error {
+                print("Unable to save: \(error)")
+                promise.resolve(.failure(.cache))
+                return
+            }
+
+            promise.resolve(.success(content))
+        }
+        return promise.future
     }
 }
 

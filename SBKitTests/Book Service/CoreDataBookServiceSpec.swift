@@ -209,7 +209,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
                 }
             }
 
-            fcontext("when there are stored chapters") {
+            context("when there are stored chapters") {
                 beforeEach {
                     objectContext.performAndWait {
                         let book = NSEntityDescription.insertNewObject(forEntityName: "CoreDataBook", into: objectContext) as! CoreDataBook
@@ -277,6 +277,165 @@ final class CoreDataBookServiceSpec: QuickSpec {
                             Chapter(title: "Chapter 3", contentURL: subpage(named: "3.html"), subchapters: []),
                             Chapter(title: "Chapter 4", contentURL: subpage(named: "4.html"), subchapters: []),
                         ]))
+                    }
+                }
+            }
+        }
+
+        describe("-title()") {
+            it("it returns an empty string until this is implemented") {
+                let future = subject.title()
+                expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
+                expect(future.value?.value).to(equal("Fake Title"))
+            }
+        }
+
+        describe("-content(of:)") {
+            var future: Future<Result<String, ServiceError>>!
+
+            var cdchapter: CoreDataChapter?
+
+            let chapter = Chapter(title: "Whatever", contentURL: URL(string: "https://example.com/my_chapter")!, subchapters: [])
+
+            beforeEach {
+                objectContext.performAndWait {
+                    let newChapter = NSEntityDescription.insertNewObject(forEntityName: "CoreDataChapter", into: objectContext) as! CoreDataChapter
+                    newChapter.contentURL = chapter.contentURL
+                    newChapter.title = "My title"
+                    newChapter.etag = nil
+                    newChapter.content = nil
+
+                    cdchapter = newChapter
+                    try! objectContext.save()
+                }
+            }
+
+            func itBehavesLikeNewDataWasReturned() {
+                describe("when the sync service comes back with new data") {
+                    let content = "<html><head></head><body>New Content, woo!</body></html>"
+                    beforeEach {
+                        guard let data = content.data(using: .utf8) else {
+                            fail("Unable to serialize content")
+                            return
+                        }
+                        syncService.checkPromises.last?.resolve(.success(.updateAvailable(content: data, etag: "new_content")))
+                    }
+
+                    it("resolves the future with the parsed chapters") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.error).to(beNil())
+                        expect(future.value?.value).to(equal(content))
+                    }
+
+                    it("updates the stored chapters") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        objectContext.performAndWait {
+                            objectContext.refreshAllObjects()
+                            let results = (try! objectContext.fetch(NSFetchRequest(entityName: "CoreDataChapter")))
+                            expect(results).to(haveCount(1))
+                            cdchapter = results.first as? CoreDataChapter
+                        }
+
+                        expect(cdchapter?.etag).to(equal("new_content"))
+                        expect(cdchapter?.contentURL).to(equal(chapter.contentURL))
+
+                        assertCoreDataChapter(chapter: cdchapter!, book: nil, url: chapter.contentURL, title: "My title",
+                                              etag: "new_content", content: content)
+
+                        expect(cdchapter?.subchapters?.count).to(equal(0))
+                    }
+                }
+            }
+
+            context("and there is no content for the chapter") {
+                beforeEach {
+                    future = subject.content(of: chapter)
+
+                    expect(syncService.checkPromises).toEventuallyNot(beEmpty())
+                }
+
+                it("asks the sync service for the chapter content") {
+                    expect(syncService.checkCalls).to(haveCount(1))
+
+                    guard let call = syncService.checkCalls.last else { return }
+
+                    expect(call.url).to(equal(chapter.contentURL))
+                    expect(call.etag).to(equal(""))
+                }
+
+                itBehavesLikeNewDataWasReturned()
+
+                describe("if the sync service comes back with no new data") {
+                    // Shouldn't happen!
+
+                    beforeEach {
+                        syncService.checkPromises.last?.resolve(.success(.noNewContent))
+                    }
+
+                    it("resolves the future with a cache error") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.error).to(equal(ServiceError.cache))
+                    }
+                }
+
+                describe("when the sync service comes back with an error") {
+                    beforeEach {
+                        syncService.checkPromises.last?.resolve(.failure(.unknown))
+                    }
+
+                    it("forwards the error") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.error).to(equal(.unknown))
+                    }
+                }
+            }
+
+            context("and there is content for the chapter") {
+                beforeEach {
+                    objectContext.performAndWait {
+                        cdchapter!.etag = "an etag"
+                        cdchapter!.content = "<html><body>Hello World</body></html>"
+
+                        try! objectContext.save()
+                    }
+
+                    future = subject.content(of: chapter)
+
+                    expect(syncService.checkPromises).toEventuallyNot(beEmpty())
+                }
+
+                it("asks the sync service to update the chapter") {
+                    expect(syncService.checkCalls).to(haveCount(1))
+
+                    guard let call = syncService.checkCalls.last else { return }
+
+                    expect(call.url).to(equal(chapter.contentURL))
+                    expect(call.etag).to(equal("an etag"))
+                }
+
+                itBehavesLikeNewDataWasReturned()
+
+                describe("when the sync service comes back with no new data") {
+                    beforeEach {
+                        syncService.checkPromises.last?.resolve(.success(.noNewContent))
+                    }
+
+                    it("returns the chapter content as stored in core data") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.error).to(beNil())
+                        expect(future.value?.value).to(equal("<html><body>Hello World</body></html>"))
+                    }
+                }
+
+                describe("when the sync service comes back with an error") {
+                    beforeEach {
+                        syncService.checkPromises.last?.resolve(.failure(.unknown))
+                    }
+
+                    it("returns the chapter content as stored in core data") {
+                        expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.error).to(beNil())
+                        expect(future.value?.value).to(equal("<html><body>Hello World</body></html>"))
                     }
                 }
             }
