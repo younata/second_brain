@@ -29,6 +29,8 @@ class ChapterViewController: UIViewController {
 
         self.title = self.chapter.title
 
+        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+
         self.bookService.content(of: self.chapter).then { result in
             switch result {
             case .success(let content):
