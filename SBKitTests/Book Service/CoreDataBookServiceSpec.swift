@@ -54,26 +54,28 @@ final class CoreDataBookServiceSpec: QuickSpec {
             )
         }
 
-        describe("-chapters()") {
-            var future: Future<Result<[Chapter], ServiceError>>!
+        describe("-Book()") {
+            var future: Future<Result<Book, ServiceError>>!
 
             var cdbook: CoreDataBook?
             var cdchapters: [CoreDataChapter] = []
 
             func itBehavesLikeNewDataWasReturned() {
                 describe("when the sync service comes back with new data") {
-                    let chapters: [[String: Any]] = [
-                        ["path": "/index.html", "title": "Introduction", "subchapters": []],
-                        ["path": "/ci/index.html", "title": "Continuous Integration", "subchapters": [
-                            ["path": "/ci/concourse.html", "title": "Concourse", "subchapters": []]
-                            ]],
-                        ["path": "/food/index.html", "title": "Food", "subchapters": [
-                            ["path": "/food/recipes/index.html", "title": "Recipes", "subchapters": [
-                                ["path": "/food/recipes/mac_and_cheese.html", "title": "Mac and Cheese", "subchapters": []],
-                                ["path": "/food/recipes/soup.html", "title": "Simple Soup", "subchapters": []]
+                    let chapters: [String: Any] = [
+                        "title": "new title",
+                        "chapters": [
+                            ["path": "/index.html", "title": "Introduction", "subchapters": []],
+                            ["path": "/ci/index.html", "title": "Continuous Integration", "subchapters": [
+                                ["path": "/ci/concourse.html", "title": "Concourse", "subchapters": []]
+                                ]],
+                            ["path": "/food/index.html", "title": "Food", "subchapters": [
+                                ["path": "/food/recipes/index.html", "title": "Recipes", "subchapters": [
+                                    ["path": "/food/recipes/mac_and_cheese.html", "title": "Mac and Cheese", "subchapters": []],
+                                    ["path": "/food/recipes/soup.html", "title": "Simple Soup", "subchapters": []]
+                                    ]]
                                 ]]
-                            ]]
-                    ]
+                        ]]
                     beforeEach {
                         guard let jsonChapters = try? JSONSerialization.data(withJSONObject: chapters, options: []) else {
                             fail("Unable to serialize chapters")
@@ -85,18 +87,20 @@ final class CoreDataBookServiceSpec: QuickSpec {
                     it("resolves the future with the parsed chapters") {
                         expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
                         expect(future.value?.error).to(beNil())
-                        expect(future.value?.value).to(equal([
-                            Chapter(title: "Introduction", contentURL: subpage(named: "index.html"), subchapters: []),
-                            Chapter(title: "Continuous Integration", contentURL: subpage(named: "ci/index.html"), subchapters: [
-                                Chapter(title: "Concourse", contentURL: subpage(named: "ci/concourse.html"), subchapters: [])
-                                ]),
-                            Chapter(title: "Food", contentURL: subpage(named: "food/index.html"), subchapters: [
-                                Chapter(title: "Recipes", contentURL: subpage(named: "food/recipes/index.html"), subchapters: [
-                                    Chapter(title: "Mac and Cheese", contentURL: subpage(named: "food/recipes/mac_and_cheese.html"), subchapters: []),
-                                    Chapter(title: "Simple Soup", contentURL: subpage(named: "food/recipes/soup.html"), subchapters: []),
+                        expect(future.value?.value).to(equal(Book(
+                            title: "new title",
+                            chapters: [
+                                Chapter(title: "Introduction", contentURL: subpage(named: "index.html"), subchapters: []),
+                                Chapter(title: "Continuous Integration", contentURL: subpage(named: "ci/index.html"), subchapters: [
+                                    Chapter(title: "Concourse", contentURL: subpage(named: "ci/concourse.html"), subchapters: [])
+                                    ]),
+                                Chapter(title: "Food", contentURL: subpage(named: "food/index.html"), subchapters: [
+                                    Chapter(title: "Recipes", contentURL: subpage(named: "food/recipes/index.html"), subchapters: [
+                                        Chapter(title: "Mac and Cheese", contentURL: subpage(named: "food/recipes/mac_and_cheese.html"), subchapters: []),
+                                        Chapter(title: "Simple Soup", contentURL: subpage(named: "food/recipes/soup.html"), subchapters: []),
+                                        ])
                                     ])
-                                ])
-                            ]))
+                            ])))
                     }
 
                     it("updates the stored book and chapters") {
@@ -111,6 +115,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
                         expect(cdbook?.etag).to(equal("new_chapters"))
                         expect(cdbook?.url).to(equal(bookURL))
+                        expect(cdbook?.title).to(equal("new title"))
 
                         expect(cdchapters.count).to(equal(3))
 
@@ -169,7 +174,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
             context("when there are no stored chapters") {
                 beforeEach {
-                    future = subject.chapters()
+                    future = subject.book()
                     expect(syncService.checkPromises).toEventuallyNot(beEmpty())
                 }
 
@@ -178,7 +183,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
                     guard let call = syncService.checkCalls.last else { return }
 
-                    expect(call.url).to(equal(subpage(named: "api/chapters.json")))
+                    expect(call.url).to(equal(subpage(named: "api/book.json")))
                     expect(call.etag).to(equal(""))
                 }
 
@@ -215,6 +220,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
                         let book = NSEntityDescription.insertNewObject(forEntityName: "CoreDataBook", into: objectContext) as! CoreDataBook
                         book.etag = "my_etag"
                         book.url = bookURL
+                        book.title = "existing title"
 
                         cdchapters = (1..<5).map { index in
                             return cdChapterFactory(
@@ -231,7 +237,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
                         try! objectContext.save()
                     }
 
-                    future = subject.chapters()
+                    future = subject.book()
                     expect(syncService.checkPromises).toEventuallyNot(beEmpty())
                 }
 
@@ -240,7 +246,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
                     guard let call = syncService.checkCalls.last else { return }
 
-                    expect(call.url).to(equal(subpage(named: "api/chapters.json")))
+                    expect(call.url).to(equal(subpage(named: "api/book.json")))
                     expect(call.etag).to(equal("my_etag"))
                 }
 
@@ -254,12 +260,14 @@ final class CoreDataBookServiceSpec: QuickSpec {
                     it("returns the chapter content as stored in core data") {
                         expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
                         expect(future.value?.error).to(beNil())
-                        expect(future.value?.value).to(equal([
-                            Chapter(title: "Chapter 1", contentURL: subpage(named: "1.html"), subchapters: []),
-                            Chapter(title: "Chapter 2", contentURL: subpage(named: "2.html"), subchapters: []),
-                            Chapter(title: "Chapter 3", contentURL: subpage(named: "3.html"), subchapters: []),
-                            Chapter(title: "Chapter 4", contentURL: subpage(named: "4.html"), subchapters: []),
-                        ]))
+                        expect(future.value?.value).to(equal(Book(
+                            title: "existing title",
+                            chapters: [
+                                Chapter(title: "Chapter 1", contentURL: subpage(named: "1.html"), subchapters: []),
+                                Chapter(title: "Chapter 2", contentURL: subpage(named: "2.html"), subchapters: []),
+                                Chapter(title: "Chapter 3", contentURL: subpage(named: "3.html"), subchapters: []),
+                                Chapter(title: "Chapter 4", contentURL: subpage(named: "4.html"), subchapters: []),
+                            ])))
                     }
                 }
 
@@ -271,22 +279,16 @@ final class CoreDataBookServiceSpec: QuickSpec {
                     it("returns the chapter content as stored in core data") {
                         expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
                         expect(future.value?.error).to(beNil())
-                        expect(future.value?.value).to(equal([
-                            Chapter(title: "Chapter 1", contentURL: subpage(named: "1.html"), subchapters: []),
-                            Chapter(title: "Chapter 2", contentURL: subpage(named: "2.html"), subchapters: []),
-                            Chapter(title: "Chapter 3", contentURL: subpage(named: "3.html"), subchapters: []),
-                            Chapter(title: "Chapter 4", contentURL: subpage(named: "4.html"), subchapters: []),
-                        ]))
+                        expect(future.value?.value).to(equal(Book(
+                            title: "existing title",
+                            chapters: [
+                                Chapter(title: "Chapter 1", contentURL: subpage(named: "1.html"), subchapters: []),
+                                Chapter(title: "Chapter 2", contentURL: subpage(named: "2.html"), subchapters: []),
+                                Chapter(title: "Chapter 3", contentURL: subpage(named: "3.html"), subchapters: []),
+                                Chapter(title: "Chapter 4", contentURL: subpage(named: "4.html"), subchapters: []),
+                            ])))
                     }
                 }
-            }
-        }
-
-        describe("-title()") {
-            it("it returns an empty string until this is implemented") {
-                let future = subject.title()
-                expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                expect(future.value?.value).to(equal("Fake Title"))
             }
         }
 
@@ -312,7 +314,9 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
             func itBehavesLikeNewDataWasReturned() {
                 describe("when the sync service comes back with new data") {
-                    let content = "<html><head></head><body>New Content, woo!</body></html>"
+                    let content = """
+<html><body><div id="page-wrapper" class="page-wrapper"><div class="page"><div id="content" class="content"><main>New Content, woo!</main></div></div></div></body></html>
+"""
                     beforeEach {
                         guard let data = content.data(using: .utf8) else {
                             fail("Unable to serialize content")
@@ -321,10 +325,10 @@ final class CoreDataBookServiceSpec: QuickSpec {
                         syncService.checkPromises.last?.resolve(.success(.updateAvailable(content: data, etag: "new_content")))
                     }
 
-                    it("resolves the future with the parsed chapters") {
+                    it("resolves the future with the parsed chapter content") {
                         expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
                         expect(future.value?.error).to(beNil())
-                        expect(future.value?.value).to(equal(content))
+                        expect(future.value?.value).to(equal("New Content, woo!"))
                     }
 
                     it("updates the stored chapters") {
@@ -340,7 +344,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
                         expect(cdchapter?.contentURL).to(equal(chapter.contentURL))
 
                         assertCoreDataChapter(chapter: cdchapter!, book: nil, url: chapter.contentURL, title: "My title",
-                                              etag: "new_content", content: content)
+                                              etag: "new_content", content: "New Content, woo!")
 
                         expect(cdchapter?.subchapters?.count).to(equal(0))
                     }

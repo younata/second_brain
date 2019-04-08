@@ -33,39 +33,42 @@ final class NetworkBookServiceSpec: QuickSpec {
             return bookURL.appendingPathComponent(path)
         }
 
-        describe("-chapters()") {
-            var future: Future<Result<[Chapter], ServiceError>>!
+        describe("-book()") {
+            var future: Future<Result<Book, ServiceError>>!
 
             beforeEach {
-                future = subject.chapters()
+                future = subject.book()
             }
 
-            it("makes a GET request to the bookURL's chapters api endpoint") {
+            it("makes a GET request to the bookURL's book api endpoint") {
                 expect(client.requests).to(haveCount(1))
-                expect(client).to(haveReceivedRequest(URLRequest(url: bookURL.appendingPathComponent("api/chapters.json", isDirectory: false))))
+                expect(client).to(haveReceivedRequest(URLRequest(url: bookURL.appendingPathComponent("api/book.json", isDirectory: false))))
             }
 
             describe("when the request succeeds with http 200") {
-                let chapters: [[String: Any]] = [
-                    ["path": "/index.html", "title": "Introduction", "subchapters": []],
-                    ["path": "/ci/index.html", "title": "Continuous Integration", "subchapters": [
-                        ["path": "/ci/concourse.html", "title": "Concourse", "subchapters": []]
-                    ]],
-                    ["path": "/food/index.html", "title": "Food", "subchapters": [
-                        ["path": "/food/recipes/index.html", "title": "Recipes", "subchapters": [
-                            ["path": "/food/recipes/mac_and_cheese.html", "title": "Mac and Cheese", "subchapters": []],
-                            ["path": "/food/recipes/soup.html", "title": "Simple Soup", "subchapters": []]
-                        ]]
-                    ]],
-                    ["path": "/rust/index.html", "title": "Rust", "subchapters": []]
+                let book: [String: Any] = [
+                    "title": "my book",
+                    "chapters": [
+                        ["path": "/index.html", "title": "Introduction", "subchapters": []],
+                        ["path": "/ci/index.html", "title": "Continuous Integration", "subchapters": [
+                            ["path": "/ci/concourse.html", "title": "Concourse", "subchapters": []]
+                            ]],
+                        ["path": "/food/index.html", "title": "Food", "subchapters": [
+                            ["path": "/food/recipes/index.html", "title": "Recipes", "subchapters": [
+                                ["path": "/food/recipes/mac_and_cheese.html", "title": "Mac and Cheese", "subchapters": []],
+                                ["path": "/food/recipes/soup.html", "title": "Simple Soup", "subchapters": []]
+                                ]]
+                            ]],
+                        ["path": "/rust/index.html", "title": "Rust", "subchapters": []]
+                    ]
                 ]
                 beforeEach {
-                    guard let jsonChapters = try? JSONSerialization.data(withJSONObject: chapters, options: []) else {
-                        fail("Unable to serialize chapters")
+                    guard let jsonBook = try? JSONSerialization.data(withJSONObject: book, options: []) else {
+                        fail("Unable to serialize book")
                         return
                     }
                     client.requestPromises.last?.resolve(.success(HTTPResponse(
-                        body: jsonChapters,
+                        body: jsonBook,
                         status: .ok,
                         mimeType: "text/html",
                         headers: [:]
@@ -76,61 +79,21 @@ final class NetworkBookServiceSpec: QuickSpec {
                 it("resolves the future with the parsed chapters") {
                     expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
                     expect(future.value?.error).to(beNil())
-                    expect(future.value?.value).to(equal([
-                        Chapter(title: "Introduction", contentURL: page("index.html"), subchapters: []),
-                        Chapter(title: "Continuous Integration", contentURL: page("ci/index.html"), subchapters: [
-                            Chapter(title: "Concourse", contentURL: page("ci/concourse.html"), subchapters: [])
-                        ]),
-                        Chapter(title: "Food", contentURL: page("food/index.html"), subchapters: [
-                            Chapter(title: "Recipes", contentURL: page("food/recipes/index.html"), subchapters: [
-                                Chapter(title: "Mac and Cheese", contentURL: page("food/recipes/mac_and_cheese.html"), subchapters: []),
-                                Chapter(title: "Simple Soup", contentURL: page("food/recipes/soup.html"), subchapters: []),
-                            ])
-                        ]),
-                        Chapter(title: "Rust", contentURL: page("rust/index.html"), subchapters: [])
-                    ]))
-                }
-            }
-
-            itBehavesLikeResolvingWithAnError { return (client, queue, future) }
-        }
-
-        describe("-title()") {
-            var future: Future<Result<String, ServiceError>>!
-
-            beforeEach {
-                future = subject.title()
-            }
-
-            it("makes a GET request to the bookURL") {
-                expect(client.requests).to(haveCount(1))
-                expect(client).to(haveReceivedRequest(URLRequest(url: bookURL)))
-            }
-
-            describe("when the request succeeds with http 200") {
-                beforeEach {
-                    guard let url = Bundle(for: self.classForCoder).url(forResource: "index", withExtension: "html") else {
-                        fail("Unable to get url for book's index.html")
-                        return
-                    }
-                    guard let data = try? Data(contentsOf: url) else {
-                        fail("Unable to read contents of index.html")
-                        return
-                    }
-
-                    client.requestPromises.last?.resolve(.success(HTTPResponse(
-                        body: data,
-                        status: .ok,
-                        mimeType: "text/html",
-                        headers: [:]
-                    )))
-                    queue.runNextOperation()
-                }
-
-                it("resolves the future with the parsed title") {
-                    expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                    expect(future.value?.error).to(beNil())
-                    expect(future.value?.value).to(equal("Book Title"))
+                    expect(future.value?.value).to(equal(Book(
+                        title: "my book",
+                        chapters: [
+                            Chapter(title: "Introduction", contentURL: page("index.html"), subchapters: []),
+                            Chapter(title: "Continuous Integration", contentURL: page("ci/index.html"), subchapters: [
+                                Chapter(title: "Concourse", contentURL: page("ci/concourse.html"), subchapters: [])
+                                ]),
+                            Chapter(title: "Food", contentURL: page("food/index.html"), subchapters: [
+                                Chapter(title: "Recipes", contentURL: page("food/recipes/index.html"), subchapters: [
+                                    Chapter(title: "Mac and Cheese", contentURL: page("food/recipes/mac_and_cheese.html"), subchapters: []),
+                                    Chapter(title: "Simple Soup", contentURL: page("food/recipes/soup.html"), subchapters: []),
+                                    ])
+                                ]),
+                            Chapter(title: "Rust", contentURL: page("rust/index.html"), subchapters: [])
+                        ])))
                 }
             }
 
@@ -171,7 +134,7 @@ final class NetworkBookServiceSpec: QuickSpec {
                     queue.runNextOperation()
                 }
 
-                it("resolves the future with the parsed title") {
+                it("resolves the future with the parsed page content") {
                     expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
                     expect(future.value?.error).to(beNil())
                     guard let value = future.value?.value else { return }

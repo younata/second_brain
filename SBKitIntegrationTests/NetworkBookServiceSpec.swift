@@ -37,28 +37,15 @@ final class NetworkBookServiceSpec: QuickSpec {
             )
         }
 
-        describe("-chapters()") {
+        describe("-book()") {
             it("successfully fetches from the network and parses the data") {
                 let expectation = self.expectation(description: "ChaptersFuture")
 
-                subject.chapters().then { result in
-                    parse(result: result, expectation: expectation) { chapters in
-                        expect(chapters.count).to(beGreaterThan(1), description: "Expected to have received some chapters, got no chapters.")
-                        expect(chapters.filter { $0.subchapters.count > 0 }.count).to(beGreaterThan(1), description: "Expected some chapters to have subchapters, none had subchapters.")
-                    }
-                }
-
-                self.waitForExpectations(timeout: 10, handler: nil)
-            }
-        }
-
-        describe("-title()") {
-            it("successfully fetches from the network and parses the title") {
-                let expectation = self.expectation(description: "TitleFuture")
-
-                subject.title().then { result in
-                    parse(result: result, expectation: expectation) { title in
-                        expect(title).to(equal("Knowledge Repository"))
+                subject.book().then { result in
+                    parse(result: result, expectation: expectation) { book in
+                        expect(book.title).to(equal("Knowledge Repository"))
+                        expect(book.chapters.count).to(beGreaterThan(1), description: "Expected to have received some chapters, got no chapters.")
+                        expect(book.chapters.filter { $0.subchapters.count > 0 }.count).to(beGreaterThan(1), description: "Expected some chapters to have subchapters, none had subchapters.")
                     }
                 }
 

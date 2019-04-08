@@ -27,19 +27,15 @@ final class CoreDataBookService: BookService {
         self.bookURL = bookURL
     }
 
-    func chapters() -> Future<Result<[Chapter], ServiceError>> {
-        return self.queueJumper.jump(self.book().map { (bookResult: Result<CoreDataBook, ServiceError>) -> Future<Result<[Chapter], ServiceError>> in
+    func book() -> Future<Result<Book, ServiceError>> {
+        return self.queueJumper.jump(self.book().map { (bookResult: Result<CoreDataBook, ServiceError>) -> Future<Result<Book, ServiceError>> in
             switch bookResult {
             case .success(let book):
-                return self.chapters(with: book)
+                return self.book(with: book)
             case .failure:
-                return self.chaptersNoCache()
+                return self.bookNoCache()
             }
         })
-    }
-
-    func title() -> Future<Result<String, ServiceError>> {
-        return Future<Result<String, ServiceError>>.resolved(.success("Fake Title"))
     }
 
     func content(of chapter: Chapter) -> Future<Result<String, ServiceError>> {
@@ -57,53 +53,53 @@ final class CoreDataBookService: BookService {
         })
     }
 
-    // MARK: Getting chapter tree
-    private lazy var chapterURL: URL = { return bookURL.appendingPathComponent("api/chapters.json", isDirectory: false) }()
-    private func chapters(with book: CoreDataBook) -> Future<Result<[Chapter], ServiceError>> {
+    // MARK: Getting Book
+    private lazy var bookAPIURL: URL = { return bookURL.appendingPathComponent("api/book.json", isDirectory: false) }()
+    private func book(with book: CoreDataBook) -> Future<Result<Book, ServiceError>> {
         guard let etag = book.etag else {
-            return self.chaptersNoCache()
+            return self.bookNoCache()
         }
         let bookIdentifier: NSManagedObjectID = book.objectID
 
-        let getExistingChapters: () -> Future<Result<[Chapter], ServiceError>> = {
-            return self.object(with: bookIdentifier).map { (result: Result<CoreDataBook, ServiceError>) -> Result<[Chapter], ServiceError> in
+        let getExistingBook: () -> Future<Result<Book, ServiceError>> = {
+            return self.object(with: bookIdentifier).map { (result: Result<CoreDataBook, ServiceError>) -> Result<Book, ServiceError> in
                 return result.map { cdBook in
-                    return self.chapters(of: cdBook)
+                    return cdBook.book()
                 }
             }
         }
 
         // we already have chapter information cached. No matter what, return that data.
 
-        return self.syncService.check(url: self.chapterURL, etag: etag).map { (syncResult: Result<SyncJudgement, ServiceError>) in
+        return self.syncService.check(url: self.bookAPIURL, etag: etag).map { (syncResult: Result<SyncJudgement, ServiceError>) in
             switch syncResult {
             case .success(.updateAvailable(content: let data, etag: let etag)):
-                switch parseChapters(data: data, bookURL: self.bookURL) {
-                case .success(let chapters):
-                    return self.upsert(chapters: chapters, etag: etag, objectId: bookIdentifier)
-                        .map {(result: Result<[Chapter], ServiceError>) -> Future<Result<[Chapter], ServiceError>> in
+                switch parseBook(data: data, bookURL: self.bookURL) {
+                case .success(let book):
+                    return self.upsert(book: book, etag: etag, objectId: bookIdentifier)
+                        .map {(result: Result<Book, ServiceError>) -> Future<Result<Book, ServiceError>> in
                             switch result {
                             case .success(let value):
                                 return Future<Result<[Chapter], ServiceError>>.resolved(.success(value))
                             case .failure:
-                                return getExistingChapters()
+                                return getExistingBook()
                             }
                         }
                 case .failure:
-                    return getExistingChapters()
+                    return getExistingBook()
                 }
             case .success(.noNewContent), .failure:
-                return getExistingChapters()
+                return getExistingBook()
             }
         }
     }
 
-    private func chaptersNoCache() -> Future<Result<[Chapter], ServiceError>> {
-        return self.syncService.check(url: self.chapterURL, etag: "").map { (syncResult: Result<SyncJudgement, ServiceError>) in
+    private func bookNoCache() -> Future<Result<Book, ServiceError>> {
+        return self.syncService.check(url: self.bookAPIURL, etag: "").map { (syncResult: Result<SyncJudgement, ServiceError>) in
             switch syncResult {
             case .success(.updateAvailable(content: let data, etag: let etag)):
-                return parseChapters(data: data, bookURL: self.bookURL).mapFuture { chapters in
-                    return self.upsert(chapters: chapters, etag: etag, objectId: nil)
+                return parseBook(data: data, bookURL: self.bookURL).mapFuture { book in
+                    return self.upsert(book: book, etag: etag, objectId: nil)
                 }
             case .success(.noNewContent):
                 return Future<Result<[Chapter], ServiceError>>.resolved(.failure(.cache))
@@ -111,14 +107,6 @@ final class CoreDataBookService: BookService {
                 return Future<Result<[Chapter], ServiceError>>.resolved(.failure(error))
             }
         }
-    }
-
-    private func chapters(of book: CoreDataBook) -> [Chapter] {
-        guard let chapters = book.chapters?.array as? [CoreDataChapter] else {
-            return []
-        }
-
-        return chapters.map { $0.chapter() }
     }
 
     private func book() -> Future<Result<CoreDataBook, ServiceError>> {
@@ -159,23 +147,24 @@ final class CoreDataBookService: BookService {
         return promise.future
     }
 
-    private func upsert(chapters: [Chapter], etag: String, objectId: NSManagedObjectID?) -> Future<Result<[Chapter], ServiceError>> {
-        let promise = Promise<Result<[Chapter], ServiceError>>()
+    private func upsert(book: Book, etag: String, objectId: NSManagedObjectID?) -> Future<Result<Book, ServiceError>> {
+        let promise = Promise<Result<Book, ServiceError>>()
         let context = self.managedObjectContext()
         context.perform {
-            let book: CoreDataBook
+            let cdBook: CoreDataBook
             if let objectIdentifier = objectId {
-                book = context.object(with: objectIdentifier) as! CoreDataBook
+                cdBook = context.object(with: objectIdentifier) as! CoreDataBook
             } else {
-                book = CoreDataBook(context: context)
-                context.insert(book)
+                cdBook = CoreDataBook(context: context)
+                context.insert(cdBook)
             }
-            book.etag = etag
-            book.url = self.bookURL
+            cdBook.etag = etag
+            cdBook.url = self.bookURL
+            cdBook.title = book.title
 
-            var existingChapters = Set(self.inlineCoreDataChapters(book: book, objectContext: context))
-            for chapter in chapters {
-                _ = self.upsert(chapter: chapter, context: context, book: book, isTopLevel: true, coreDataChapters: &existingChapters)
+            var existingChapters = Set(self.inlineCoreDataChapters(book: cdBook, objectContext: context))
+            for chapter in book.chapters {
+                _ = self.upsert(chapter: chapter, context: context, book: cdBook, isTopLevel: true, coreDataChapters: &existingChapters)
             }
 
             for unreferencedChapter in existingChapters {
@@ -190,7 +179,7 @@ final class CoreDataBookService: BookService {
                 return
             }
 
-            promise.resolve(.success(chapters))
+            promise.resolve(.success(book))
         }
         return promise.future
     }
@@ -270,11 +259,12 @@ final class CoreDataBookService: BookService {
         return self.syncService.check(url: url, etag: originalEtag).map { (syncResult: Result<SyncJudgement, ServiceError>) in
             switch syncResult {
             case .success(.updateAvailable(content: let data, etag: let etag)):
-                guard let html = String(data: data, encoding: .utf8) else {
-                    return getExistingContent()
+                switch parseChapterContent(data: data, url: url) {
+                case .success(let html):
+                    return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
+                case .failure(let error):
+                    return Future<Result<String, ServiceError>>.resolved(.failure(error))
                 }
-
-                return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
             case .success(.noNewContent), .failure:
                 return getExistingContent()
             }
@@ -285,11 +275,12 @@ final class CoreDataBookService: BookService {
         return self.syncService.check(url: url, etag: "").map { (syncResult: Result<SyncJudgement, ServiceError>) in
             switch syncResult {
             case .success(.updateAvailable(content: let data, etag: let etag)):
-                guard let html = String(data: data, encoding: .utf8) else {
-                    return Future<Result<String, ServiceError>>.resolved(.failure(.parse))
+                switch parseChapterContent(data: data, url: url) {
+                case .success(let html):
+                    return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
+                case .failure(let error):
+                    return Future<Result<String, ServiceError>>.resolved(.failure(error))
                 }
-
-                return self.upsert(content: html, etag: etag, objectId: objectIdentifier)
             case .success(.noNewContent):
                 return Future<Result<String, ServiceError>>.resolved(.failure(.cache))
             case .failure(let error):
@@ -301,6 +292,7 @@ final class CoreDataBookService: BookService {
     private func upsert(content: String, etag: String, objectId: NSManagedObjectID) -> Future<Result<String, ServiceError>> {
         let promise = Promise<Result<String, ServiceError>>()
         let context = self.managedObjectContext()
+
         context.perform {
             guard let chapter = context.object(with: objectId) as? CoreDataChapter else {
                 promise.resolve(.failure(.cache))
@@ -333,22 +325,12 @@ extension CoreDataChapter {
     }
 }
 
-extension Future {
-    class func resolved<T>(_ value: T) -> Future<T> {
-        let promise = Promise<T>()
-        promise.resolve(value)
-        return promise.future
-    }
-}
-
-extension Result where Result.Error: Swift.Error {
-    public func mapFuture<U>(_ transform: (Value) -> Future<Result<U, Error>>) -> Future<Result<U, Error>> {
-        switch self {
-        case .success(let value):
-            return transform(value)
-        case .failure(let error):
-            return Future<Result<U, Error>>.resolved(Result<U, Error>.failure(error))
-        }
+extension CoreDataBook {
+    func book() -> Book {
+        return Book(
+            title: self.title!,
+            chapters: (self.chapters!.array as! [CoreDataChapter]).map { $0.chapter() }
+        )
     }
 }
 
@@ -366,7 +348,7 @@ func persistentStoreCoordinatorFactory() throws -> NSPersistentStoreCoordinator 
 
 func addSQLStorage(to persistentStoreCoordinator: NSPersistentStoreCoordinator, at fileName: String) throws {
     let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
-    let fileURL = URL(string: "filename", relativeTo: dirURL)
+    let fileURL = URL(string: fileName, relativeTo: dirURL)
     try persistentStoreCoordinator.addPersistentStore(
         ofType: NSSQLiteStoreType,
         configurationName: nil,

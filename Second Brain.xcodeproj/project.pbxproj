@@ -53,6 +53,10 @@
 		891E6953224F3A02009F076A /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E6952224F3A02009F076A /* BookService.swift */; };
 		892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */; };
 		892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC02256EFE100C8A069 /* FakeSyncService.swift */; };
+		892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC2225A9FCB00C8A069 /* Models.swift */; };
+		892A9CC5225A9FD800C8A069 /* NetworkBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */; };
+		892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC6225AA02A00C8A069 /* Helpers.swift */; };
+		892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -252,6 +256,10 @@
 		891E6952224F3A02009F076A /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
 		892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBookServiceSpec.swift; sourceTree = "<group>"; };
 		892A9CC02256EFE100C8A069 /* FakeSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSyncService.swift; sourceTree = "<group>"; };
+		892A9CC2225A9FCB00C8A069 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookService.swift; sourceTree = "<group>"; };
+		892A9CC6225AA02A00C8A069 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorModuleSpec.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -465,6 +473,8 @@
 				891E6921224F3771009F076A /* SBKit.h */,
 				891E6922224F3771009F076A /* Info.plist */,
 				897B3CE122508DA8007F2E84 /* OperationQueueJumper.swift */,
+				892A9CC2225A9FCB00C8A069 /* Models.swift */,
+				892A9CC6225AA02A00C8A069 /* Helpers.swift */,
 				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
 			);
@@ -479,6 +489,7 @@
 				897B3CA7224FF076007F2E84 /* Matchers.swift */,
 				897B3CE422508E24007F2E84 /* OperationQueueJumperSpec.swift */,
 				8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */,
+				892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */,
 				897B3CA5224FEF28007F2E84 /* Book Service */,
 				891E6930224F3771009F076A /* Info.plist */,
 			);
@@ -544,6 +555,7 @@
 			isa = PBXGroup;
 			children = (
 				891E6952224F3A02009F076A /* BookService.swift */,
+				892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */,
 				8958C5E4225584700081B6E0 /* CoreDataBookService.swift */,
 				8958C5E62255A6C60081B6E0 /* SyncService.swift */,
 			);
@@ -981,11 +993,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				897B3CE322508E15007F2E84 /* OperationQueueJumper.swift in Sources */,
+				892A9CC5225A9FD800C8A069 /* NetworkBookService.swift in Sources */,
 				8958C5E5225584700081B6E0 /* CoreDataBookService.swift in Sources */,
 				8958C5E72255A6C60081B6E0 /* SyncService.swift in Sources */,
+				892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */,
 				891E6953224F3A02009F076A /* BookService.swift in Sources */,
 				8958C5E2225581550081B6E0 /* BookModel.xcdatamodeld in Sources */,
 				897B3CDE22508C76007F2E84 /* InjectorModule.swift in Sources */,
+				892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -995,6 +1010,7 @@
 			files = (
 				897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */,
 				892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */,
+				892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */,
 				8958C5E92255C4AC0081B6E0 /* SyncServiceSpec.swift in Sources */,
 				892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */,
 				897B3CE522508E24007F2E84 /* OperationQueueJumperSpec.swift in Sources */,

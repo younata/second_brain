@@ -42,20 +42,17 @@ class ChapterListViewController: UIViewController {
         self.refreshControl.addTarget(self, action: #selector(ChapterListViewController.requestChapters), for: .valueChanged)
 
         self.tableView.tableFooterView = UIView()
-
-        self.bookService.title().then { result in
-            self.title = result.value
-        }
     }
 
     @objc
     private func requestChapters() {
-        self.bookService.chapters().then { result in
+        self.bookService.book().then { result in
             self.refreshControl.endRefreshing()
 
             switch result {
-            case .success(let chapters):
-                self.tableDelesource.update(items: chapters)
+            case .success(let book):
+                self.title = book.title
+                self.tableDelesource.update(items: book.chapters)
             case .failure(ServiceError.network(.http)):
                 self.warningView.show(text: NSLocalizedString("Unable to get chapters, check the server", comment: ""))
             default:

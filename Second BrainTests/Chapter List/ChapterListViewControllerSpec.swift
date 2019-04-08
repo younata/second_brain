@@ -32,8 +32,8 @@ final class ChapterListViewControllerSpec: QuickSpec {
                 expect(subject.tableViewController.refreshControl?.isRefreshing).to(beTruthy())
             }
 
-            it("asks for the book's chapters") {
-                expect(bookService.chaptersPromises).to(haveCount(1))
+            it("asks for the book's contents") {
+                expect(bookService.bookPromises).to(haveCount(1))
             }
 
             it("gives the tableView an empty view so that it doesn't have the many lines") {
@@ -45,27 +45,13 @@ final class ChapterListViewControllerSpec: QuickSpec {
                 expect(subject.tableView.dataSource).to(beIdenticalTo(subject.tableDelesource))
             }
 
-            it("requests the book's title") {
-                expect(bookService.titlePromises).to(haveCount(1))
-            }
-
-            describe("when the title promise succeeds") {
-                beforeEach {
-                    bookService.titlePromises.last?.resolve(.success("Book Title"))
+            func itRefreshesTheBook(refreshCount: Int) {
+                it("asks for the book's contents") {
+                    expect(bookService.bookPromises).to(haveCount(refreshCount))
                 }
 
-                it("sets it's title") {
-                    expect(subject.title).to(equal("Book Title"))
-                }
-            }
-
-            func itRefreshesTheChapters(refreshCount: Int) {
-                it("asks for the book's chapters") {
-                    expect(bookService.chaptersPromises).to(haveCount(refreshCount))
-                }
-
-                describe("when the chapters come back") {
-                    let chapters = [
+                describe("when the book come back") {
+                    let book = Book(title: "Book Title", chapters: [
                         chapterFactory(title: "Title 1"),
                         chapterFactory(title: "Title 2", subchapters: [
                             chapterFactory(title: "Title 2.1"),
@@ -79,16 +65,20 @@ final class ChapterListViewControllerSpec: QuickSpec {
                         chapterFactory(title: "Title 4", subchapters: [
                             chapterFactory(title: "Title 4.1")
                             ]),
-                        ]
+                        ])
                     beforeEach {
-                        guard bookService.chaptersPromises.count == refreshCount else {
+                        guard bookService.bookPromises.count == refreshCount else {
                             return
                         }
-                        bookService.chaptersPromises.last?.resolve(.success(chapters))
+                        bookService.bookPromises.last?.resolve(.success(book))
+                    }
+
+                    it("updates the title") {
+                        expect(subject.title).to(equal("Book Title"))
                     }
 
                     it("displays the chapters") {
-                        expect(subject.tableDelesource.items).to(equal(chapters))
+                        expect(subject.tableDelesource.items).to(equal(book.chapters))
                     }
 
                     it("hides the spinner") {
@@ -97,7 +87,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
 
                     describe("selecting a chapter") {
                         beforeEach {
-                            subject.tableDelesource.onSelect?(chapters[2])
+                            subject.tableDelesource.onSelect?(book.chapters[2])
                         }
 
                         it("shows a chapter view controller inside of a UINavigationController") {
@@ -107,17 +97,17 @@ final class ChapterListViewControllerSpec: QuickSpec {
                             expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
                             expect(navController.hidesBarsOnSwipe).to(beTruthy())
                             expect(navController.hidesBarsOnTap).to(beTruthy())
-                            expect(presentedChapters).to(equal([chapters[2]]))
+                            expect(presentedChapters).to(equal([book.chapters[2]]))
                         }
                     }
                 }
 
                 describe("when the chapters fail due to a server error") {
                     beforeEach {
-                        guard bookService.chaptersPromises.count == refreshCount else {
+                        guard bookService.bookPromises.count == refreshCount else {
                             return
                         }
-                        bookService.chaptersPromises.last?.resolve(.failure(.network(.http(nil))))
+                        bookService.bookPromises.last?.resolve(.failure(.network(.http(nil))))
                     }
 
                     it("alerts the user without showing an alert") {
@@ -127,10 +117,10 @@ final class ChapterListViewControllerSpec: QuickSpec {
 
                 describe("when the chapters fail") {
                     beforeEach {
-                        guard bookService.chaptersPromises.count == refreshCount else {
+                        guard bookService.bookPromises.count == refreshCount else {
                             return
                         }
-                        bookService.chaptersPromises.last?.resolve(.failure(.unknown))
+                        bookService.bookPromises.last?.resolve(.failure(.unknown))
                     }
 
                     it("alerts the user without showing an alert") {
@@ -139,17 +129,17 @@ final class ChapterListViewControllerSpec: QuickSpec {
                 }
             }
 
-            itRefreshesTheChapters(refreshCount: 1)
+            itRefreshesTheBook(refreshCount: 1)
 
             describe("pulling on the refresh control") {
                 beforeEach {
                     // resolve the in-progress chapters promise here, rather than do it in response to the function.
-                    bookService.chaptersPromises.last?.resolve(.success([]))
+                    bookService.bookPromises.last?.resolve(.success(Book(title: "", chapters: [])))
 
                     subject.tableViewController.refreshControl?.sendActions(for: .valueChanged)
                 }
 
-                itRefreshesTheChapters(refreshCount: 2)
+                itRefreshesTheBook(refreshCount: 2)
             }
         }
     }
