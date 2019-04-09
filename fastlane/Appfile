@@ -1,0 +1,8 @@
+app_identifier("com.younata.Second-Brain") # The bundle identifier of your app
+apple_id("rachel+developer@younata.com") # Your Apple email address
+
+itc_team_id("692982") # App Store Connect Team ID
+team_id("9D456YCUH2") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

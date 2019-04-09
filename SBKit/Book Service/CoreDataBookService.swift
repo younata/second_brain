@@ -192,13 +192,14 @@ final class CoreDataBookService: BookService {
 
     private func upsert(chapter: Chapter, context: NSManagedObjectContext, book: CoreDataBook, isTopLevel: Bool, coreDataChapters: inout Set<CoreDataChapter>) -> CoreDataChapter? {
         var createdChapter: CoreDataChapter? = nil
+        let upsertedChapter: CoreDataChapter
         if let existingChapter = coreDataChapters.first(where: { $0.contentURL == chapter.contentURL }) {
             // update
             coreDataChapters.remove(existingChapter)
-            existingChapter.content = nil
             existingChapter.title = chapter.title
+            upsertedChapter = existingChapter
         } else {
-            let newChapter = CoreDataChapter(context: context)
+            let newChapter = NSEntityDescription.insertNewObject(forEntityName: "CoreDataChapter", into: context) as! CoreDataChapter
             if isTopLevel {
                 newChapter.book = book
             }
@@ -207,11 +208,12 @@ final class CoreDataBookService: BookService {
             newChapter.content = nil
             context.insert(newChapter)
             createdChapter = newChapter
+            upsertedChapter = newChapter
         }
 
         for subchapter in chapter.subchapters {
             if let addedChapter = self.upsert(chapter: subchapter, context: context, book: book, isTopLevel: false, coreDataChapters: &coreDataChapters) {
-                createdChapter?.addToSubchapters(addedChapter)
+                upsertedChapter.addToSubchapters(addedChapter)
             }
         }
 

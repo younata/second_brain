@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4527D6AA225D9E6400C78EFE /* SyncBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6A9225D9E6400C78EFE /* SyncBookService.swift */; };
+		4527D6AC225DA7E000C78EFE /* SyncBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */; };
 		891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E68CA224F32CA009F076A /* AppDelegate.swift */; };
 		891E68D2224F32CC009F076A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D1224F32CC009F076A /* Assets.xcassets */; };
 		891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D3224F32CC009F076A /* LaunchScreen.storyboard */; };
@@ -54,9 +56,9 @@
 		892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */; };
 		892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC02256EFE100C8A069 /* FakeSyncService.swift */; };
 		892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC2225A9FCB00C8A069 /* Models.swift */; };
-		892A9CC5225A9FD800C8A069 /* NetworkBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */; };
 		892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC6225AA02A00C8A069 /* Helpers.swift */; };
 		892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */; };
+		892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CD6225AE8A000C8A069 /* matchers.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -69,7 +71,6 @@
 		8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */; };
 		8958C5ED225696AD0081B6E0 /* NetworkSyncServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */; };
 		8958C5EF2256977B0081B6E0 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EE2256977B0081B6E0 /* helpers.swift */; };
-		897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CA7224FF076007F2E84 /* Matchers.swift */; };
 		897B3CAA224FF459007F2E84 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */; };
 		897B3CAB224FF45D007F2E84 /* Foundation_PivotalCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -226,6 +227,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4527D6A9225D9E6400C78EFE /* SyncBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookService.swift; sourceTree = "<group>"; };
+		4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookServiceSpec.swift; sourceTree = "<group>"; };
 		891E68C7224F32CA009F076A /* Second Brain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Second Brain.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		891E68CA224F32CA009F076A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		891E68D1224F32CC009F076A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -257,9 +260,9 @@
 		892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBookServiceSpec.swift; sourceTree = "<group>"; };
 		892A9CC02256EFE100C8A069 /* FakeSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSyncService.swift; sourceTree = "<group>"; };
 		892A9CC2225A9FCB00C8A069 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookService.swift; sourceTree = "<group>"; };
 		892A9CC6225AA02A00C8A069 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorModuleSpec.swift; sourceTree = "<group>"; };
+		892A9CD6225AE8A000C8A069 /* matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = matchers.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -272,7 +275,6 @@
 		8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sharedBehavior.swift; sourceTree = "<group>"; };
 		8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSyncServiceSpec.swift; sourceTree = "<group>"; };
 		8958C5EE2256977B0081B6E0 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
-		897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CA7224FF076007F2E84 /* Matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
 		897B3CA9224FF459007F2E84 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/iOS/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
 		897B3CB122500026007F2E84 /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kanna.framework; path = Carthage/Build/iOS/Kanna.framework; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				897B3CE122508DA8007F2E84 /* OperationQueueJumper.swift */,
 				892A9CC2225A9FCB00C8A069 /* Models.swift */,
 				892A9CC6225AA02A00C8A069 /* Helpers.swift */,
+				892A9CD3225AE6BE00C8A069 /* Sync */,
 				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
 			);
@@ -494,6 +497,14 @@
 				891E6930224F3771009F076A /* Info.plist */,
 			);
 			path = SBKitTests;
+			sourceTree = "<group>";
+		};
+		892A9CD3225AE6BE00C8A069 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				8958C5E62255A6C60081B6E0 /* SyncService.swift */,
+			);
+			path = Sync;
 			sourceTree = "<group>";
 		};
 		8958C5CE22546C610081B6E0 /* HTML Assets */ = {
@@ -545,8 +556,8 @@
 		897B3CA5224FEF28007F2E84 /* Book Service */ = {
 			isa = PBXGroup;
 			children = (
-				897B3CA3224FEF1F007F2E84 /* NetworkBookServiceSpec.swift */,
 				892A9CBE2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift */,
+				4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */,
 			);
 			path = "Book Service";
 			sourceTree = "<group>";
@@ -555,9 +566,8 @@
 			isa = PBXGroup;
 			children = (
 				891E6952224F3A02009F076A /* BookService.swift */,
-				892A9CC4225A9FD800C8A069 /* NetworkBookService.swift */,
+				4527D6A9225D9E6400C78EFE /* SyncBookService.swift */,
 				8958C5E4225584700081B6E0 /* CoreDataBookService.swift */,
-				8958C5E62255A6C60081B6E0 /* SyncService.swift */,
 			);
 			path = "Book Service";
 			sourceTree = "<group>";
@@ -580,6 +590,7 @@
 				897B3CD42250730B007F2E84 /* factories.swift */,
 				8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */,
 				892A9CC02256EFE100C8A069 /* FakeSyncService.swift */,
+				892A9CD6225AE8A000C8A069 /* matchers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -993,7 +1004,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				897B3CE322508E15007F2E84 /* OperationQueueJumper.swift in Sources */,
-				892A9CC5225A9FD800C8A069 /* NetworkBookService.swift in Sources */,
+				4527D6AA225D9E6400C78EFE /* SyncBookService.swift in Sources */,
 				8958C5E5225584700081B6E0 /* CoreDataBookService.swift in Sources */,
 				8958C5E72255A6C60081B6E0 /* SyncService.swift in Sources */,
 				892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */,
@@ -1016,8 +1027,9 @@
 				897B3CE522508E24007F2E84 /* OperationQueueJumperSpec.swift in Sources */,
 				8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */,
 				897B3CD2225071DF007F2E84 /* FakeBookService.swift in Sources */,
+				892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */,
 				897B3CD52250730B007F2E84 /* factories.swift in Sources */,
-				897B3CA4224FEF1F007F2E84 /* NetworkBookServiceSpec.swift in Sources */,
+				4527D6AC225DA7E000C78EFE /* SyncBookServiceSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

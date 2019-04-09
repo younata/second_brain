@@ -12,35 +12,14 @@ final class CoreDataBookServiceSpec: QuickSpec {
     override func spec() {
         var subject: CoreDataBookService!
 
-        let storeCoordinator = try! persistentStoreCoordinatorFactory()
-        try! addInMemoryStorage(to: storeCoordinator)
         var objectContext: NSManagedObjectContext!
         var syncService: FakeSyncService!
         var queueJumper: OperationQueueJumper!
 
         let bookURL = URL(string: "https://example.com")!
 
-        func subpage(named: String) -> URL {
-            return bookURL.appendingPathComponent(named, isDirectory: false)
-        }
-
         beforeEach {
-            objectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-            objectContext.persistentStoreCoordinator = storeCoordinator
-
-            objectContext.performAndWait {
-                ["CoreDataBook", "CoreDataChapter"].forEach { entityName in
-                    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
-
-                    let result = try! objectContext.fetch(fetchRequest)
-
-                    result.forEach {
-                        objectContext.delete($0)
-                    }
-
-                    try! objectContext.save()
-                }
-            }
+            objectContext = resetStoreCoordinator()
 
             syncService = FakeSyncService()
 
@@ -223,7 +202,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
                         book.title = "existing title"
 
                         cdchapters = (1..<5).map { index in
-                            return cdChapterFactory(
+                            return coreDataChapterFactory(
                                 objectContext: objectContext,
                                 book: book,
                                 etag: nil,
@@ -444,35 +423,5 @@ final class CoreDataBookServiceSpec: QuickSpec {
                 }
             }
         }
-    }
-}
-
-private func cdChapterFactory(objectContext: NSManagedObjectContext, book: CoreDataBook, etag: String?, contentURL: URL, content: String?, title: String) -> CoreDataChapter {
-    let chapter = NSEntityDescription.insertNewObject(forEntityName: "CoreDataChapter", into: objectContext) as! CoreDataChapter
-    chapter.etag = etag
-    chapter.contentURL = contentURL
-    chapter.content = content
-    chapter.title = title
-    chapter.book = book
-    return chapter
-}
-
-private func assertCoreDataChapter(chapter: CoreDataChapter, book: CoreDataBook?, url: URL, title: String, etag: String?, content: String?, file: FileString = #file, line: UInt = #line) {
-    if let cdbook = book {
-        expect(chapter.book, file: file, line: line).to(equal(cdbook))
-    } else {
-        expect(chapter.book, file: file, line: line).to(beNil())
-    }
-    expect(chapter.contentURL, file: file, line: line).to(equal(url))
-    expect(chapter.title, file: file, line: line).to(equal(title))
-    if content == nil {
-        expect(chapter.content, file: file, line: line).to(beNil())
-    } else {
-        expect(chapter.content, file: file, line: line).to(equal(content))
-    }
-    if etag == nil {
-        expect(chapter.etag, file: file, line: line).to(beNil())
-    } else {
-        expect(chapter.etag, file: file, line: line).to(equal(etag))
     }
 }

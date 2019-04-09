@@ -29,12 +29,22 @@ private func registerSync(_ container: Container) {
         return NetworkSyncService(httpClient: r.resolve(HTTPClient.self)!)
     }
 
-    container.register(BookService.self) { r, url in
-        return CoreDataBookService(
+    container.register(BookService.self) { (r: Resolver, url: URL) in
+        let cdBookService = CoreDataBookService(
             persistentStoreCoordinator: r.resolve(NSPersistentStoreCoordinator.self)!,
             syncService: r.resolve(SyncService.self)!,
             queueJumper: r.resolve(OperationQueueJumper.self)!,
             bookURL: url
+        )
+
+        let workQueue = OperationQueue()
+        workQueue.maxConcurrentOperationCount = 3
+        workQueue.qualityOfService = QualityOfService.background
+
+        return SyncBookService(
+            bookService: cdBookService,
+            operationQueue: workQueue,
+            queueJumper: r.resolve(OperationQueueJumper.self)!
         )
     }.inObjectScope(.container)
 }

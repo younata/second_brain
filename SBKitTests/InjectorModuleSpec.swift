@@ -22,8 +22,14 @@ final class InjectorModuleSpec: QuickSpec {
 
         describe("BookService") {
             let url = URL(string: "https://example.com")!
-            it("is a CoreDataBookService") {
-                expect(subject.resolve(BookService.self, argument: url)).to(beAKindOf(CoreDataBookService.self))
+            it("is a SyncBookService with a CoreDataBookService under it") {
+                expect(subject.resolve(BookService.self, argument: url)).to(beAKindOf(SyncBookService.self))
+
+                guard let bookService = subject.resolve(BookService.self, argument: url) as? SyncBookService else {
+                    return
+                }
+
+                expect(bookService.bookService).to(beAKindOf(CoreDataBookService.self))
             }
 
             it("is a singleton") {
