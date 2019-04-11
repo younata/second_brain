@@ -48,5 +48,11 @@ final class InjectorModuleSpec: QuickSpec {
                 expect(subject.resolve(HTTPClient.self)).to(beIdenticalTo(URLSession.shared))
             }
         }
+
+        describe("ActivityService") {
+            it("is a SearchActivityService") {
+                expect(subject.resolve(ActivityService.self)).to(beAKindOf(SearchActivityService.self))
+            }
+        }
     }
 }

@@ -11,14 +11,16 @@ final class ChapterViewControllerSpec: QuickSpec {
 
         var bookService: FakeBookService!
         var htmlWrapper: SimpleHTMLWrapper!
+        var activityService: ActivityService!
 
         let chapter = Chapter(title: "My Title", contentURL: URL(string: "https://example.com/chapter.html")!, subchapters: [])
 
         beforeEach {
             bookService = FakeBookService()
             htmlWrapper = SimpleHTMLWrapper()
+            activityService = SearchActivityService()
 
-            subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, chapter: chapter)
+            subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, activityService: activityService, chapter: chapter)
         }
 
         describe("when the view loads") {
@@ -32,6 +34,26 @@ final class ChapterViewControllerSpec: QuickSpec {
 
             it("sets the view controller's title") {
                 expect(subject.title).to(equal("My Title"))
+            }
+
+            describe("after the view appears") {
+                beforeEach {
+                    subject.viewDidAppear(false)
+                }
+
+                it("sets it's user activity to one describing the chapter") {
+                    expect(subject.userActivity).toNot(beNil())
+                }
+
+                describe("and when the view disappears") {
+                    beforeEach {
+                        subject.viewWillDisappear(false)
+                    }
+
+                    it("disables the user activity") {
+                        fail("todo")
+                    }
+                }
             }
 
             describe("when the content request succeeds") {

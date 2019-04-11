@@ -19,7 +19,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
             presentedChapters = []
             subject = ChapterListViewController(bookService: bookService, chapterViewControllerFactory: { chapter in
                 presentedChapters.append(chapter)
-                return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), chapter: chapter)
+                return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), activityService: SearchActivityService(), chapter: chapter)
             })
         }
 

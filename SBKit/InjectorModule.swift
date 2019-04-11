@@ -15,6 +15,10 @@ public func register(_ container: Container) {
         return OperationQueueJumper(queue: r.resolve(OperationQueue.self, name: mainQueue)!)
     }
 
+    container.register(ActivityService.self) { _ in
+        return SearchActivityService()
+    }
+
     registerSync(container)
 }
 

@@ -15,6 +15,7 @@ func register(_ container: Container) {
         return ChapterViewController(
             bookService: r.resolve(BookService.self, argument: url)!,
             htmlWrapper: r.resolve(HTMLWrapper.self)!,
+            activityService: r.resolve(ActivityService.self)!,
             chapter: chapter
         )
     }

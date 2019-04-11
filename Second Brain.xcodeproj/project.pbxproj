@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4527D6AA225D9E6400C78EFE /* SyncBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6A9225D9E6400C78EFE /* SyncBookService.swift */; };
 		4527D6AC225DA7E000C78EFE /* SyncBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */; };
+		4527D6AE225E383C00C78EFE /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AD225E383C00C78EFE /* SearchService.swift */; };
 		891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E68CA224F32CA009F076A /* AppDelegate.swift */; };
 		891E68D2224F32CC009F076A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D1224F32CC009F076A /* Assets.xcassets */; };
 		891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D3224F32CC009F076A /* LaunchScreen.storyboard */; };
@@ -87,7 +88,6 @@
 		897B3CC922506F19007F2E84 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68FD224F35ED009F076A /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		897B3CCA22506F19007F2E84 /* FutureHTTP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68FB224F35E9009F076A /* FutureHTTP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		897B3CCB22506F19007F2E84 /* CBGPromise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 891E68F9224F35E3009F076A /* CBGPromise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		897B3CCD22506F34007F2E84 /* NetworkBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CCC22506F34007F2E84 /* NetworkBookServiceSpec.swift */; };
 		897B3CCE22507125007F2E84 /* Kanna.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 897B3CB122500026007F2E84 /* Kanna.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		897B3CD2225071DF007F2E84 /* FakeBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CD022507190007F2E84 /* FakeBookService.swift */; };
 		897B3CD3225071E0007F2E84 /* FakeBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CD022507190007F2E84 /* FakeBookService.swift */; };
@@ -229,6 +229,7 @@
 /* Begin PBXFileReference section */
 		4527D6A9225D9E6400C78EFE /* SyncBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookService.swift; sourceTree = "<group>"; };
 		4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookServiceSpec.swift; sourceTree = "<group>"; };
+		4527D6AD225E383C00C78EFE /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		891E68C7224F32CA009F076A /* Second Brain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Second Brain.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		891E68CA224F32CA009F076A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		891E68D1224F32CC009F076A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -280,7 +281,6 @@
 		897B3CB122500026007F2E84 /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kanna.framework; path = Carthage/Build/iOS/Kanna.framework; sourceTree = "<group>"; };
 		897B3CB822506EE5007F2E84 /* SBKitIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SBKitIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		897B3CBC22506EE5007F2E84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		897B3CCC22506F34007F2E84 /* NetworkBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBookServiceSpec.swift; sourceTree = "<group>"; };
 		897B3CD022507190007F2E84 /* FakeBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeBookService.swift; sourceTree = "<group>"; };
 		897B3CD42250730B007F2E84 /* factories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = factories.swift; sourceTree = "<group>"; };
 		897B3CD722507856007F2E84 /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
@@ -477,6 +477,7 @@
 				897B3CE122508DA8007F2E84 /* OperationQueueJumper.swift */,
 				892A9CC2225A9FCB00C8A069 /* Models.swift */,
 				892A9CC6225AA02A00C8A069 /* Helpers.swift */,
+				4527D6AD225E383C00C78EFE /* SearchService.swift */,
 				892A9CD3225AE6BE00C8A069 /* Sync */,
 				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
@@ -577,7 +578,6 @@
 			children = (
 				897B3CBC22506EE5007F2E84 /* Info.plist */,
 				8958C5EE2256977B0081B6E0 /* helpers.swift */,
-				897B3CCC22506F34007F2E84 /* NetworkBookServiceSpec.swift */,
 				8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */,
 			);
 			path = SBKitIntegrationTests;
@@ -1010,6 +1010,7 @@
 				892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */,
 				891E6953224F3A02009F076A /* BookService.swift in Sources */,
 				8958C5E2225581550081B6E0 /* BookModel.xcdatamodeld in Sources */,
+				4527D6AE225E383C00C78EFE /* SearchService.swift in Sources */,
 				897B3CDE22508C76007F2E84 /* InjectorModule.swift in Sources */,
 				892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */,
 			);
@@ -1038,7 +1039,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8958C5ED225696AD0081B6E0 /* NetworkSyncServiceSpec.swift in Sources */,
-				897B3CCD22506F34007F2E84 /* NetworkBookServiceSpec.swift in Sources */,
 				8958C5EF2256977B0081B6E0 /* helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

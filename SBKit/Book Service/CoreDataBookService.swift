@@ -14,11 +14,11 @@ final class CoreDataBookService: BookService {
     private let queueJumper: OperationQueueJumper
     private let bookURL: URL
 
-    private func managedObjectContext() -> NSManagedObjectContext {
+    private lazy var context: NSManagedObjectContext = {
         let objectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         objectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         return objectContext
-    }
+    }()
 
     init(persistentStoreCoordinator: NSPersistentStoreCoordinator, syncService: SyncService, queueJumper: OperationQueueJumper, bookURL: URL) {
         self.persistentStoreCoordinator = persistentStoreCoordinator
@@ -111,14 +111,13 @@ final class CoreDataBookService: BookService {
 
     private func book() -> Future<Result<CoreDataBook, ServiceError>> {
         let promise = Promise<Result<CoreDataBook, ServiceError>>()
-        let context = self.managedObjectContext()
-        context.perform {
+        self.context.perform {
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CoreDataBook")
             fetchRequest.predicate = NSPredicate(format: "url.absoluteString = %@", self.bookURL.absoluteString)
             fetchRequest.fetchLimit = 1
             let coreDataBook: CoreDataBook?
             do {
-                coreDataBook = try context.fetch(fetchRequest).first as? CoreDataBook
+                coreDataBook = try self.context.fetch(fetchRequest).first as? CoreDataBook
             } catch let error {
                 dump(error)
                 promise.resolve(.failure(.cache))
@@ -136,9 +135,9 @@ final class CoreDataBookService: BookService {
 
     private func object<T: NSManagedObject>(with id: NSManagedObjectID) -> Future<Result<T, ServiceError>> {
         let promise = Promise<Result<T, ServiceError>>()
-        let context = self.managedObjectContext()
-        context.perform {
-            guard let object = context.object(with: id) as? T else {
+        self.context.perform {
+            guard promise.future.value == nil else { return }
+            guard let object = self.context.object(with: id) as? T else {
                 promise.resolve(.failure(.cache))
                 return
             }
@@ -149,30 +148,29 @@ final class CoreDataBookService: BookService {
 
     private func upsert(book: Book, etag: String, objectId: NSManagedObjectID?) -> Future<Result<Book, ServiceError>> {
         let promise = Promise<Result<Book, ServiceError>>()
-        let context = self.managedObjectContext()
-        context.perform {
+        self.context.perform {
             let cdBook: CoreDataBook
             if let objectIdentifier = objectId {
-                cdBook = context.object(with: objectIdentifier) as! CoreDataBook
+                cdBook = self.context.object(with: objectIdentifier) as! CoreDataBook
             } else {
-                cdBook = CoreDataBook(context: context)
-                context.insert(cdBook)
+                cdBook = NSEntityDescription.insertNewObject(forEntityName: "CoreDataBook", into: self.context) as! CoreDataBook
+                self.context.insert(cdBook)
             }
             cdBook.etag = etag
             cdBook.url = self.bookURL
             cdBook.title = book.title
 
-            var existingChapters = Set(self.inlineCoreDataChapters(book: cdBook, objectContext: context))
+            var existingChapters = Set(self.inlineCoreDataChapters(book: cdBook))
             for chapter in book.chapters {
-                _ = self.upsert(chapter: chapter, context: context, book: cdBook, isTopLevel: true, coreDataChapters: &existingChapters)
+                _ = self.upsert(chapter: chapter, book: cdBook, isTopLevel: true, coreDataChapters: &existingChapters)
             }
 
             for unreferencedChapter in existingChapters {
-                context.delete(unreferencedChapter)
+                self.context.delete(unreferencedChapter)
             }
 
             do {
-                try context.save()
+                try self.context.save()
             } catch let error {
                 print("Unable to save: \(error)")
                 promise.resolve(.failure(.cache))
@@ -184,13 +182,13 @@ final class CoreDataBookService: BookService {
         return promise.future
     }
 
-    private func inlineCoreDataChapters(book: CoreDataBook, objectContext: NSManagedObjectContext) -> [CoreDataChapter] {
+    private func inlineCoreDataChapters(book: CoreDataBook) -> [CoreDataChapter] {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CoreDataChapter")
         fetchRequest.predicate = NSPredicate(format: "book == %@", book.objectID)
-        return ((try? objectContext.fetch(fetchRequest)) ?? []) as? [CoreDataChapter] ?? []
+        return ((try? self.context.fetch(fetchRequest)) ?? []) as? [CoreDataChapter] ?? []
     }
 
-    private func upsert(chapter: Chapter, context: NSManagedObjectContext, book: CoreDataBook, isTopLevel: Bool, coreDataChapters: inout Set<CoreDataChapter>) -> CoreDataChapter? {
+    private func upsert(chapter: Chapter, book: CoreDataBook, isTopLevel: Bool, coreDataChapters: inout Set<CoreDataChapter>) -> CoreDataChapter? {
         var createdChapter: CoreDataChapter? = nil
         let upsertedChapter: CoreDataChapter
         if let existingChapter = coreDataChapters.first(where: { $0.contentURL == chapter.contentURL }) {
@@ -199,20 +197,20 @@ final class CoreDataBookService: BookService {
             existingChapter.title = chapter.title
             upsertedChapter = existingChapter
         } else {
-            let newChapter = NSEntityDescription.insertNewObject(forEntityName: "CoreDataChapter", into: context) as! CoreDataChapter
+            let newChapter = NSEntityDescription.insertNewObject(forEntityName: "CoreDataChapter", into: self.context) as! CoreDataChapter
             if isTopLevel {
                 newChapter.book = book
             }
             newChapter.contentURL = chapter.contentURL
             newChapter.title = chapter.title
             newChapter.content = nil
-            context.insert(newChapter)
+            self.context.insert(newChapter)
             createdChapter = newChapter
             upsertedChapter = newChapter
         }
 
         for subchapter in chapter.subchapters {
-            if let addedChapter = self.upsert(chapter: subchapter, context: context, book: book, isTopLevel: false, coreDataChapters: &coreDataChapters) {
+            if let addedChapter = self.upsert(chapter: subchapter, book: book, isTopLevel: false, coreDataChapters: &coreDataChapters) {
                 upsertedChapter.addToSubchapters(addedChapter)
             }
         }
@@ -223,14 +221,13 @@ final class CoreDataBookService: BookService {
     // MARK: Getting Chapter Content
     private func chapter(from chapter: Chapter) -> Future<Result<CoreDataChapter, ServiceError>> {
         let promise = Promise<Result<CoreDataChapter, ServiceError>>()
-        let context = self.managedObjectContext()
-        context.perform {
+        self.context.perform {
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CoreDataChapter")
             fetchRequest.predicate = NSPredicate(format: "contentURL.absoluteString = %@", chapter.contentURL.absoluteString)
             fetchRequest.fetchLimit = 1
             let coreDataChapter: CoreDataChapter?
             do {
-                coreDataChapter = try context.fetch(fetchRequest).first as? CoreDataChapter
+                coreDataChapter = try self.context.fetch(fetchRequest).first as? CoreDataChapter
             } catch let error {
                 dump(error)
                 promise.resolve(.failure(.cache))
@@ -293,10 +290,8 @@ final class CoreDataBookService: BookService {
 
     private func upsert(content: String, etag: String, objectId: NSManagedObjectID) -> Future<Result<String, ServiceError>> {
         let promise = Promise<Result<String, ServiceError>>()
-        let context = self.managedObjectContext()
-
-        context.perform {
-            guard let chapter = context.object(with: objectId) as? CoreDataChapter else {
+        self.context.perform {
+            guard let chapter = self.context.object(with: objectId) as? CoreDataChapter else {
                 promise.resolve(.failure(.cache))
                 return
             }
@@ -304,7 +299,7 @@ final class CoreDataBookService: BookService {
             chapter.content = content
 
             do {
-                try context.save()
+                try self.context.save()
             } catch let error {
                 print("Unable to save: \(error)")
                 promise.resolve(.failure(.cache))

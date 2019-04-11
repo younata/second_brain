@@ -5,14 +5,16 @@ import WebKit
 class ChapterViewController: UIViewController {
     private let bookService: BookService
     private let htmlWrapper: HTMLWrapper
+    private let activityService: ActivityService
     private let chapter: Chapter
 
     @IBOutlet weak var warningView: WarningView!
     @IBOutlet weak var webView: WKWebView!
 
-    init(bookService: BookService, htmlWrapper: HTMLWrapper, chapter: Chapter) {
+    init(bookService: BookService, htmlWrapper: HTMLWrapper, activityService: ActivityService, chapter: Chapter) {
         self.bookService = bookService
         self.htmlWrapper = htmlWrapper
+        self.activityService = activityService
         self.chapter = chapter
 
         super.init(nibName: "ChapterViewController", bundle: Bundle.main)
@@ -29,8 +31,6 @@ class ChapterViewController: UIViewController {
 
         self.title = self.chapter.title
 
-        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
-
         self.bookService.content(of: self.chapter).then { result in
             switch result {
             case .success(let content):
@@ -41,6 +41,17 @@ class ChapterViewController: UIViewController {
                 self.warningView.show(text: NSLocalizedString("Error fetching chapter: Try again later", comment: ""))
             }
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.userActivity = self.activityService.activity(for: self.chapter)
+        self.userActivity?.becomeCurrent()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.userActivity?.invalidate()
     }
 
     private func display(html: String, url: URL) {
