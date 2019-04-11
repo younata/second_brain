@@ -10,6 +10,9 @@
 		4527D6AA225D9E6400C78EFE /* SyncBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6A9225D9E6400C78EFE /* SyncBookService.swift */; };
 		4527D6AC225DA7E000C78EFE /* SyncBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */; };
 		4527D6AE225E383C00C78EFE /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AD225E383C00C78EFE /* SearchService.swift */; };
+		4527D6B1225EE77F00C78EFE /* SearchTableDeleSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6B0225EE77F00C78EFE /* SearchTableDeleSource.swift */; };
+		4527D6B4225EE79D00C78EFE /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6B2225EE79D00C78EFE /* SearchTableCell.swift */; };
+		4527D6B5225EE79D00C78EFE /* SearchTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4527D6B3225EE79D00C78EFE /* SearchTableCell.xib */; };
 		891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891E68CA224F32CA009F076A /* AppDelegate.swift */; };
 		891E68D2224F32CC009F076A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D1224F32CC009F076A /* Assets.xcassets */; };
 		891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891E68D3224F32CC009F076A /* LaunchScreen.storyboard */; };
@@ -230,6 +233,9 @@
 		4527D6A9225D9E6400C78EFE /* SyncBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookService.swift; sourceTree = "<group>"; };
 		4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookServiceSpec.swift; sourceTree = "<group>"; };
 		4527D6AD225E383C00C78EFE /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		4527D6B0225EE77F00C78EFE /* SearchTableDeleSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableDeleSource.swift; sourceTree = "<group>"; };
+		4527D6B2225EE79D00C78EFE /* SearchTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableCell.swift; sourceTree = "<group>"; };
+		4527D6B3225EE79D00C78EFE /* SearchTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableCell.xib; sourceTree = "<group>"; };
 		891E68C7224F32CA009F076A /* Second Brain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Second Brain.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		891E68CA224F32CA009F076A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		891E68D1224F32CC009F076A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -384,6 +390,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4527D6AF225EE75E00C78EFE /* Search Table */ = {
+			isa = PBXGroup;
+			children = (
+				4527D6B0225EE77F00C78EFE /* SearchTableDeleSource.swift */,
+				4527D6B2225EE79D00C78EFE /* SearchTableCell.swift */,
+				4527D6B3225EE79D00C78EFE /* SearchTableCell.xib */,
+			);
+			path = "Search Table";
+			sourceTree = "<group>";
+		};
 		891E68BE224F32CA009F076A = {
 			isa = PBXGroup;
 			children = (
@@ -541,6 +557,7 @@
 			children = (
 				891E694C224F3852009F076A /* ChapterListViewController.swift */,
 				891E694D224F3852009F076A /* ChapterListViewController.xib */,
+				4527D6AF225EE75E00C78EFE /* Search Table */,
 				89F263A222517E0800B6991F /* Tree Table */,
 			);
 			path = "Chapter List Screen";
@@ -842,6 +859,7 @@
 			files = (
 				8958C5D622546DD80081B6E0 /* general.css in Resources */,
 				89F263A622517E6000B6991F /* ChapterViewController.xib in Resources */,
+				4527D6B5225EE79D00C78EFE /* SearchTableCell.xib in Resources */,
 				8958C5DA22546DE80081B6E0 /* font-awesome.css in Resources */,
 				891E694F224F3852009F076A /* ChapterListViewController.xib in Resources */,
 				891E68D5224F32CC009F076A /* LaunchScreen.storyboard in Resources */,
@@ -964,6 +982,8 @@
 				89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */,
 				897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */,
 				8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */,
+				4527D6B1225EE77F00C78EFE /* SearchTableDeleSource.swift in Sources */,
+				4527D6B4225EE79D00C78EFE /* SearchTableCell.swift in Sources */,
 				897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */,
 				891E694E224F3852009F076A /* ChapterListViewController.swift in Sources */,
 				891E68CB224F32CA009F076A /* AppDelegate.swift in Sources */,

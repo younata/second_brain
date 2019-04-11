@@ -121,7 +121,7 @@ body {
 
 code {
     font-family: Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace;
-    font-size: 1.0em; /* please adjust the ace font size accordingly in editor.js */
+    font-size: 0.9em; /* please adjust the ace font size accordingly in editor.js */
 }
 
 .left { float: left; }
@@ -273,6 +273,7 @@ a:hover > .hljs {
 
 pre {
     position: relative;
+    font-size: 0.9em;
 }
 pre > .buttons {
     position: absolute;
