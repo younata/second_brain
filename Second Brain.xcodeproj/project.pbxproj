@@ -107,6 +107,8 @@
 		897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CE822512F86007F2E84 /* TreeTableCell.swift */; };
 		897B3CEB22512F86007F2E84 /* TreeTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 897B3CE922512F86007F2E84 /* TreeTableCell.xib */; };
 		897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */; };
+		89ED0A53226029A8000FEDBC /* NSUserActivity+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */; };
+		89ED0A5522602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */; };
 		89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263A322517E6000B6991F /* ChapterViewController.swift */; };
 		89F263A622517E6000B6991F /* ChapterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89F263A422517E6000B6991F /* ChapterViewController.xib */; };
 		89F263A9225182F800B6991F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 89F263A8225182F800B6991F /* index.html */; };
@@ -300,6 +302,9 @@
 		897B3CE822512F86007F2E84 /* TreeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTableCell.swift; sourceTree = "<group>"; };
 		897B3CE922512F86007F2E84 /* TreeTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeTableCell.xib; sourceTree = "<group>"; };
 		897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		89ED0A5022602847000FEDBC /* NSUserActivity+SpecHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSUserActivity+SpecHelper.h"; sourceTree = "<group>"; };
+		89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSUserActivity+SpecHelper.m"; sourceTree = "<group>"; };
+		89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUserActivity_SpecHelperSpec.swift; sourceTree = "<group>"; };
 		89F263A322517E6000B6991F /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
 		89F263A422517E6000B6991F /* ChapterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterViewController.xib; sourceTree = "<group>"; };
 		89F263A8225182F800B6991F /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -635,6 +640,9 @@
 			children = (
 				89F263AB22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift */,
 				89F263B82251A4F900B6991F /* WKWebView_SpecHelperSpec.swift */,
+				89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */,
+				89ED0A5022602847000FEDBC /* NSUserActivity+SpecHelper.h */,
+				89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */,
 				89F263AE22518DC500B6991F /* UIViewController+SpecHelper.h */,
 				89F263AF22518DC500B6991F /* UIViewController+SpecHelper.m */,
 				89F263B52251A48F00B6991F /* WKWebView+SpecHelper.h */,
@@ -821,6 +829,7 @@
 					};
 					891E6926224F3771009F076A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 891E68C6224F32CA009F076A;
 					};
 					897B3CB722506EE5007F2E84 = {
@@ -1002,10 +1011,12 @@
 				89F263B72251A48F00B6991F /* WKWebView+SpecHelper.m in Sources */,
 				891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */,
 				89F263B42251A06300B6991F /* ChapterViewControllerSpec.swift in Sources */,
+				89ED0A53226029A8000FEDBC /* NSUserActivity+SpecHelper.m in Sources */,
 				897B3CD62250730F007F2E84 /* factories.swift in Sources */,
 				8958C5DC22546E830081B6E0 /* SimpleHTMLWrapper.swift in Sources */,
 				897B3CE722512450007F2E84 /* TreeTableDeleSourceSpec.swift in Sources */,
 				89F263B92251A4F900B6991F /* WKWebView_SpecHelperSpec.swift in Sources */,
+				89ED0A5522602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift in Sources */,
 				89F263B022518DC500B6991F /* UIViewController+SpecHelper.m in Sources */,
 				897B3CD3225071E0007F2E84 /* FakeBookService.swift in Sources */,
 			);
@@ -1440,6 +1451,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9D456YCUH2;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1454,6 +1466,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";
@@ -1464,6 +1477,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9D456YCUH2;
 				FRAMEWORK_SEARCH_PATHS = (

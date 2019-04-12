@@ -5,7 +5,7 @@ public protocol ActivityService {
     func activity(for: Chapter) -> NSUserActivity
 }
 
-let ChapterActivityType = "com.rachelbrindle.second_brain.activity.chapter"
+let ChapterActivityType = "com.rachelbrindle.second_brain.read_chapter"
 
 struct SearchActivityService: ActivityService {
     func activity(for chapter: Chapter) -> NSUserActivity {
@@ -17,7 +17,7 @@ struct SearchActivityService: ActivityService {
         activity.contentAttributeSet = self.attributes(for: chapter, content: nil)
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = true
-        activity.isEligibleForPrediction = false
+        activity.isEligibleForPrediction = true
         activity.isEligibleForPublicIndexing = false
         return activity
     }

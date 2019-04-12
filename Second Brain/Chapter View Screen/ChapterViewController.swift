@@ -5,7 +5,7 @@ import WebKit
 class ChapterViewController: UIViewController {
     private let bookService: BookService
     private let htmlWrapper: HTMLWrapper
-    private let activityService: ActivityService
+    private let activity: NSUserActivity
     private let chapter: Chapter
 
     @IBOutlet weak var warningView: WarningView!
@@ -14,10 +14,12 @@ class ChapterViewController: UIViewController {
     init(bookService: BookService, htmlWrapper: HTMLWrapper, activityService: ActivityService, chapter: Chapter) {
         self.bookService = bookService
         self.htmlWrapper = htmlWrapper
-        self.activityService = activityService
         self.chapter = chapter
+        self.activity = activityService.activity(for: chapter)
 
         super.init(nibName: "ChapterViewController", bundle: Bundle.main)
+
+        self.userActivity = self.activity
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -31,27 +33,30 @@ class ChapterViewController: UIViewController {
 
         self.title = self.chapter.title
 
-        self.bookService.content(of: self.chapter).then { result in
+        self.bookService.content(of: self.chapter).then { [weak self] result in
             switch result {
             case .success(let content):
-                self.display(html: content, url: url)
+                self?.display(html: content, url: url)
             case .failure(ServiceError.network(.http)):
-                self.warningView.show(text: NSLocalizedString("Unable to get chapter content, check the server", comment: ""))
+                self?.warningView.show(text: NSLocalizedString("Unable to get chapter content, check the server", comment: ""))
             default:
-                self.warningView.show(text: NSLocalizedString("Error fetching chapter: Try again later", comment: ""))
+                self?.warningView.show(text: NSLocalizedString("Error fetching chapter: Try again later", comment: ""))
             }
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.userActivity = self.activityService.activity(for: self.chapter)
-        self.userActivity?.becomeCurrent()
+        self.activity.becomeCurrent()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.userActivity?.invalidate()
+        self.activity.resignCurrent()
+    }
+
+    deinit {
+        self.activity.invalidate()
     }
 
     private func display(html: String, url: URL) {

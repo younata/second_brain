@@ -23,6 +23,23 @@ final class ChapterViewControllerSpec: QuickSpec {
             subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, activityService: activityService, chapter: chapter)
         }
 
+        it("sets the userActivity to an inactive activity describing the chapter") {
+            expect(subject.userActivity).toNot(beNil())
+            expect(subject.userActivity?.isActive).to(beFalsy())
+            expect(subject.userActivity?.isValid).to(beTruthy())
+
+            guard let activity = subject.userActivity else { return }
+
+            expect(activity.webpageURL).to(equal(chapter.contentURL))
+            expect(activity.keywords).to(equal([chapter.title]))
+            expect(activity.activityType).to(equal(ChapterActivityType))
+            expect(activity.userInfo as? [String: String]).to(equal(["urlString": chapter.contentURL.absoluteString]))
+            expect(activity.isEligibleForSearch).to(beTruthy())
+            expect(activity.isEligibleForHandoff).to(beTruthy())
+            expect(activity.isEligibleForPrediction).to(beTruthy())
+            expect(activity.isEligibleForPublicIndexing).to(beFalsy()) // Doesn't make sense for this app.
+        }
+
         describe("when the view loads") {
             beforeEach {
                 subject.view.layoutIfNeeded()
@@ -41,8 +58,9 @@ final class ChapterViewControllerSpec: QuickSpec {
                     subject.viewDidAppear(false)
                 }
 
-                it("sets it's user activity to one describing the chapter") {
-                    expect(subject.userActivity).toNot(beNil())
+                it("activates the user activity") {
+                    expect(subject.userActivity?.isActive).to(beTruthy())
+                    expect(subject.userActivity?.isValid).to(beTruthy())
                 }
 
                 describe("and when the view disappears") {
@@ -50,8 +68,9 @@ final class ChapterViewControllerSpec: QuickSpec {
                         subject.viewWillDisappear(false)
                     }
 
-                    it("disables the user activity") {
-                        fail("todo")
+                    it("makes the user activity no longer current") {
+                        expect(subject.userActivity?.isActive).to(beFalsy())
+                        expect(subject.userActivity?.isValid).to(beTruthy())
                     }
                 }
             }

@@ -4,3 +4,4 @@
 
 #import "UIViewController+SpecHelper.h"
 #import "WKWebView+SpecHelper.h"
+#import "NSUserActivity+SpecHelper.h"
