@@ -1,14 +1,17 @@
-import CoreSpotlight
 import CoreServices
+import CoreSpotlight
 
 public protocol ActivityService {
     func activity(for: Chapter) -> NSUserActivity
 }
 
-let ChapterActivityType = "com.rachelbrindle.second_brain.read_chapter"
+public let ChapterActivityType = "com.rachelbrindle.second_brain.read_chapter"
 
-struct SearchActivityService: ActivityService {
+final class SearchActivityService: ActivityService {
+    private var activities: [Chapter: NSUserActivity] = [:]
+
     func activity(for chapter: Chapter) -> NSUserActivity {
+        if let activity = self.activities[chapter] { return activity }
         let activity = NSUserActivity(activityType: ChapterActivityType)
         activity.webpageURL = chapter.contentURL
         activity.keywords = [chapter.title]
@@ -17,8 +20,9 @@ struct SearchActivityService: ActivityService {
         activity.contentAttributeSet = self.attributes(for: chapter, content: nil)
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = true
-        activity.isEligibleForPrediction = true
+        activity.isEligibleForPrediction = false
         activity.isEligibleForPublicIndexing = false
+        self.activities[chapter] = activity
         return activity
     }
 

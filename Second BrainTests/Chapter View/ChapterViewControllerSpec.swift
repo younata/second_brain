@@ -23,10 +23,8 @@ final class ChapterViewControllerSpec: QuickSpec {
             subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, activityService: activityService, chapter: chapter)
         }
 
-        it("sets the userActivity to an inactive activity describing the chapter") {
+        it("sets the userActivity to an activity describing the chapter") {
             expect(subject.userActivity).toNot(beNil())
-            expect(subject.userActivity?.isActive).to(beFalsy())
-            expect(subject.userActivity?.isValid).to(beTruthy())
 
             guard let activity = subject.userActivity else { return }
 
@@ -36,7 +34,7 @@ final class ChapterViewControllerSpec: QuickSpec {
             expect(activity.userInfo as? [String: String]).to(equal(["urlString": chapter.contentURL.absoluteString]))
             expect(activity.isEligibleForSearch).to(beTruthy())
             expect(activity.isEligibleForHandoff).to(beTruthy())
-            expect(activity.isEligibleForPrediction).to(beTruthy())
+            expect(activity.isEligibleForPrediction).to(beFalsy())
             expect(activity.isEligibleForPublicIndexing).to(beFalsy()) // Doesn't make sense for this app.
         }
 
@@ -51,28 +49,6 @@ final class ChapterViewControllerSpec: QuickSpec {
 
             it("sets the view controller's title") {
                 expect(subject.title).to(equal("My Title"))
-            }
-
-            describe("after the view appears") {
-                beforeEach {
-                    subject.viewDidAppear(false)
-                }
-
-                it("activates the user activity") {
-                    expect(subject.userActivity?.isActive).to(beTruthy())
-                    expect(subject.userActivity?.isValid).to(beTruthy())
-                }
-
-                describe("and when the view disappears") {
-                    beforeEach {
-                        subject.viewWillDisappear(false)
-                    }
-
-                    it("makes the user activity no longer current") {
-                        expect(subject.userActivity?.isActive).to(beFalsy())
-                        expect(subject.userActivity?.isValid).to(beTruthy())
-                    }
-                }
             }
 
             describe("when the content request succeeds") {

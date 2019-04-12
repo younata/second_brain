@@ -28,12 +28,12 @@ svgexport AppIcon.xml "../$APP_NAME/Assets.xcassets/AppIcon.appiconset/Icon-AppS
 EOF
     export ASSET_PATH="../$APP_NAME/Assets.xcassets/AppIcon.appiconset"
     parallel --progress -j 0 << EOF
-convert "$ASSET_PATH/Icon@2x.png" -background white -alpha remove "$ASSET_PATH/Icon@2x.png"
-convert "$ASSET_PATH/Icon@3x.png" -background white -alpha remove "$ASSET_PATH/Icon@3x.png"
-convert "$ASSET_PATH/Icon-iPadPro@2x.png" -background white -alpha remove $ASSET_PATH/Icon-iPadPro@2x.png"
-convert "$ASSET_PATH/Icon-iPad.png" -background white -alpha remove $ASSET_PATH/Icon-iPad.png"
-convert "$ASSET_PATH/Icon-iPad@2x.png" -background white -alpha remove $ASSET_PATH/Icon-iPad@2x.png"
-convert "$ASSET_PATH/Icon-AppStore.png" -background white -alpha remove $ASSET_PATH/Icon-AppStore.png"
+convert "$ASSET_PATH/Icon@2x.png" "$ASSET_PATH/Icon@2x.png"
+convert "$ASSET_PATH/Icon@3x.png" "$ASSET_PATH/Icon@3x.png"
+convert "$ASSET_PATH/Icon-iPadPro@2x.png" "$ASSET_PATH/Icon-iPadPro@2x.png"
+convert "$ASSET_PATH/Icon-iPad.png" "$ASSET_PATH/Icon-iPad.png"
+convert "$ASSET_PATH/Icon-iPad@2x.png" "$ASSET_PATH/Icon-iPad@2x.png"
+convert "$ASSET_PATH/Icon-AppStore.png" "$ASSET_PATH/Icon-AppStore.png"
 EOF
 }
 

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4527D6AA225D9E6400C78EFE /* SyncBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6A9225D9E6400C78EFE /* SyncBookService.swift */; };
 		4527D6AC225DA7E000C78EFE /* SyncBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */; };
-		4527D6AE225E383C00C78EFE /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AD225E383C00C78EFE /* SearchService.swift */; };
+		4527D6AE225E383C00C78EFE /* ActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6AD225E383C00C78EFE /* ActivityService.swift */; };
 		4527D6B1225EE77F00C78EFE /* SearchTableDeleSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6B0225EE77F00C78EFE /* SearchTableDeleSource.swift */; };
 		4527D6B4225EE79D00C78EFE /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4527D6B2225EE79D00C78EFE /* SearchTableCell.swift */; };
 		4527D6B5225EE79D00C78EFE /* SearchTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4527D6B3225EE79D00C78EFE /* SearchTableCell.xib */; };
@@ -234,7 +234,7 @@
 /* Begin PBXFileReference section */
 		4527D6A9225D9E6400C78EFE /* SyncBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookService.swift; sourceTree = "<group>"; };
 		4527D6AB225DA7E000C78EFE /* SyncBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBookServiceSpec.swift; sourceTree = "<group>"; };
-		4527D6AD225E383C00C78EFE /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		4527D6AD225E383C00C78EFE /* ActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityService.swift; sourceTree = "<group>"; };
 		4527D6B0225EE77F00C78EFE /* SearchTableDeleSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableDeleSource.swift; sourceTree = "<group>"; };
 		4527D6B2225EE79D00C78EFE /* SearchTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableCell.swift; sourceTree = "<group>"; };
 		4527D6B3225EE79D00C78EFE /* SearchTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableCell.xib; sourceTree = "<group>"; };
@@ -498,7 +498,7 @@
 				897B3CE122508DA8007F2E84 /* OperationQueueJumper.swift */,
 				892A9CC2225A9FCB00C8A069 /* Models.swift */,
 				892A9CC6225AA02A00C8A069 /* Helpers.swift */,
-				4527D6AD225E383C00C78EFE /* SearchService.swift */,
+				4527D6AD225E383C00C78EFE /* ActivityService.swift */,
 				892A9CD3225AE6BE00C8A069 /* Sync */,
 				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
@@ -1041,7 +1041,7 @@
 				892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */,
 				891E6953224F3A02009F076A /* BookService.swift in Sources */,
 				8958C5E2225581550081B6E0 /* BookModel.xcdatamodeld in Sources */,
-				4527D6AE225E383C00C78EFE /* SearchService.swift in Sources */,
+				4527D6AE225E383C00C78EFE /* ActivityService.swift in Sources */,
 				897B3CDE22508C76007F2E84 /* InjectorModule.swift in Sources */,
 				892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */,
 			);

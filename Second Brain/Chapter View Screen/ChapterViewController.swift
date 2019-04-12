@@ -5,7 +5,7 @@ import WebKit
 class ChapterViewController: UIViewController {
     private let bookService: BookService
     private let htmlWrapper: HTMLWrapper
-    private let activity: NSUserActivity
+    private let activityService: ActivityService
     private let chapter: Chapter
 
     @IBOutlet weak var warningView: WarningView!
@@ -14,12 +14,12 @@ class ChapterViewController: UIViewController {
     init(bookService: BookService, htmlWrapper: HTMLWrapper, activityService: ActivityService, chapter: Chapter) {
         self.bookService = bookService
         self.htmlWrapper = htmlWrapper
+        self.activityService = activityService
         self.chapter = chapter
-        self.activity = activityService.activity(for: chapter)
 
         super.init(nibName: "ChapterViewController", bundle: Bundle.main)
 
-        self.userActivity = self.activity
+        self.userActivity = self.activityService.activity(for: chapter)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -43,20 +43,6 @@ class ChapterViewController: UIViewController {
                 self?.warningView.show(text: NSLocalizedString("Error fetching chapter: Try again later", comment: ""))
             }
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.activity.becomeCurrent()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.activity.resignCurrent()
-    }
-
-    deinit {
-        self.activity.invalidate()
     }
 
     private func display(html: String, url: URL) {
