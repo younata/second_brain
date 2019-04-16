@@ -20,6 +20,16 @@ final class InjectorModuleSpec: QuickSpec {
             }
         }
 
+        describe("ActivityService") {
+            it("is a SearchActivityService") {
+                expect(subject.resolve(ActivityService.self)).to(beAKindOf(SearchActivityService.self))
+            }
+
+            it("is a singleton") {
+                expect(subject.resolve(ActivityService.self)).to(beIdenticalTo(subject.resolve(ActivityService.self)))
+            }
+        }
+
         describe("BookService") {
             let url = URL(string: "https://example.com")!
             it("is a SyncBookService with a CoreDataBookService under it") {

@@ -63,6 +63,7 @@
 		892A9CC7225AA02A00C8A069 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC6225AA02A00C8A069 /* Helpers.swift */; };
 		892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */; };
 		892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CD6225AE8A000C8A069 /* matchers.swift */; };
+		8931B8412265713D001BEE26 /* SearchIndexActivityServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -272,6 +273,7 @@
 		892A9CC6225AA02A00C8A069 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorModuleSpec.swift; sourceTree = "<group>"; };
 		892A9CD6225AE8A000C8A069 /* matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = matchers.swift; sourceTree = "<group>"; };
+		8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIndexActivityServiceSpec.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 		89ED0A5022602847000FEDBC /* NSUserActivity+SpecHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSUserActivity+SpecHelper.h"; sourceTree = "<group>"; };
 		89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSUserActivity+SpecHelper.m"; sourceTree = "<group>"; };
 		89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUserActivity_SpecHelperSpec.swift; sourceTree = "<group>"; };
+		89ED0A5D22612778000FEDBC /* Second Brain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Second Brain.entitlements"; sourceTree = "<group>"; };
 		89F263A322517E6000B6991F /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
 		89F263A422517E6000B6991F /* ChapterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterViewController.xib; sourceTree = "<group>"; };
 		89F263A8225182F800B6991F /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -435,6 +438,7 @@
 		891E68C9224F32CA009F076A /* Second Brain */ = {
 			isa = PBXGroup;
 			children = (
+				89ED0A5D22612778000FEDBC /* Second Brain.entitlements */,
 				891E68CA224F32CA009F076A /* AppDelegate.swift */,
 				897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */,
 				897B3CDF22508CA0007F2E84 /* InjectorModule.swift */,
@@ -515,6 +519,7 @@
 				897B3CE422508E24007F2E84 /* OperationQueueJumperSpec.swift */,
 				8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */,
 				892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */,
+				8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */,
 				897B3CA5224FEF28007F2E84 /* Book Service */,
 				891E6930224F3771009F076A /* Info.plist */,
 			);
@@ -813,6 +818,11 @@
 				TargetAttributes = {
 					891E68C6224F32CA009F076A = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
 					};
 					891E68DA224F32CC009F076A = {
 						CreatedOnToolsVersion = 10.1;
@@ -1057,6 +1067,7 @@
 				8958C5E92255C4AC0081B6E0 /* SyncServiceSpec.swift in Sources */,
 				892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */,
 				897B3CE522508E24007F2E84 /* OperationQueueJumperSpec.swift in Sources */,
+				8931B8412265713D001BEE26 /* SearchIndexActivityServiceSpec.swift in Sources */,
 				8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */,
 				897B3CD2225071DF007F2E84 /* FakeBookService.swift in Sources */,
 				892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */,

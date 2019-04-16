@@ -17,7 +17,7 @@ public func register(_ container: Container) {
 
     container.register(ActivityService.self) { _ in
         return SearchActivityService()
-    }
+    }.inObjectScope(.container)
 
     registerSync(container)
 }
