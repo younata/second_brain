@@ -121,7 +121,7 @@ final class TreeTableDeleSource<Item: Tree>: NSObject, UITableViewDataSource, UI
 
     private func removeChildren(indexPath: IndexPath, item: Item) {
         let toRemove = self.shownItems.filter { item.hasSubchild($0) }
-        let indices = toRemove.compactMap { self.shownItems.index(of: $0) }
+        let indices = toRemove.compactMap { self.shownItems.firstIndex(of: $0) }
         let indexPaths = indices.map { IndexPath(row: $0, section: 0) }
 
         for index in indices.sorted().reversed() {

@@ -825,6 +825,7 @@
 				TargetAttributes = {
 					891E68C6224F32CA009F076A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 0;
@@ -833,16 +834,17 @@
 					};
 					891E68DA224F32CC009F076A = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						TestTargetID = 891E68C6224F32CA009F076A;
 					};
 					891E68E5224F32CC009F076A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 891E68C6224F32CA009F076A;
 					};
 					891E691E224F3771009F076A = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 					891E6926224F3771009F076A = {
 						CreatedOnToolsVersion = 10.1;
@@ -851,7 +853,7 @@
 					};
 					897B3CB722506EE5007F2E84 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -1276,7 +1278,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1299,7 +1301,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1326,7 +1328,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";
 			};
@@ -1353,7 +1355,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-BrainTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";
 			};
@@ -1373,7 +1375,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-BrainUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Second Brain";
 			};
@@ -1393,7 +1395,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-BrainUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Second Brain";
 			};
@@ -1427,7 +1429,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1461,7 +1463,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1488,7 +1490,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";
 			};
@@ -1513,7 +1515,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Second Brain";
 			};
@@ -1538,7 +1540,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1561,7 +1563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
