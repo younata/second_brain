@@ -65,6 +65,8 @@
 		892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */; };
 		892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A9CD6225AE8A000C8A069 /* matchers.swift */; };
 		8931B8412265713D001BEE26 /* SearchIndexActivityServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */; };
+		8931B8432266E3A1001BEE26 /* FakeSeachIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */; };
+		8931B8442266E3B7001BEE26 /* FakeSeachIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -276,6 +278,7 @@
 		892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorModuleSpec.swift; sourceTree = "<group>"; };
 		892A9CD6225AE8A000C8A069 /* matchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = matchers.swift; sourceTree = "<group>"; };
 		8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIndexActivityServiceSpec.swift; sourceTree = "<group>"; };
+		8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSeachIndex.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -621,6 +624,7 @@
 				892A9CC02256EFE100C8A069 /* FakeSyncService.swift */,
 				892A9CD6225AE8A000C8A069 /* matchers.swift */,
 				45041FB62266CF5800FB475A /* FakeSearchIndexService.swift */,
+				8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1019,6 +1023,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8931B8442266E3B7001BEE26 /* FakeSeachIndex.swift in Sources */,
 				897B3CDA22508008007F2E84 /* WarningViewSpec.swift in Sources */,
 				89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */,
 				89F263B72251A48F00B6991F /* WKWebView+SpecHelper.m in Sources */,
@@ -1064,6 +1069,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8931B8432266E3A1001BEE26 /* FakeSeachIndex.swift in Sources */,
 				897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */,
 				892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */,
 				45041FB72266CF5800FB475A /* FakeSearchIndexService.swift in Sources */,

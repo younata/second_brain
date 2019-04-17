@@ -18,7 +18,7 @@ final class ChapterViewControllerSpec: QuickSpec {
         beforeEach {
             bookService = FakeBookService()
             htmlWrapper = SimpleHTMLWrapper()
-            activityService = SearchActivityService()
+            activityService = SearchActivityService(searchIndex: FakeSearchIndex(), searchQueue: OperationQueue())
 
             subject = ChapterViewController(bookService: bookService, htmlWrapper: htmlWrapper, activityService: activityService, chapter: chapter)
         }

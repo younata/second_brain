@@ -3,6 +3,7 @@ import Nimble
 import Result
 import CBGPromise
 import FutureHTTP
+import CoreSpotlight
 
 @testable import Second_Brain
 @testable import SBKit
@@ -17,9 +18,12 @@ final class ChapterListViewControllerSpec: QuickSpec {
         beforeEach {
             bookService = FakeBookService()
             presentedChapters = []
+
+            let activityService = SearchActivityService(searchIndex: FakeSearchIndex(), searchQueue: OperationQueue())
+
             subject = ChapterListViewController(bookService: bookService, chapterViewControllerFactory: { chapter in
                 presentedChapters.append(chapter)
-                return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), activityService: SearchActivityService(), chapter: chapter)
+                return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), activityService: activityService, chapter: chapter)
             })
         }
 
@@ -143,176 +147,194 @@ final class ChapterListViewControllerSpec: QuickSpec {
             }
         }
 
-        describe("-resume(chapterActivity:)") {
-            let activity = NSUserActivity(activityType: ChapterActivityType)
-            activity.userInfo = ["urlString": "https://example.com/chapter/1.html"]
+        func itBehavesLikeResumingFromAnActivityDescribingAChapter(_ resume: @escaping () -> Bool) {
+            describe("it behaves like resuming from an activity describing a chapter") {
+                let activity = NSUserActivity(activityType: ChapterActivityType)
+                activity.userInfo = ["urlString": "https://example.com/chapter/1.html"]
 
-            var resumeResult: Bool!
+                var resumeResult: Bool!
 
-            func itBehavesLikeFetchingABook() {
-                describe("if the book fetch is successful") {
-                    context("and the chapter is among the book's chapters") {
-                        let theChapter = Chapter(title: "Yep", contentURL: URL(string: "https://example.com/chapter/1.html")!, subchapters: [])
-                        let book = Book(title: "", chapters: [
-                            Chapter(title: "nope", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [
-                                theChapter
+                func itBehavesLikeFetchingABook() {
+                    describe("if the book fetch is successful") {
+                        context("and the chapter is among the book's chapters") {
+                            let theChapter = Chapter(title: "Yep", contentURL: URL(string: "https://example.com/chapter/1.html")!, subchapters: [])
+                            let book = Book(title: "", chapters: [
+                                Chapter(title: "nope", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [
+                                    theChapter
+                                    ])
                                 ])
-                            ])
 
-                        beforeEach {
-                            bookService.bookPromises.last?.resolve(.success(book))
+                            beforeEach {
+                                bookService.bookPromises.last?.resolve(.success(book))
+                            }
+
+                            it("shows a chapter view controller inside of a UINavigationController") {
+                                expect(subject.detail).to(beAKindOf(UINavigationController.self))
+
+                                guard let navController = subject.detail as? UINavigationController else { return }
+                                expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
+                                expect(navController.hidesBarsOnSwipe).to(beTruthy())
+                                expect(navController.hidesBarsOnTap).to(beTruthy())
+                                expect(presentedChapters).to(equal([theChapter]))
+                            }
                         }
 
-                        it("shows a chapter view controller inside of a UINavigationController") {
-                            expect(subject.detail).to(beAKindOf(UINavigationController.self))
+                        context("but the chapter is not among the book's chapters") {
+                            let book = Book(title: "", chapters: [
+                                Chapter(title: "", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [])
+                                ])
 
-                            guard let navController = subject.detail as? UINavigationController else { return }
-                            expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
-                            expect(navController.hidesBarsOnSwipe).to(beTruthy())
-                            expect(navController.hidesBarsOnTap).to(beTruthy())
-                            expect(presentedChapters).to(equal([theChapter]))
+                            beforeEach {
+                                bookService.bookPromises.last?.resolve(.success(book))
+                            }
+
+                            it("alerts the user that the chapter was not found") {
+                                expect(subject.warningView?.label.text).to(equal("Unable to open chapter: Not found"))
+                            }
                         }
                     }
 
-                    context("but the chapter is not among the book's chapters") {
-                        let book = Book(title: "", chapters: [
-                            Chapter(title: "", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [])
-                        ])
-
+                    describe("If the book fetch fails") {
                         beforeEach {
-                            bookService.bookPromises.last?.resolve(.success(book))
+                            bookService.bookPromises.last?.resolve(.failure(.unknown))
                         }
 
                         it("alerts the user that the chapter was not found") {
-                            expect(subject.warningView?.label.text).to(equal("Unable to open chapter: Not found"))
+                            expect(subject.warningView?.label.text).to(equal("Unable to open chapter: Unable to get chapters"))
                         }
                     }
                 }
 
-                describe("If the book fetch fails") {
+                context("before the view even loads") {
                     beforeEach {
-                        bookService.bookPromises.last?.resolve(.failure(.unknown))
+                        resumeResult = resume()
                     }
 
-                    it("alerts the user that the chapter was not found") {
-                        expect(subject.warningView?.label.text).to(equal("Unable to open chapter: Unable to get chapters"))
-                    }
-                }
-            }
-
-            context("before the view even loads") {
-                beforeEach {
-                    resumeResult = subject.resume(chapterActivity: activity)
-                }
-
-                it("it returns true preemptively") {
-                    expect(resumeResult).to(beTruthy())
-                }
-
-                it("fetches the books") {
-                    expect(bookService.bookPromises).to(haveCount(1))
-                }
-
-                it("does not refetch the books after the view loads") {
-                    subject.view.layoutIfNeeded()
-                    expect(bookService.bookPromises).to(haveCount(1))
-                }
-
-                itBehavesLikeFetchingABook()
-            }
-
-            context("after the view loads") {
-                beforeEach {
-                    subject.view.layoutIfNeeded()
-                }
-
-                context("before the book's contents are available") {
-                    beforeEach {
-                        expect(bookService.bookPromises).to(haveCount(1))
-                        resumeResult = subject.resume(chapterActivity: activity)
-                    }
-
-                    it("returns true preemptively") {
+                    it("it returns true preemptively") {
                         expect(resumeResult).to(beTruthy())
                     }
 
-                    it("does not refetch the book") {
+                    it("fetches the books") {
                         expect(bookService.bookPromises).to(haveCount(1))
                     }
 
+                    it("does not refetch the books after the view loads") {
+                        subject.view.layoutIfNeeded()
+                        expect(bookService.bookPromises).to(haveCount(1))
+                    }
 
+                    itBehavesLikeFetchingABook()
                 }
 
-                context("after the book's contents have been retrieved") {
-                    context("and the chapter is amongst the book's chapters") {
-                        let theChapter = Chapter(title: "Yep", contentURL: URL(string: "https://example.com/chapter/1.html")!, subchapters: [])
-                        let book = Book(title: "", chapters: [
-                            Chapter(title: "nope", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [
-                                theChapter
-                            ])
-                        ])
+                context("after the view loads") {
+                    beforeEach {
+                        subject.view.layoutIfNeeded()
+                    }
 
+                    context("before the book's contents are available") {
                         beforeEach {
-                            bookService.bookPromises.last?.resolve(.success(book))
-
-                            resumeResult = subject.resume(chapterActivity: activity)
+                            expect(bookService.bookPromises).to(haveCount(1))
+                            resumeResult = resume()
                         }
 
-                        it("returns true") {
+                        it("returns true preemptively") {
                             expect(resumeResult).to(beTruthy())
                         }
 
-                        it("shows a chapter view controller inside of a UINavigationController") {
-                            expect(subject.detail).to(beAKindOf(UINavigationController.self))
-
-                            guard let navController = subject.detail as? UINavigationController else { return }
-                            expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
-                            expect(navController.hidesBarsOnSwipe).to(beTruthy())
-                            expect(navController.hidesBarsOnTap).to(beTruthy())
-                            expect(presentedChapters).to(equal([theChapter]))
+                        it("does not refetch the book") {
+                            expect(bookService.bookPromises).to(haveCount(1))
                         }
                     }
 
-                    context("and the chapter is not amongst the book's chapters") {
-                        let book = Book(title: "", chapters: [
-                            Chapter(title: "", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [])
-                        ])
+                    context("after the book's contents have been retrieved") {
+                        context("and the chapter is amongst the book's chapters") {
+                            let theChapter = Chapter(title: "Yep", contentURL: URL(string: "https://example.com/chapter/1.html")!, subchapters: [])
+                            let book = Book(title: "", chapters: [
+                                Chapter(title: "nope", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [
+                                    theChapter
+                                    ])
+                                ])
 
-                        beforeEach {
-                            bookService.bookPromises.last?.resolve(.success(book))
+                            beforeEach {
+                                bookService.bookPromises.last?.resolve(.success(book))
 
-                            subject.warningView?.label.text = ""
+                                resumeResult = resume()
+                            }
 
-                            resumeResult = subject.resume(chapterActivity: activity)
+                            it("returns true") {
+                                expect(resumeResult).to(beTruthy())
+                            }
+
+                            it("shows a chapter view controller inside of a UINavigationController") {
+                                expect(subject.detail).to(beAKindOf(UINavigationController.self))
+
+                                guard let navController = subject.detail as? UINavigationController else { return }
+                                expect(navController.visibleViewController).to(beAKindOf(ChapterViewController.self))
+                                expect(navController.hidesBarsOnSwipe).to(beTruthy())
+                                expect(navController.hidesBarsOnTap).to(beTruthy())
+                                expect(presentedChapters).to(equal([theChapter]))
+                            }
                         }
 
-                        it("returns false") {
-                            expect(resumeResult).to(beFalsy())
+                        context("and the chapter is not amongst the book's chapters") {
+                            let book = Book(title: "", chapters: [
+                                Chapter(title: "", contentURL: URL(string: "https://example.com/nope.html")!, subchapters: [])
+                                ])
+
+                            beforeEach {
+                                bookService.bookPromises.last?.resolve(.success(book))
+
+                                subject.warningView?.label.text = ""
+
+                                resumeResult = resume()
+                            }
+
+                            it("returns false") {
+                                expect(resumeResult).to(beFalsy())
+                            }
+
+                            it("does not alert the user") {
+                                expect(subject.warningView?.label.text).to(equal(""))
+                            }
                         }
 
-                        it("does not alert the user") {
-                            expect(subject.warningView?.label.text).to(equal(""))
-                        }
-                    }
+                        context("and there was an error fetching the book") {
+                            beforeEach {
+                                bookService.bookPromises.last?.resolve(.failure(.unknown))
 
-                    context("and there was an error fetching the book") {
-                        beforeEach {
-                            bookService.bookPromises.last?.resolve(.failure(.unknown))
+                                subject.warningView?.label.text = ""
 
-                            subject.warningView?.label.text = ""
+                                resumeResult = resume()
+                            }
 
-                            resumeResult = subject.resume(chapterActivity: activity)
-                        }
+                            it("returns false") {
+                                expect(resumeResult).to(beFalsy())
+                            }
 
-                        it("returns false") {
-                            expect(resumeResult).to(beFalsy())
-                        }
-
-                        it("does not alert the user") {
-                            expect(subject.warningView?.label.text).to(equal(""))
+                            it("does not alert the user") {
+                                expect(subject.warningView?.label.text).to(equal(""))
+                            }
                         }
                     }
                 }
+            }
+        }
+
+        describe("-resume(chapterActivity:)") {
+            itBehavesLikeResumingFromAnActivityDescribingAChapter {
+                let activity = NSUserActivity(activityType: ChapterActivityType)
+                activity.userInfo = ["urlString": "https://example.com/chapter/1.html"]
+
+                return subject.resume(chapterActivity: activity)
+            }
+        }
+
+        describe("-resume(searchActivity:)") {
+            itBehavesLikeResumingFromAnActivityDescribingAChapter {
+                let activity = NSUserActivity(activityType: CSSearchableItemActionType)
+                activity.userInfo = [CSSearchableItemActivityIdentifier: "https://example.com/chapter/1.html"]
+
+                return subject.resume(searchActivity: activity)
             }
         }
     }

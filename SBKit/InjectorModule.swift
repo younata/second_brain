@@ -22,7 +22,7 @@ public func register(_ container: Container) {
 
 private func registerSearch(_ container: Container) {
     container.register(SearchIndex.self) { _ in
-        return CSSearchableIndex.default()
+        return CSSearchableIndex(name: "com.rachelbrindle.second_brain")
     }.inObjectScope(.container)
 
     let searchActivityServiceRegistry = container.register(SearchActivityService.self) { r in

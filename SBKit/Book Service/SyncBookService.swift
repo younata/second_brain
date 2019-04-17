@@ -41,14 +41,11 @@ final class SyncBookService: BookService {
             contentOperation.qualityOfService = .userInitiated
             contentOperation.queuePriority = Operation.QueuePriority.veryHigh
         }
-        return self.queueJumper.jump(contentOperation.future.then { result in
-            guard let content = result.value else { return }
-            self.searchIndexService.update(chapter: chapter, content: content)
-        })
+        return self.queueJumper.jump(contentOperation.future)
     }
 
     private func enqueue(chapters: [Chapter]) {
-        let operations = chapters.map { ChapterContentOperation(bookService: self.bookService, chapter: $0) }
+        let operations = chapters.map { ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: $0) }
 
         let updateSearchOperation = BlockOperation {
             self.searchIndexService.endRefresh()
@@ -63,7 +60,7 @@ final class SyncBookService: BookService {
     }
 
     private func addSingleOperation(chapter: Chapter) -> ChapterContentOperation {
-        let contentOperation = ChapterContentOperation(bookService: self.bookService, chapter: chapter)
+        let contentOperation = ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: chapter)
         self.operationQueue.addOperation(contentOperation)
         self.operations[chapter] = contentOperation
         return contentOperation
@@ -73,6 +70,7 @@ final class SyncBookService: BookService {
 final class ChapterContentOperation: Operation {
     private let promise = Promise<Result<String, ServiceError>>()
     private let bookService: BookService
+    private let searchIndexService: SearchIndexService
 
     let chapter: Chapter
 
@@ -80,8 +78,9 @@ final class ChapterContentOperation: Operation {
         return self.promise.future
     }
 
-    init(bookService: BookService, chapter: Chapter) {
+    init(bookService: BookService, searchIndexService: SearchIndexService, chapter: Chapter) {
         self.bookService = bookService
+        self.searchIndexService = searchIndexService
         self.chapter = chapter
         super.init()
     }
@@ -89,6 +88,10 @@ final class ChapterContentOperation: Operation {
     override func start() {
         self.willChangeValue(forKey: "isExecuting")
         self.bookService.content(of: self.chapter).then {
+            if let content = $0.value {
+                self.searchIndexService.update(chapter: self.chapter, content: content)
+            }
+
             self.willChangeValue(forKey: "isExecuting")
             defer {
                 self._isExecuting = false

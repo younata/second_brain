@@ -1,3 +1,4 @@
+import Kanna
 import CoreServices
 import CoreSpotlight
 
@@ -42,7 +43,7 @@ final class SearchActivityService: ActivityService, SearchIndexService, BookServ
     }
 
     // MARK: SearchIndexService
-    private var updatedChapters: [CSSearchableItem] = []
+    private var updatedChapters: [Chapter: String] = [:]
     private var removedChapters: [String] = []
 
     func startRefresh() {
@@ -57,20 +58,23 @@ final class SearchActivityService: ActivityService, SearchIndexService, BookServ
                 activity.contentAttributeSet = self.attributes(for: chapter, content: content)
                 activity.needsSave = true
             }
-            self.updatedChapters.append(self.item(for: chapter, content: content))
+            self.updatedChapters[chapter] = content
         }
     }
 
     func endRefresh() {
         self.searchQueue.addOperation {
-            guard !self.updatedChapters.isEmpty && !self.removedChapters.isEmpty else {
+            guard !self.updatedChapters.isEmpty || !self.removedChapters.isEmpty else {
                 return
             }
             self.searchIndex.beginBatch()
-            self.searchIndex.indexSearchableItems(self.updatedChapters, completionHandler: nil)
+            let items = self.updatedChapters.map { (chapter, content) in
+                return self.item(for: chapter, content: content)
+            }
+            self.searchIndex.indexSearchableItems(items, completionHandler: nil)
             self.searchIndex.deleteSearchableItems(withIdentifiers: self.removedChapters, completionHandler: nil)
             self.searchIndex.endBatch(withClientState: Data(), completionHandler: nil)
-            self.updatedChapters = []
+            self.updatedChapters = [:]
             self.removedChapters = []
         }
     }
@@ -104,7 +108,14 @@ final class SearchActivityService: ActivityService, SearchIndexService, BookServ
         attributes.title = chapter.title
         attributes.url = chapter.contentURL
         attributes.displayName = chapter.title
+        attributes.subject = chapter.title
         attributes.htmlContentData = content?.data(using: .utf8)
+
+        if let document = content, let (description, headers) = self.parse(document: document) {
+            attributes.contentDescription = description
+            attributes.keywords = [chapter.title] + headers
+        }
+
         return attributes
     }
 
@@ -114,5 +125,16 @@ final class SearchActivityService: ActivityService, SearchIndexService, BookServ
             domainIdentifier: "com.rachelbrindle.second_brain.chapter",
             attributeSet: self.attributes(for: chapter, content: content)
         )
+    }
+
+    private func parse(document: String) -> (String, [String])? {
+        guard let doc = try? HTML(html: document, encoding: .utf8) else {
+            return nil
+        }
+
+        let firstParagraph = doc.css("p").first?.text ?? ""
+        let headers = doc.css("h2,h3,h4,h5,h6").compactMap { $0.text }
+
+        return (firstParagraph, headers)
     }
 }

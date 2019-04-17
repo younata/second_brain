@@ -2,6 +2,7 @@ import SBKit
 import UIKit
 import Result
 import CBGPromise
+import CoreSpotlight
 
 class ChapterListViewController: UIViewController {
     private let bookService: BookService
@@ -56,6 +57,17 @@ class ChapterListViewController: UIViewController {
             let urlString = activity.userInfo?["urlString"] as? String,
             let url = URL(string: urlString) else { return false }
 
+        return self.resume(url: url)
+    }
+
+    func resume(searchActivity activity: NSUserActivity) -> Bool {
+        guard activity.activityType == CSSearchableItemActionType,
+            let urlString = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
+            let url = URL(string: urlString) else { return false }
+        return self.resume(url: url)
+    }
+
+    private func resume(url: URL) -> Bool {
         guard let bookResult = self.bookFuture.value else {
             self.bookFuture.then { [weak self] (bookResult: Result<Book, ServiceError>) in
                 self?.presentChapter(with: url, and: bookResult, showError: true)

@@ -1,6 +1,7 @@
+import SBKit
 import UIKit
 import Swinject
-import SBKit
+import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -53,9 +54,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        guard userActivity.activityType == ChapterActivityType else { return false }
-
-        return self.chapterListController?.resume(chapterActivity: userActivity) == true
+        switch userActivity.activityType {
+        case ChapterActivityType:
+            return self.chapterListController?.resume(chapterActivity: userActivity) == true
+        case CSSearchableItemActionType:
+            return self.chapterListController?.resume(searchActivity: userActivity) == true
+        default:
+            return false
+        }
     }
 }
 
