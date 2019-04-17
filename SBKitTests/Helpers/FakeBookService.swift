@@ -1,4 +1,4 @@
-import SBKit
+@testable import SBKit
 import Result
 import CBGPromise
 

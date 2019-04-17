@@ -16,6 +16,8 @@ final class CoreDataBookServiceSpec: QuickSpec {
         var syncService: FakeSyncService!
         var queueJumper: OperationQueueJumper!
 
+        var delegate: FakeBookServiceDelegate!
+
         let bookURL = URL(string: "https://example.com")!
 
         beforeEach {
@@ -31,6 +33,9 @@ final class CoreDataBookServiceSpec: QuickSpec {
                 queueJumper: queueJumper,
                 bookURL: bookURL
             )
+
+            delegate = FakeBookServiceDelegate()
+            subject.delegate = delegate
         }
 
         describe("-Book()") {
@@ -39,7 +44,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
             var cdbook: CoreDataBook?
             var cdchapters: [CoreDataChapter] = []
 
-            func itBehavesLikeNewDataWasReturned() {
+            func itBehavesLikeNewDataWasReturned(delegateExpect: @escaping () -> Void) {
                 describe("when the sync service comes back with new data") {
                     let chapters: [String: Any] = [
                         "title": "new title",
@@ -148,6 +153,8 @@ final class CoreDataBookServiceSpec: QuickSpec {
                             expect(results as? [CoreDataChapter]).to(haveCount(7))
                         }
                     }
+
+                    delegateExpect()
                 }
             }
 
@@ -166,7 +173,11 @@ final class CoreDataBookServiceSpec: QuickSpec {
                     expect(call.etag).to(equal(""))
                 }
 
-                itBehavesLikeNewDataWasReturned()
+                itBehavesLikeNewDataWasReturned {
+                    it("doesn't remove any chapters") {
+
+                    }
+                }
 
                 describe("if the sync service comes back with no new data") {
                     // Shouldn't happen!
@@ -229,7 +240,21 @@ final class CoreDataBookServiceSpec: QuickSpec {
                     expect(call.etag).to(equal("my_etag"))
                 }
 
-                itBehavesLikeNewDataWasReturned()
+                itBehavesLikeNewDataWasReturned {
+                    it("informs the delegate that some chapters were removed") {
+                        expect(delegate.didRemoveChapterCalls).toEventually(haveCount(4))
+
+                        let expectedChapters: [Chapter] = (1..<5).map { index in
+                            return Chapter(
+                                title: "Chapter \(index)",
+                                contentURL: subpage(named: "\(index).html"),
+                                subchapters: []
+                            )
+                        }
+
+                        expect(delegate.didRemoveChapterCalls).to(contain(expectedChapters))
+                    }
+                }
 
                 describe("when the sync service comes back with no new data") {
                     beforeEach {
@@ -423,5 +448,12 @@ final class CoreDataBookServiceSpec: QuickSpec {
                 }
             }
         }
+    }
+}
+
+final class FakeBookServiceDelegate: BookServiceDelegate {
+    private(set) var didRemoveChapterCalls: [Chapter] = []
+    func didRemove(chapter: Chapter) {
+        self.didRemoveChapterCalls.append(chapter)
     }
 }

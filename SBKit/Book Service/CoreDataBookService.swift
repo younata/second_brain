@@ -14,6 +14,8 @@ final class CoreDataBookService: BookService {
     private let queueJumper: OperationQueueJumper
     private let bookURL: URL
 
+    var delegate: BookServiceDelegate?
+
     private lazy var context: NSManagedObjectContext = {
         let objectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         objectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
@@ -167,6 +169,7 @@ final class CoreDataBookService: BookService {
 
             for unreferencedChapter in existingChapters {
                 self.context.delete(unreferencedChapter)
+                self.delegate?.didRemove(chapter: unreferencedChapter.chapter())
             }
 
             do {

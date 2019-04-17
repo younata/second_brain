@@ -6,7 +6,7 @@ public protocol ActivityService {
 }
 
 protocol SearchIndex {
-    func deleteAllSearchableItems(completionHandler: ((Error?) -> Void)?)
+    func deleteSearchableItems(withIdentifiers identifiers: [String], completionHandler: ((Error?) -> Void)?)
     func indexSearchableItems(_ items: [CSSearchableItem], completionHandler: ((Error?) -> Void)?)
 
     func beginBatch()
@@ -16,15 +16,21 @@ protocol SearchIndex {
 extension CSSearchableIndex: SearchIndex {}
 
 protocol SearchIndexService {
-    func startRefresh()
     func update(chapter: Chapter, content: String)
     func endRefresh()
 }
 
 public let ChapterActivityType = "com.rachelbrindle.second_brain.read_chapter"
 
-final class SearchActivityService: ActivityService, SearchIndexService {
+final class SearchActivityService: ActivityService, SearchIndexService, BookServiceDelegate {
     private var activities: [Chapter: NSUserActivity] = [:]
+    private let searchIndex: SearchIndex
+    private let searchQueue: OperationQueue
+
+    init(searchIndex: SearchIndex, searchQueue: OperationQueue) {
+        self.searchIndex = searchIndex
+        self.searchQueue = searchQueue
+    }
 
     // MARK: ActivityService
     func activity(for chapter: Chapter) -> NSUserActivity {
@@ -36,9 +42,49 @@ final class SearchActivityService: ActivityService, SearchIndexService {
     }
 
     // MARK: SearchIndexService
-    func startRefresh() {}
-    func update(chapter: Chapter, content: String) {}
-    func endRefresh() {}
+    private var updatedChapters: [CSSearchableItem] = []
+    private var removedChapters: [String] = []
+
+    func startRefresh() {
+        self.searchQueue.addOperation {
+            self.searchIndex.beginBatch()
+        }
+    }
+
+    func update(chapter: Chapter, content: String) {
+        self.searchQueue.addOperation {
+            if let activity = self.activities[chapter] {
+                activity.contentAttributeSet = self.attributes(for: chapter, content: content)
+                activity.needsSave = true
+            }
+            self.updatedChapters.append(self.item(for: chapter, content: content))
+        }
+    }
+
+    func endRefresh() {
+        self.searchQueue.addOperation {
+            guard !self.updatedChapters.isEmpty && !self.removedChapters.isEmpty else {
+                return
+            }
+            self.searchIndex.beginBatch()
+            self.searchIndex.indexSearchableItems(self.updatedChapters, completionHandler: nil)
+            self.searchIndex.deleteSearchableItems(withIdentifiers: self.removedChapters, completionHandler: nil)
+            self.searchIndex.endBatch(withClientState: Data(), completionHandler: nil)
+            self.updatedChapters = []
+            self.removedChapters = []
+        }
+    }
+
+    // MARK: BookServiceDelegate
+    func didRemove(chapter: Chapter) {
+        self.searchQueue.addOperation {
+            if let activity = self.activities[chapter] {
+                activity.invalidate()
+                self.activities.removeValue(forKey: chapter)
+            }
+            self.removedChapters.append(chapter.contentURL.absoluteString)
+        }
+    }
 
     private func update(activity: NSUserActivity, from chapter: Chapter, content: String?) {
         activity.webpageURL = chapter.contentURL
@@ -60,5 +106,13 @@ final class SearchActivityService: ActivityService, SearchIndexService {
         attributes.displayName = chapter.title
         attributes.htmlContentData = content?.data(using: .utf8)
         return attributes
+    }
+
+    private func item(for chapter: Chapter, content: String) -> CSSearchableItem {
+        return CSSearchableItem(
+            uniqueIdentifier: chapter.contentURL.absoluteString,
+            domainIdentifier: "com.rachelbrindle.second_brain.chapter",
+            attributeSet: self.attributes(for: chapter, content: content)
+        )
     }
 }

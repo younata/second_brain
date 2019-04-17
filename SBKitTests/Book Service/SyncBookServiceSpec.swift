@@ -11,6 +11,7 @@ final class SyncBookServiceSpec: QuickSpec {
         var subject: SyncBookService!
         var queueJumper: OperationQueueJumper!
         var mainQueue: PSHKFakeOperationQueue!
+        var searchIndexService: FakeSearchIndexService!
 
         var workQueue: PSHKFakeOperationQueue!
 
@@ -19,6 +20,8 @@ final class SyncBookServiceSpec: QuickSpec {
         beforeEach {
             bookService = FakeBookService()
 
+            searchIndexService = FakeSearchIndexService()
+
             workQueue = PSHKFakeOperationQueue()
 
             mainQueue = PSHKFakeOperationQueue()
@@ -26,6 +29,7 @@ final class SyncBookServiceSpec: QuickSpec {
 
             subject = SyncBookService(
                 bookService: bookService,
+                searchIndexService: searchIndexService,
                 operationQueue: workQueue,
                 queueJumper: queueJumper
             )
@@ -70,14 +74,16 @@ final class SyncBookServiceSpec: QuickSpec {
                     expect(future.value?.value).to(equal(book))
                 }
 
-                it("queues up an on the workQueue for each chapter in the book") {
-                    expect(workQueue.operationCount).to(equal(3))
-                    expect(workQueue.operations.compactMap { $0 as? ChapterContentOperation }).to(haveCount(3))
+                it("queues up an on the workQueue for each chapter in the book, plus an operation to update the search service") {
+                    expect(workQueue.operationCount).to(equal(4))
+                    let chapterOperations = workQueue.operations.compactMap { $0 as? ChapterContentOperation }
+                    expect(chapterOperations).to(haveCount(3))
 
                     for operation in workQueue.operations {
                         expect(operation.queuePriority).to(equal(.normal))
                         expect(operation.qualityOfService).to(equal(.default))
                     }
+                    expect(workQueue.operations.last?.dependencies).to(equal(chapterOperations))
                 }
             }
 
@@ -129,6 +135,14 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
                             expect(future.value?.value).to(equal("Content"))
                         }
+
+                        it("tells the searchIndexService to index the chapter") {
+                            expect(searchIndexService.updateCalls).to(haveCount(1))
+
+                            guard let call = searchIndexService.updateCalls.last else { return }
+                            expect(call.chapter).to(equal(chapter))
+                            expect(call.content).to(equal("Content"))
+                        }
                     }
 
                     describe("when the operation fails") {
@@ -150,6 +164,10 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
                             expect(future.value?.error).to(equal(.cache))
                         }
+
+                        it("does not tell the searchIndexService anything") {
+                            expect(searchIndexService.updateCalls).to(beEmpty())
+                        }
                     }
                 }
             }
@@ -160,7 +178,7 @@ final class SyncBookServiceSpec: QuickSpec {
                     bookService.bookPromises.last?.resolve(.success(Book(title: "", chapters: [chapter])))
                     mainQueue.runNextOperation()
 
-                    expect(workQueue.operationCount).to(equal(1))
+                    expect(workQueue.operationCount).to(equal(2))
                 }
 
                 context("and that operation had completed") {
@@ -196,6 +214,10 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(bookService.contentsPromises).toEventually(haveCount(1))
                             bookService.contentsPromises.last?.resolve(.failure(.cache))
 
+                            expect(workQueue.operations).toEventually(haveCount(1))
+
+                            workQueue.runNextOperation() // run the operation
+
                             expect(workQueue.operations).toEventually(beEmpty())
 
                             bookService.resetContents()
@@ -221,9 +243,9 @@ final class SyncBookServiceSpec: QuickSpec {
                     }
 
                     it("ups the priority of the operations, now that the user is actually waiting on it") {
-                        expect(workQueue.operations).to(haveCount(1))
+                        expect(workQueue.operations).to(haveCount(2))
 
-                        guard let operation = workQueue.operations.last else { return }
+                        guard let operation = workQueue.operations.compactMap({ $0 as? ChapterContentOperation }).first else { return }
                         expect(operation.queuePriority).to(equal(.veryHigh))
                         expect(operation.qualityOfService).to(equal(.userInitiated))
                     }

@@ -5,12 +5,16 @@ import Foundation
 
 final class SyncBookService: BookService {
     private var operations: [Chapter: ChapterContentOperation] = [:]
+
     let bookService: BookService
+    private let searchIndexService: SearchIndexService
     private let queueJumper: OperationQueueJumper
     private let operationQueue: OperationQueue
 
-    init(bookService: BookService, operationQueue: OperationQueue, queueJumper: OperationQueueJumper) {
+    init(bookService: BookService, searchIndexService: SearchIndexService, operationQueue: OperationQueue,
+         queueJumper: OperationQueueJumper) {
         self.bookService = bookService
+        self.searchIndexService = searchIndexService
         self.operationQueue = operationQueue
         self.queueJumper = queueJumper
     }
@@ -37,16 +41,25 @@ final class SyncBookService: BookService {
             contentOperation.qualityOfService = .userInitiated
             contentOperation.queuePriority = Operation.QueuePriority.veryHigh
         }
-        return self.queueJumper.jump(contentOperation.future)
+        return self.queueJumper.jump(contentOperation.future.then { result in
+            guard let content = result.value else { return }
+            self.searchIndexService.update(chapter: chapter, content: content)
+        })
     }
 
     private func enqueue(chapters: [Chapter]) {
         let operations = chapters.map { ChapterContentOperation(bookService: self.bookService, chapter: $0) }
 
+        let updateSearchOperation = BlockOperation {
+            self.searchIndexService.endRefresh()
+        }
         operations.forEach {
             self.operations[$0.chapter] = $0
+            updateSearchOperation.addDependency($0)
         }
+
         self.operationQueue.addOperations(operations, waitUntilFinished: false)
+        self.operationQueue.addOperation(updateSearchOperation)
     }
 
     private func addSingleOperation(chapter: Chapter) -> ChapterContentOperation {

@@ -1,6 +1,7 @@
 import CoreData
 import Swinject
 import FutureHTTP
+import CoreSpotlight
 
 public func register(_ container: Container) {
     let mainQueue = "MainQueue"
@@ -15,11 +16,27 @@ public func register(_ container: Container) {
         return OperationQueueJumper(queue: r.resolve(OperationQueue.self, name: mainQueue)!)
     }
 
-    container.register(ActivityService.self) { _ in
-        return SearchActivityService()
+    registerSearch(container)
+    registerSync(container)
+}
+
+private func registerSearch(_ container: Container) {
+    container.register(SearchIndex.self) { _ in
+        return CSSearchableIndex.default()
     }.inObjectScope(.container)
 
-    registerSync(container)
+    let searchActivityServiceRegistry = container.register(SearchActivityService.self) { r in
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .utility
+        return SearchActivityService(
+            searchIndex: r.resolve(SearchIndex.self)!,
+            searchQueue: queue
+        )
+    }.inObjectScope(.container)
+
+    container.forward(SearchIndexService.self, to: searchActivityServiceRegistry)
+    container.forward(ActivityService.self, to: searchActivityServiceRegistry)
 }
 
 private func registerSync(_ container: Container) {
@@ -45,8 +62,12 @@ private func registerSync(_ container: Container) {
         workQueue.maxConcurrentOperationCount = 3
         workQueue.qualityOfService = QualityOfService.background
 
+        let searchIndexService = r.resolve(SearchActivityService.self)!
+        cdBookService.delegate = searchIndexService
+
         return SyncBookService(
             bookService: cdBookService,
+            searchIndexService: searchIndexService,
             operationQueue: workQueue,
             queueJumper: r.resolve(OperationQueueJumper.self)!
         )
