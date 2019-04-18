@@ -1,4 +1,4 @@
 github "quick/quick"
 github "quick/nimble"
-github "pivotal/PivotalCoreKit"
+github "younata/PivotalCoreKit" "mac_use_underscore_in_product_name"
 

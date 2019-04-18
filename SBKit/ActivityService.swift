@@ -98,7 +98,9 @@ final class SearchActivityService: ActivityService, SearchIndexService, BookServ
         activity.contentAttributeSet = self.attributes(for: chapter, content: content)
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = true
-        activity.isEligibleForPrediction = false
+        #if os(iOS)
+            activity.isEligibleForPrediction = false
+        #endif
         activity.isEligibleForPublicIndexing = false
         activity.needsSave = true
     }
