@@ -112,6 +112,11 @@
 		8933535B2268153400F29324 /* Foundation_PivotalSpecHelper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8933538E22681CAA00F29324 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; };
 		8933538F22681CAF00F29324 /* Foundation_PivotalCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8933539722682B9000F29324 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933539622682B8F00F29324 /* AppDelegate.swift */; };
+		8933539922682B9100F29324 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8933539822682B9100F29324 /* Assets.xcassets */; };
+		8933539C22682B9100F29324 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8933539A22682B9100F29324 /* MainMenu.xib */; };
+		893353A822682B9200F29324 /* Second_Brain_MacTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893353A722682B9200F29324 /* Second_Brain_MacTests.swift */; };
+		893353B322682B9200F29324 /* Second_Brain_MacUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893353B222682B9200F29324 /* Second_Brain_MacUITests.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -156,6 +161,17 @@
 		897B3CEA22512F86007F2E84 /* TreeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CE822512F86007F2E84 /* TreeTableCell.swift */; };
 		897B3CEB22512F86007F2E84 /* TreeTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 897B3CE922512F86007F2E84 /* TreeTableCell.xib */; };
 		897B3CED22515EE0007F2E84 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CEC22515EE0007F2E84 /* HelperFunctions.swift */; };
+		898E1FDC226A51BB004852EA /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893352DD22680F9300F29324 /* SBKit.framework */; };
+		898E1FDD226A51D0004852EA /* CBGPromise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8933530F226810A500F29324 /* CBGPromise.framework */; };
+		898E1FDE226A51D0004852EA /* FutureHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89335312226810A500F29324 /* FutureHTTP.framework */; };
+		898E1FDF226A51D0004852EA /* Kanna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89335313226810A500F29324 /* Kanna.framework */; };
+		898E1FE0226A51D0004852EA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89335310226810A500F29324 /* Result.framework */; };
+		898E1FE1226A51D0004852EA /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89335311226810A500F29324 /* Swinject.framework */; };
+		898E1FE3226A51DF004852EA /* CBGPromise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8933530F226810A500F29324 /* CBGPromise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		898E1FE4226A51DF004852EA /* FutureHTTP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 89335312226810A500F29324 /* FutureHTTP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		898E1FE5226A51DF004852EA /* Kanna.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 89335313226810A500F29324 /* Kanna.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		898E1FE6226A51DF004852EA /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 89335310226810A500F29324 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		898E1FE7226A51DF004852EA /* Swinject.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 89335311226810A500F29324 /* Swinject.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		89ED0A53226029A8000FEDBC /* NSUserActivity+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */; };
 		89ED0A5522602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */; };
 		89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263A322517E6000B6991F /* ChapterViewController.swift */; };
@@ -211,6 +227,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 893352DC22680F9300F29324;
 			remoteInfo = SBMacKit;
+		};
+		893353A422682B9200F29324 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 891E68BF224F32CA009F076A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8933539322682B8F00F29324;
+			remoteInfo = "Second Brain Mac";
+		};
+		893353AF22682B9200F29324 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 891E68BF224F32CA009F076A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8933539322682B8F00F29324;
+			remoteInfo = "Second Brain Mac";
 		};
 		897B3CBE22506EE5007F2E84 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -304,6 +334,21 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		898E1FE2226A51D3004852EA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				898E1FE3226A51DF004852EA /* CBGPromise.framework in Embed Frameworks */,
+				898E1FE4226A51DF004852EA /* FutureHTTP.framework in Embed Frameworks */,
+				898E1FE5226A51DF004852EA /* Kanna.framework in Embed Frameworks */,
+				898E1FE6226A51DF004852EA /* Result.framework in Embed Frameworks */,
+				898E1FE7226A51DF004852EA /* Swinject.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -361,6 +406,18 @@
 		8933531C226810C600F29324 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		893353562268152F00F29324 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/Mac/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
 		893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalSpecHelper.framework; path = Carthage/Build/Mac/Foundation_PivotalSpecHelper.framework; sourceTree = "<group>"; };
+		8933539422682B8F00F29324 /* Second Brain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Second Brain.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8933539622682B8F00F29324 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8933539822682B9100F29324 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8933539B22682B9100F29324 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8933539D22682B9100F29324 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8933539E22682B9100F29324 /* Second_Brain_Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Second_Brain_Mac.entitlements; sourceTree = "<group>"; };
+		893353A322682B9100F29324 /* Second Brain MacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Second Brain MacTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		893353A722682B9200F29324 /* Second_Brain_MacTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Second_Brain_MacTests.swift; sourceTree = "<group>"; };
+		893353A922682B9200F29324 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		893353AE22682B9200F29324 /* Second Brain MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Second Brain MacUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		893353B222682B9200F29324 /* Second_Brain_MacUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Second_Brain_MacUITests.swift; sourceTree = "<group>"; };
+		893353B422682B9200F29324 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -496,6 +553,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8933539122682B8F00F29324 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				898E1FDC226A51BB004852EA /* SBKit.framework in Frameworks */,
+				898E1FDD226A51D0004852EA /* CBGPromise.framework in Frameworks */,
+				898E1FDE226A51D0004852EA /* FutureHTTP.framework in Frameworks */,
+				898E1FDF226A51D0004852EA /* Kanna.framework in Frameworks */,
+				898E1FE0226A51D0004852EA /* Result.framework in Frameworks */,
+				898E1FE1226A51D0004852EA /* Swinject.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893353A022682B9100F29324 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893353AB22682B9200F29324 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		897B3CB522506EE5007F2E84 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -528,9 +612,13 @@
 				891E6920224F3771009F076A /* SBKit */,
 				891E692D224F3771009F076A /* SBKitTests */,
 				897B3CB922506EE5007F2E84 /* SBKitIntegrationTests */,
+				8933539522682B8F00F29324 /* Second Brain Mac */,
+				893353A622682B9200F29324 /* Second Brain MacTests */,
+				893353B122682B9200F29324 /* Second Brain MacUITests */,
 				891E68C8224F32CA009F076A /* Products */,
 				891E68F8224F35E3009F076A /* iOS Frameworks */,
 				8933530E226810A400F29324 /* Mac Frameworks */,
+				898E1FDB226A51BB004852EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -545,6 +633,9 @@
 				897B3CB822506EE5007F2E84 /* SBKitIntegrationTests.xctest */,
 				893352DD22680F9300F29324 /* SBKit.framework */,
 				893352E522680F9300F29324 /* SBKitTests.xctest */,
+				8933539422682B8F00F29324 /* Second Brain.app */,
+				893353A322682B9100F29324 /* Second Brain MacTests.xctest */,
+				893353AE22682B9200F29324 /* Second Brain MacUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -664,6 +755,36 @@
 			name = "Mac Frameworks";
 			sourceTree = "<group>";
 		};
+		8933539522682B8F00F29324 /* Second Brain Mac */ = {
+			isa = PBXGroup;
+			children = (
+				8933539622682B8F00F29324 /* AppDelegate.swift */,
+				8933539822682B9100F29324 /* Assets.xcassets */,
+				8933539A22682B9100F29324 /* MainMenu.xib */,
+				8933539D22682B9100F29324 /* Info.plist */,
+				8933539E22682B9100F29324 /* Second_Brain_Mac.entitlements */,
+			);
+			path = "Second Brain Mac";
+			sourceTree = "<group>";
+		};
+		893353A622682B9200F29324 /* Second Brain MacTests */ = {
+			isa = PBXGroup;
+			children = (
+				893353A722682B9200F29324 /* Second_Brain_MacTests.swift */,
+				893353A922682B9200F29324 /* Info.plist */,
+			);
+			path = "Second Brain MacTests";
+			sourceTree = "<group>";
+		};
+		893353B122682B9200F29324 /* Second Brain MacUITests */ = {
+			isa = PBXGroup;
+			children = (
+				893353B222682B9200F29324 /* Second_Brain_MacUITests.swift */,
+				893353B422682B9200F29324 /* Info.plist */,
+			);
+			path = "Second Brain MacUITests";
+			sourceTree = "<group>";
+		};
 		8958C5CE22546C610081B6E0 /* HTML Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,6 +873,13 @@
 				8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		898E1FDB226A51BB004852EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		89F263A222517E0800B6991F /* Tree Table */ = {
@@ -963,6 +1091,61 @@
 			productReference = 893352E522680F9300F29324 /* SBKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8933539322682B8F00F29324 /* Second Brain Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 893353B522682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain Mac" */;
+			buildPhases = (
+				8933539022682B8F00F29324 /* Sources */,
+				8933539122682B8F00F29324 /* Frameworks */,
+				8933539222682B8F00F29324 /* Resources */,
+				898E1FE2226A51D3004852EA /* Embed Frameworks */,
+				898E1FDA226A5199004852EA /* Insert BookURL into info.plist */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Second Brain Mac";
+			productName = "Second Brain Mac";
+			productReference = 8933539422682B8F00F29324 /* Second Brain.app */;
+			productType = "com.apple.product-type.application";
+		};
+		893353A222682B9100F29324 /* Second Brain MacTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 893353B822682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain MacTests" */;
+			buildPhases = (
+				8933539F22682B9100F29324 /* Sources */,
+				893353A022682B9100F29324 /* Frameworks */,
+				893353A122682B9100F29324 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				893353A522682B9200F29324 /* PBXTargetDependency */,
+			);
+			name = "Second Brain MacTests";
+			productName = "Second Brain MacTests";
+			productReference = 893353A322682B9100F29324 /* Second Brain MacTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		893353AD22682B9200F29324 /* Second Brain MacUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 893353BB22682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain MacUITests" */;
+			buildPhases = (
+				893353AA22682B9200F29324 /* Sources */,
+				893353AB22682B9200F29324 /* Frameworks */,
+				893353AC22682B9200F29324 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				893353B022682B9200F29324 /* PBXTargetDependency */,
+			);
+			name = "Second Brain MacUITests";
+			productName = "Second Brain MacUITests";
+			productReference = 893353AE22682B9200F29324 /* Second Brain MacUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		897B3CB722506EE5007F2E84 /* SBKitIntegrationTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 897B3CC022506EE5007F2E84 /* Build configuration list for PBXNativeTarget "SBKitIntegrationTests" */;
@@ -1027,6 +1210,17 @@
 					893352E422680F9300F29324 = {
 						CreatedOnToolsVersion = 10.2;
 					};
+					8933539322682B8F00F29324 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					893353A222682B9100F29324 = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 8933539322682B8F00F29324;
+					};
+					893353AD22682B9200F29324 = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 8933539322682B8F00F29324;
+					};
 					897B3CB722506EE5007F2E84 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -1054,6 +1248,9 @@
 				897B3CB722506EE5007F2E84 /* SBKitIntegrationTests */,
 				893352DC22680F9300F29324 /* SBMacKit */,
 				893352E422680F9300F29324 /* SBMacKitTests */,
+				8933539322682B8F00F29324 /* Second Brain Mac */,
+				893353A222682B9100F29324 /* Second Brain MacTests */,
+				893353AD22682B9200F29324 /* Second Brain MacUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1116,6 +1313,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				893352FF2268105000F29324 /* index.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8933539222682B8F00F29324 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8933539922682B9100F29324 /* Assets.xcassets in Resources */,
+				8933539C22682B9100F29324 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893353A122682B9100F29324 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893353AC22682B9200F29324 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1185,6 +1405,24 @@
 			inputPaths = (
 			);
 			name = "Copy BookURL into info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT\"/scripts/copy_book.sh\n";
+		};
+		898E1FDA226A5199004852EA /* Insert BookURL into info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Insert BookURL into info.plist";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -1319,6 +1557,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8933539022682B8F00F29324 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8933539722682B9000F29324 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8933539F22682B9100F29324 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				893353A822682B9200F29324 /* Second_Brain_MacTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893353AA22682B9200F29324 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				893353B322682B9200F29324 /* Second_Brain_MacUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		897B3CB422506EE5007F2E84 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1361,6 +1623,16 @@
 			target = 893352DC22680F9300F29324 /* SBMacKit */;
 			targetProxy = 893352E722680F9300F29324 /* PBXContainerItemProxy */;
 		};
+		893353A522682B9200F29324 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8933539322682B8F00F29324 /* Second Brain Mac */;
+			targetProxy = 893353A422682B9200F29324 /* PBXContainerItemProxy */;
+		};
+		893353B022682B9200F29324 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8933539322682B8F00F29324 /* Second Brain Mac */;
+			targetProxy = 893353AF22682B9200F29324 /* PBXContainerItemProxy */;
+		};
 		897B3CBF22506EE5007F2E84 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 891E691E224F3771009F076A /* SBKit */;
@@ -1375,6 +1647,14 @@
 				891E68D4224F32CC009F076A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		8933539A22682B9100F29324 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8933539B22682B9100F29324 /* Base */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1883,6 +2163,152 @@
 			};
 			name = Release;
 		};
+		893353B622682B9200F29324 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Second Brain Mac/Second_Brain_Mac.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Second Brain Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-Mac";
+				PRODUCT_NAME = "Second Brain";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		893353B722682B9200F29324 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Second Brain Mac/Second_Brain_Mac.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Second Brain Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-Mac";
+				PRODUCT_NAME = "Second Brain";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		893353B922682B9200F29324 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				INFOPLIST_FILE = "Second Brain MacTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-MacTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain Mac.app/Contents/MacOS/Second Brain Mac";
+			};
+			name = Debug;
+		};
+		893353BA22682B9200F29324 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				INFOPLIST_FILE = "Second Brain MacTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-MacTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain Mac.app/Contents/MacOS/Second Brain Mac";
+			};
+			name = Release;
+		};
+		893353BC22682B9200F29324 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				INFOPLIST_FILE = "Second Brain MacUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-MacUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Second Brain Mac";
+			};
+			name = Debug;
+		};
+		893353BD22682B9200F29324 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9D456YCUH2;
+				INFOPLIST_FILE = "Second Brain MacUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.younata.Second-Brain-MacUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Second Brain Mac";
+			};
+			name = Release;
+		};
 		897B3CC122506EE5007F2E84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2001,6 +2427,33 @@
 			buildConfigurations = (
 				893352F222680F9300F29324 /* Debug */,
 				893352F322680F9300F29324 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		893353B522682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				893353B622682B9200F29324 /* Debug */,
+				893353B722682B9200F29324 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		893353B822682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain MacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				893353B922682B9200F29324 /* Debug */,
+				893353BA22682B9200F29324 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		893353BB22682B9200F29324 /* Build configuration list for PBXNativeTarget "Second Brain MacUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				893353BC22682B9200F29324 /* Debug */,
+				893353BD22682B9200F29324 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
