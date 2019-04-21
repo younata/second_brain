@@ -12,19 +12,7 @@ final class NetworkSyncServiceSpec: QuickSpec {
         var subject: NetworkSyncService!
         var client: URLSession!
 
-        guard let bookURLString = Bundle(for: self.classForCoder).infoDictionary?["BookURL"] as? String else {
-            it("is missing the BookURL") {
-                fail("Unable to get BookURL from SBKitIntegrationTest's info.plist")
-            }
-            return
-        }
-
-        guard let bookURL = URL(string: bookURLString) else {
-            it("is improperly configured") {
-                fail("Unable to convert bookURLString to a url, got \(bookURLString)")
-            }
-            return
-        }
+        let bookURLString = URL(string: "https://knowledge.rachelbrindle.com")!
 
         let pageURL = bookURL.appendingPathComponent("index.html", isDirectory: false)
 

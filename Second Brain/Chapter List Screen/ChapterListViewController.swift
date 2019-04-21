@@ -52,6 +52,15 @@ class ChapterListViewController: UIViewController {
         self.tableView.tableFooterView = UIView()
     }
 
+    override var keyCommands: [UIKeyCommand]? {
+        let refresh = UIKeyCommand(
+            input: "r",
+            modifierFlags: UIKeyModifierFlags.command,
+            action: #selector(ChapterListViewController.refreshBook),
+            discoverabilityTitle: "Refresh Repository"
+        )
+    }
+
     func resume(chapterActivity activity: NSUserActivity) -> Bool {
         guard activity.activityType == ChapterActivityType,
             let urlString = activity.userInfo?["urlString"] as? String,
@@ -97,6 +106,13 @@ class ChapterListViewController: UIViewController {
             self.warningView.show(text: errorString)
         }
         return false
+    }
+
+    @objc
+    private func refreshBook() {
+        guard self.bookFuture.value != nil else { return }
+        self.refreshControl.beginRefreshing()
+        self.requestChapters()
     }
 
     @objc

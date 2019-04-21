@@ -31,14 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
 
-        guard let bookURLString = Bundle.main.infoDictionary?["BookURL"] as? String,
-            let bookURL = URL(string: bookURLString) else {
-                dump(Bundle.main.infoDictionary)
-                window.rootViewController = UIViewController()
-                let alert = UIAlertController(title: "No book url specified", message: "Unable to load book", preferredStyle: .alert)
-                window.rootViewController?.present(alert, animated: true, completion: nil)
-                return true
-        }
+        let bookURL = URL(string: "https://knowledge.rachelbrindle.com")!
 
         applyTheme()
 

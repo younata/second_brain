@@ -2,7 +2,7 @@
 //  Second_Brain_MacUITests.swift
 //  Second Brain MacUITests
 //
-//  Created by Rachel Brindle on 4/17/19.
+//  Created by Rachel Brindle on 4/20/19.
 //  Copyright © 2019 Rachel Brindle. All rights reserved.
 //
 
