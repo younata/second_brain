@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "898E1FEB226BD025004852EA"
-               BuildableName = "Second Brain Mac.app"
+               BuildableName = "Second Brain.app"
                BlueprintName = "Second Brain Mac"
                ReferencedContainer = "container:Second Brain.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "898E1FFC226BD028004852EA"
-               BuildableName = "Second Brain MacTests.xctest"
+               BuildableName = "Second Brain Tests.xctest"
                BlueprintName = "Second Brain MacTests"
                ReferencedContainer = "container:Second Brain.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "898E1FEB226BD025004852EA"
-            BuildableName = "Second Brain Mac.app"
+            BuildableName = "Second Brain.app"
             BlueprintName = "Second Brain Mac"
             ReferencedContainer = "container:Second Brain.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "898E1FEB226BD025004852EA"
-            BuildableName = "Second Brain Mac.app"
+            BuildableName = "Second Brain.app"
             BlueprintName = "Second Brain Mac"
             ReferencedContainer = "container:Second Brain.xcodeproj">
          </BuildableReference>
@@ -95,7 +95,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "898E1FEB226BD025004852EA"
-            BuildableName = "Second Brain Mac.app"
+            BuildableName = "Second Brain.app"
             BlueprintName = "Second Brain Mac"
             ReferencedContainer = "container:Second Brain.xcodeproj">
          </BuildableReference>

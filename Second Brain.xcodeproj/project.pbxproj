@@ -196,6 +196,20 @@
 		898E2044226BEB76004852EA /* FakeBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CD022507190007F2E84 /* FakeBookService.swift */; };
 		898E2045226BEB79004852EA /* factories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B3CD42250730B007F2E84 /* factories.swift */; };
 		898E2046226BEB7D004852EA /* sharedBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5EA225690BF0081B6E0 /* sharedBehavior.swift */; };
+		898E204A226CCC93004852EA /* UI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 898E2049226CCC93004852EA /* UI.storyboard */; };
+		898E204C226CD1CF004852EA /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898E204B226CD1CF004852EA /* ChapterViewController.swift */; };
+		898E204E226CD2B0004852EA /* ChapterViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898E204D226CD2B0004852EA /* ChapterViewControllerSpec.swift */; };
+		898E204F226CD3B4004852EA /* content.html in Resources */ = {isa = PBXBuildFile; fileRef = 89F263BB2251A78800B6991F /* content.html */; };
+		898E2050226CD3CD004852EA /* SimpleHTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */; };
+		898E2051226CD3D5004852EA /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
+		898E2052226CD3D5004852EA /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
+		898E2053226CD3D5004852EA /* font-awesome.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D922546DE80081B6E0 /* font-awesome.css */; };
+		898E2055226CD3DE004852EA /* WKWebView_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B82251A4F900B6991F /* WKWebView_SpecHelperSpec.swift */; };
+		898E2056226CD3DE004852EA /* NSUserActivity_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */; };
+		898E2057226CD3F8004852EA /* NSUserActivity+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */; };
+		898E2059226CD3F8004852EA /* WKWebView+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F263B62251A48F00B6991F /* WKWebView+SpecHelper.m */; };
+		898E205A226CD42B004852EA /* FakeSeachIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */; };
+		898E2061226D3299004852EA /* ChapterSelectionPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898E2060226D3299004852EA /* ChapterSelectionPublisher.swift */; };
 		89ED0A53226029A8000FEDBC /* NSUserActivity+SpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */; };
 		89ED0A5522602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */; };
 		89F263A522517E6000B6991F /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F263A322517E6000B6991F /* ChapterViewController.swift */; };
@@ -492,6 +506,10 @@
 		898E203B226BE935004852EA /* InjectorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorModule.swift; sourceTree = "<group>"; };
 		898E203D226BE95C004852EA /* CocoaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoaModels.swift; sourceTree = "<group>"; };
 		898E203F226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTreeViewControllerSpec.swift; sourceTree = "<group>"; };
+		898E2049226CCC93004852EA /* UI.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UI.storyboard; sourceTree = "<group>"; };
+		898E204B226CD1CF004852EA /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
+		898E204D226CD2B0004852EA /* ChapterViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewControllerSpec.swift; sourceTree = "<group>"; };
+		898E2060226D3299004852EA /* ChapterSelectionPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterSelectionPublisher.swift; sourceTree = "<group>"; };
 		89ED0A5022602847000FEDBC /* NSUserActivity+SpecHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSUserActivity+SpecHelper.h"; sourceTree = "<group>"; };
 		89ED0A5122602847000FEDBC /* NSUserActivity+SpecHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSUserActivity+SpecHelper.m"; sourceTree = "<group>"; };
 		89ED0A5422602AF6000FEDBC /* NSUserActivity_SpecHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUserActivity_SpecHelperSpec.swift; sourceTree = "<group>"; };
@@ -916,8 +934,11 @@
 				898E203B226BE935004852EA /* InjectorModule.swift */,
 				898E203D226BE95C004852EA /* CocoaModels.swift */,
 				898E2031226BE274004852EA /* ChapterTreeViewController.swift */,
+				898E204B226CD1CF004852EA /* ChapterViewController.swift */,
+				898E2060226D3299004852EA /* ChapterSelectionPublisher.swift */,
 				898E1FF2226BD028004852EA /* Assets.xcassets */,
 				898E1FF4226BD028004852EA /* Main.storyboard */,
+				898E2049226CCC93004852EA /* UI.storyboard */,
 				898E1FF7226BD028004852EA /* Info.plist */,
 				898E1FF8226BD028004852EA /* Second_Brain.entitlements */,
 			);
@@ -929,6 +950,7 @@
 			children = (
 				898E2003226BD028004852EA /* Info.plist */,
 				898E203F226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift */,
+				898E204D226CD2B0004852EA /* ChapterViewControllerSpec.swift */,
 			);
 			path = "Second Brain MacTests";
 			sourceTree = "<group>";
@@ -1231,7 +1253,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Rachel Brindle";
 				TargetAttributes = {
 					891E68C6224F32CA009F076A = {
@@ -1391,8 +1413,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				898E2052226CD3D5004852EA /* general.css in Resources */,
 				898E1FF3226BD028004852EA /* Assets.xcassets in Resources */,
+				898E2053226CD3D5004852EA /* font-awesome.css in Resources */,
 				898E1FF6226BD028004852EA /* Main.storyboard in Resources */,
+				898E204A226CCC93004852EA /* UI.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1400,6 +1425,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				898E204F226CD3B4004852EA /* content.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1580,9 +1606,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				898E204C226CD1CF004852EA /* ChapterViewController.swift in Sources */,
+				898E2061226D3299004852EA /* ChapterSelectionPublisher.swift in Sources */,
 				898E203C226BE935004852EA /* InjectorModule.swift in Sources */,
 				898E203E226BE95C004852EA /* CocoaModels.swift in Sources */,
 				898E2032226BE274004852EA /* ChapterTreeViewController.swift in Sources */,
+				898E2051226CD3D5004852EA /* HTMLWrapper.swift in Sources */,
 				898E1FEF226BD025004852EA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1592,9 +1621,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				898E2040226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift in Sources */,
+				898E205A226CD42B004852EA /* FakeSeachIndex.swift in Sources */,
+				898E2059226CD3F8004852EA /* WKWebView+SpecHelper.m in Sources */,
+				898E2055226CD3DE004852EA /* WKWebView_SpecHelperSpec.swift in Sources */,
+				898E204E226CD2B0004852EA /* ChapterViewControllerSpec.swift in Sources */,
+				898E2050226CD3CD004852EA /* SimpleHTMLWrapper.swift in Sources */,
+				898E2057226CD3F8004852EA /* NSUserActivity+SpecHelper.m in Sources */,
 				898E2045226BEB79004852EA /* factories.swift in Sources */,
 				898E2046226BEB7D004852EA /* sharedBehavior.swift in Sources */,
 				898E2044226BEB76004852EA /* FakeBookService.swift in Sources */,
+				898E2056226CD3DE004852EA /* NSUserActivity_SpecHelperSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2058,7 +2094,7 @@
 		893352EF22680F9300F29324 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2094,7 +2130,7 @@
 		893352F022680F9300F29324 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2198,6 +2234,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2220,6 +2257,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -2303,6 +2341,7 @@
 				PRODUCT_MODULE_NAME = Second_Brain_Tests;
 				PRODUCT_NAME = "Second Brain Tests";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Contents/MacOS/Second Brain";
@@ -2334,6 +2373,7 @@
 				PRODUCT_MODULE_NAME = Second_Brain_Tests;
 				PRODUCT_NAME = "Second Brain Tests";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Second BrainTests/Helpers/Second BrainTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Second Brain.app/Contents/MacOS/Second Brain";
 			};
@@ -2382,53 +2422,6 @@
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = "Second Brain Mac";
-			};
-			name = Release;
-		};
-		897B3CC122506EE5007F2E84 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9D456YCUH2;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = SBKitIntegrationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		897B3CC222506EE5007F2E84 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9D456YCUH2;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = SBKitIntegrationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.younata.SBKitIntegrationTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

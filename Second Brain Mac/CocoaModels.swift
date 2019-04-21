@@ -7,7 +7,10 @@ import SBKit
     @objc let childrenCount: Int
     @objc let isLeaf: Bool
 
+    let chapter: Chapter
+
     init(chapter: Chapter) {
+        self.chapter = chapter
         self.title = chapter.title
         self.children = chapter.subchapters.map(CocoaChapter.init)
         self.childrenCount = self.children.count

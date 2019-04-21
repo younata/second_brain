@@ -17,23 +17,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard NSClassFromString("XCTestCase") == nil else { return }
 
-        self.storyboard = SwinjectStoryboard.create(name: "Main", bundle: nil, container: self.injector)
+        self.storyboard = SwinjectStoryboard.create(name: "UI", bundle: nil, container: self.injector)
 
         self.windowController = storyboard.instantiateInitialController() as! NSWindowController?
         self.windowController?.showWindow(self)
-    }
-}
-
-final class Application: NSApplication {
-    let strongDelegate = AppDelegate()
-
-    override init() {
-        super.init()
-        self.delegate = self.strongDelegate
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

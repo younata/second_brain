@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 protocol HTMLWrapper {
     func wrap(html: String) -> String

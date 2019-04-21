@@ -1,5 +1,5 @@
 #import "WKWebView+SpecHelper.h"
-#import "PCKMethodRedirector.h"
+#import <Foundation_PivotalCore/Foundation+PivotalCore.h>
 #import <objc/runtime.h>
 
 static char * kUrlKey;
@@ -16,15 +16,13 @@ static char * kHtmlKey;
 @implementation WKWebView (SpecHelper)
 
 + (void)load {
-    [PCKMethodRedirector redirectSelector:@selector(loadRequest:)
-                                 forClass:[self class]
-                                       to:@selector(_loadRequest:)
-                            andRenameItTo:@selector(original_loadRequest:)];
+    [[self class] redirectSelector:@selector(loadRequest:)
+                                to:@selector(_loadRequest:)
+                     andRenameItTo:@selector(original_loadRequest:)];
 
-    [PCKMethodRedirector redirectSelector:@selector(loadHTMLString:baseURL:)
-                                 forClass:[self class]
-                                       to:@selector(_loadHTMLString:baseURL:)
-                            andRenameItTo:@selector(original_loadHTMLString:baseURL:)];
+    [[self class] redirectSelector:@selector(loadHTMLString:baseURL:)
+                                to:@selector(_loadHTMLString:baseURL:)
+                     andRenameItTo:@selector(original_loadHTMLString:baseURL:)];
 }
 
 - (void)setCurrentURL:(NSURL * __nullable)currentURL {

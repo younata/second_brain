@@ -2,9 +2,7 @@ import Cocoa
 import Quick
 import Nimble
 import Result
-import Swinject
 import CBGPromise
-import SwinjectStoryboard
 
 @testable import SBKit
 @testable import Second_Brain
@@ -14,15 +12,22 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
         var subject: ChapterTreeViewController!
 
         var bookService: FakeBookService!
+        var publisher: ChapterSelectorPubSub!
+
+        var chapterSubscriber: FakeChapterSubscriber!
 
         beforeEach {
             bookService = FakeBookService()
+            publisher = ChapterSelectorPubSub()
+            chapterSubscriber = FakeChapterSubscriber()
+            publisher.add(subscriber: chapterSubscriber)
 
-            let storyboard = NSStoryboard(name: "Main", bundle: Bundle(for: ChapterTreeViewController.self))
+            let storyboard = NSStoryboard(name: "UI", bundle: Bundle(for: ChapterTreeViewController.self))
 
             subject = storyboard.instantiateController(withIdentifier: "ChapterTreeController") as? ChapterTreeViewController
             expect(subject).toNot(beNil())
             subject.bookService = bookService
+            subject.selectionPublisher = publisher
         }
 
         describe("when the view loads") {
@@ -67,6 +72,17 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
                     let expectedChapters = book.chapters.map(CocoaChapter.init)
                     expect(receivedChapters).to(equal(expectedChapters))
                 }
+
+                describe("when the user selects a cell") {
+                    beforeEach {
+                        guard let node = subject.treeController.arrangedObjects.children?.first else { return }
+                        subject.treeController.addSelectionIndexPaths([node.indexPath])
+                    }
+
+                    it("sends a selectedChapter notification") {
+                        expect(chapterSubscriber.selectedChapters.last).to(equal(book.chapters.first!))
+                    }
+                }
             }
 
             describe("when the book promise fails") {
@@ -80,5 +96,13 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
                 }
             }
         }
+    }
+}
+
+private final class FakeChapterSubscriber: ChapterSelectionSubscriber {
+    fileprivate private(set) var selectedChapters: [Chapter] = []
+
+    func didSelect(chapter: Chapter) {
+        self.selectedChapters.append(chapter)
     }
 }

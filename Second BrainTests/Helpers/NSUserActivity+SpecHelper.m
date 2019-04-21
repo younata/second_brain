@@ -1,5 +1,5 @@
 #import "NSUserActivity+SpecHelper.h"
-#import "PCKMethodRedirector.h"
+#import <Foundation_PivotalCore/Foundation+PivotalCore.h>
 #import <objc/runtime.h>
 
 static char * kCurrentKey;
@@ -14,20 +14,17 @@ static char * kInvalidKey;
 @implementation NSUserActivity (rNewsTests)
 
 + (void)load {
-    [PCKMethodRedirector redirectSelector:@selector(becomeCurrent)
-                                 forClass:[self class]
-                                       to:@selector(_becomeCurrent)
-                            andRenameItTo:@selector(original_becomeCurrent)];
+    [[self class] redirectSelector:@selector(becomeCurrent)
+                                to:@selector(_becomeCurrent)
+                     andRenameItTo:@selector(original_becomeCurrent)];
 
-    [PCKMethodRedirector redirectSelector:@selector(resignCurrent)
-                                 forClass:[self class]
-                                       to:@selector(_resignCurrent)
-                            andRenameItTo:@selector(original_resignCurrent)];
+    [[self class] redirectSelector:@selector(resignCurrent)
+                                to:@selector(_resignCurrent)
+                     andRenameItTo:@selector(original_resignCurrent)];
 
-    [PCKMethodRedirector redirectSelector:@selector(invalidate)
-                                 forClass:[self class]
-                                       to:@selector(_invalidate)
-                            andRenameItTo:@selector(original_invalidate)];
+    [[self class] redirectSelector:@selector(invalidate)
+                                to:@selector(_invalidate)
+                     andRenameItTo:@selector(original_invalidate)];
 }
 
 - (BOOL)isActive {
