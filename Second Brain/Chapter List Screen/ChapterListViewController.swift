@@ -59,6 +59,7 @@ class ChapterListViewController: UIViewController {
             action: #selector(ChapterListViewController.refreshBook),
             discoverabilityTitle: "Refresh Repository"
         )
+        return [refresh]
     }
 
     func resume(chapterActivity activity: NSUserActivity) -> Bool {
@@ -88,7 +89,6 @@ class ChapterListViewController: UIViewController {
 
     @discardableResult
     private func presentChapter(with url: URL, and result: Result<Book, ServiceError>, showError: Bool) -> Bool {
-
         let errorString: String
 
         switch result {

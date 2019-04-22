@@ -28,13 +28,10 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
             expect(subject).toNot(beNil())
             subject.bookService = bookService
             subject.selectionPublisher = publisher
+            subject.view.layout()
         }
 
         describe("when the view loads") {
-            beforeEach {
-                subject.view.layout()
-            }
-
             it("makes a request to the book service") {
                 expect(bookService.bookPromises).to(haveCount(1))
             }
@@ -93,6 +90,129 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
 
                 xit("displays an alert") {
                     fail("display an alert")
+                }
+            }
+        }
+
+        describe("resuming from an activity") {
+            let handedOffChapter = chapterFactory(title: "Title 2.3", contentURL: URL(string: "https://example.com/2/3")!)
+            var didHandoff: Bool? = nil
+
+            beforeEach {
+                didHandoff = nil
+            }
+
+            context("before the book's contents are available") {
+                beforeEach {
+                    didHandoff = subject.resumeFromActivity(url: handedOffChapter.contentURL)
+                }
+
+                it("returns true preemptively") {
+                    expect(didHandoff).to(beTrue())
+                }
+
+                it("does not refetch the book") {
+                    expect(bookService.bookPromises).to(haveCount(1))
+                }
+
+                describe("when the book request succeeds") {
+                    context("and the chapter is in the book") {
+                        let book = Book(title: "Book Title", chapters: [
+                            chapterFactory(title: "Title 1"),
+                            chapterFactory(title: "Title 2", subchapters: [
+                                chapterFactory(title: "Title 2.1"),
+                                chapterFactory(title: "Title 2.2", subchapters: [
+                                    chapterFactory(title: "Title 2.2.1"),
+                                    chapterFactory(title: "Title 2.2.2"),
+                                    ]),
+                                handedOffChapter
+                                ]),
+                            chapterFactory(title: "Title 3"),
+                            chapterFactory(title: "Title 4", subchapters: [
+                                chapterFactory(title: "Title 4.1")
+                                ]),
+                            ])
+
+                        beforeEach {
+                            guard bookService.bookPromises.count == 1 else { return }
+                            bookService.bookPromises.last?.resolve(.success(book))
+                        }
+
+                        it("does not refetch the book") {
+                            expect(bookService.bookPromises).to(haveCount(1))
+                        }
+
+                        it("finds the chapter and sends a selectedChapter notification") {
+                            expect(chapterSubscriber.selectedChapters.last).to(equal(handedOffChapter))
+                        }
+                    }
+                }
+            }
+
+            context("after the book's contents are available") {
+                context("and the chapter is in the book") {
+                    let book = Book(title: "Book Title", chapters: [
+                        chapterFactory(title: "Title 1"),
+                        chapterFactory(title: "Title 2", subchapters: [
+                            chapterFactory(title: "Title 2.1"),
+                            chapterFactory(title: "Title 2.2", subchapters: [
+                                chapterFactory(title: "Title 2.2.1"),
+                                chapterFactory(title: "Title 2.2.2"),
+                                ]),
+                            handedOffChapter
+                            ]),
+                        chapterFactory(title: "Title 3"),
+                        chapterFactory(title: "Title 4", subchapters: [
+                            chapterFactory(title: "Title 4.1")
+                            ]),
+                        ])
+
+                    beforeEach {
+                        guard bookService.bookPromises.count == 1 else { return }
+                        bookService.bookPromises.last?.resolve(.success(book))
+
+                        didHandoff = subject.resumeFromActivity(url: handedOffChapter.contentURL)
+                    }
+
+                    it("does not refetch the book") {
+                        expect(bookService.bookPromises).to(haveCount(1))
+                    }
+
+                    it("finds the chapter and sends a selectedChapter notification") {
+                        expect(chapterSubscriber.selectedChapters.last).to(equal(handedOffChapter))
+                    }
+
+                    it("returns true") {
+                        expect(didHandoff).to(beTrue())
+                    }
+                }
+
+                context("and the chapter is not in the book") {
+                    let book = Book(title: "Book Title", chapters: [
+                        chapterFactory(title: "Title 1"),
+                        chapterFactory(title: "Title 2", subchapters: [
+                            chapterFactory(title: "Title 2.1"),
+                            chapterFactory(title: "Title 2.2", subchapters: [
+                                chapterFactory(title: "Title 2.2.1"),
+                                chapterFactory(title: "Title 2.2.2"),
+                                ]),
+                            ]),
+                        chapterFactory(title: "Title 3"),
+                        chapterFactory(title: "Title 4", subchapters: [
+                            chapterFactory(title: "Title 4.1")
+                            ]),
+                        ])
+
+                    beforeEach {
+                        guard bookService.bookPromises.count == 1 else { return }
+                        bookService.bookPromises.last?.resolve(.success(book))
+
+                        didHandoff = subject.resumeFromActivity(url: handedOffChapter.contentURL)
+                    }
+
+                    it("returns false") {
+                        expect(didHandoff).to(beFalse())
+                    }
                 }
             }
         }

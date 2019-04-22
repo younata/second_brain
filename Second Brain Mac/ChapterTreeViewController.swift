@@ -1,5 +1,7 @@
 import Cocoa
+import Result
 import SBKit
+import CBGPromise
 
 class ChapterTreeViewController: NSViewController {
     @IBOutlet weak var treeController: NSTreeController! {
@@ -10,8 +12,14 @@ class ChapterTreeViewController: NSViewController {
         }
     }
 
-    var bookService: BookService?
+    var bookService: BookService? {
+        didSet {
+            self.refresh()
+        }
+    }
     var selectionPublisher: ChapterSelectorPubSub?
+
+    private var bookFuture: Future<Result<Book, ServiceError>>?
 
     @objc dynamic var contents: [CocoaChapter] = []
 
@@ -19,8 +27,6 @@ class ChapterTreeViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.refresh()
 
         self.selectedIndexPathChange = self.treeController.observe(\.selectedNodes) { _, _ in
             guard let node = self.treeController.selectedNodes.first else {
@@ -36,7 +42,7 @@ class ChapterTreeViewController: NSViewController {
     }
 
     func refresh() {
-        self.bookService?.book().then { [weak self] result in
+        self.bookFuture = self.bookService?.book().then { [weak self] result in
             switch result {
             case .success(let book):
                 self?.show(book: book)
@@ -44,6 +50,36 @@ class ChapterTreeViewController: NSViewController {
                 self?.show(error: error)
             }
         }
+    }
+
+    func resumeFromActivity(url: URL) -> Bool {
+        guard let bookResult = self.bookFuture?.value else {
+            self.bookFuture?.then { [weak self] (bookResult: Result<Book, ServiceError>) in
+                self?.presentChapter(with: url, and: bookResult, showError: true)
+            }
+            return true
+        }
+        return self.presentChapter(with: url, and: bookResult, showError: false)
+    }
+
+    @discardableResult
+    private func presentChapter(with url: URL, and result: Result<Book, ServiceError>, showError: Bool) -> Bool {
+        let error: ServiceError
+        switch result {
+        case .success(let book):
+            if let chapter = book.flatChapters.first(where: { $0.contentURL == url }) {
+                self.selectionPublisher?.select(chapter: chapter)
+                return true
+            }
+            error = ServiceError.notFound
+        case .failure(let receivedError):
+            error = receivedError
+        }
+
+        if showError {
+            self.show(error: error)
+        }
+        return false
     }
 
     private func show(book: Book) {
