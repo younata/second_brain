@@ -11,7 +11,8 @@ class ChapterTreeViewController: NSViewController {
             }
         }
     }
-
+    @IBOutlet weak var outlineView: NSOutlineView!
+    
     var bookService: BookService? {
         didSet {
             self.refresh()
@@ -60,6 +61,20 @@ class ChapterTreeViewController: NSViewController {
             return true
         }
         return self.presentChapter(with: url, and: bookResult, showError: false)
+    }
+
+    @objc @IBAction func openChapterInBrowser(_ sender: Any) {
+        guard let chapter = self.clickedChapter() else { return }
+        NSWorkspace.shared.open(chapter.contentURL)
+    }
+
+    private func clickedChapter() -> Chapter? {
+        let row = self.outlineView.clickedRow
+        guard row != NSNotFound,
+            let treeNode = self.outlineView.item(atRow: row) as? NSTreeNode,
+            let cocoaChapter = treeNode.representedObject as? CocoaChapter
+            else { return nil }
+        return cocoaChapter.chapter
     }
 
     @discardableResult

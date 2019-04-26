@@ -82,7 +82,7 @@
     --content-max-width: 750px;
 
     /* Theme */
-    --bg: hsl(210, 25%, 8%);
+    --bg: #1e1e1e;
     --fg: #c5c5c5;
 
     --icons: #737480;
@@ -104,13 +104,36 @@
     --table-alternate-bg: hsl(210, 25%, 11%);
 }
 
+@media (prefers-color-scheme: light) {
+    --bg: hsl(0, 0%, 100%);
+    --fg: #333333;
+
+    --icons: #cccccc;
+    --icons-hover: #333333;
+
+    --links: #4183c4;
+
+    --inline-code-color: #6e6b5e;
+
+    --theme-popup-bg: #fafafa;
+    --theme-popup-border: #cccccc;
+    --theme-hover: #e6e6e6;
+
+    --quote-bg: hsl(197, 37%, 96%);
+    --quote-border: hsl(197, 37%, 91%);
+
+    --table-border-color: hsl(0, 0%, 95%);
+    --table-header-bg: hsl(0, 0%, 80%);
+    --table-alternate-bg: hsl(0, 0%, 97%);
+}
+
 /* General css */
 
 html {
     font: -apple-system-body;
     font-family: sans-serif;
-    color: #c5c5c5;
-    background-color: hsl(210, 25%, 8%);
+    color: var(--fg);
+    background-color: var(--bg);
     text-size-adjust: none;
 }
 

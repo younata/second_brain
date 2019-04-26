@@ -47,7 +47,7 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
                             ]),
                         chapterFactory(title: "Title 2.3")
                         ]),
-                    chapterFactory(title: "Title 3"),
+                    chapterFactory(title: "Title 3", contentURL: URL(string: "https://example.com/3/")!),
                     chapterFactory(title: "Title 4", subchapters: [
                         chapterFactory(title: "Title 4.1")
                         ]),
@@ -78,6 +78,27 @@ final class ChapterTreeViewControllerSpec: QuickSpec {
 
                     it("sends a selectedChapter notification") {
                         expect(chapterSubscriber.selectedChapters.last).to(equal(book.chapters.first!))
+                    }
+                }
+
+                describe("the outline view's delegate") {
+                    it("exists") {
+                        expect(subject.outlineView.delegate).toNot(beNil())
+                    }
+
+                    describe("tooltip") {
+                        it("shows the url for the chapter") {
+                            var rect = NSRect(x: 0, y: 0, width: 0, height: 0)
+                            let tooltip = subject.outlineView.delegate?.outlineView?(
+                                subject.outlineView,
+                                toolTipFor: NSCell(imageCell: nil), // doesn't matter
+                                rect: &rect,
+                                tableColumn: nil,
+                                item: CocoaChapter(chapter: book.chapters[2]),
+                                mouseLocation: NSPoint(x: 0, y: 0)
+                            )
+                            expect(tooltip).to(equal("https://example.com/3/"))
+                        }
                     }
                 }
             }

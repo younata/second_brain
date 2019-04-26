@@ -13,7 +13,7 @@
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="fGg-1q-Xah">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="-2135" y="461" width="480" height="270"/>
+                        <rect key="contentRect" x="-2135" y="461" width="600" height="450"/>
                         <rect key="screenRect" x="-2560" y="0.0" width="2560" height="1417"/>
                         <connections>
                             <outlet property="delegate" destination="DZF-T8-MFO" id="qw8-KW-aDh"/>
@@ -25,7 +25,7 @@
                 </windowController>
                 <customObject id="EwO-35-Oqc" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50" y="263"/>
+            <point key="canvasLocation" x="50" y="107"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="SIo-Xf-JrM">
@@ -52,7 +52,7 @@
                 </viewController>
                 <customObject id="479-bX-EYd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50" y="652"/>
+            <point key="canvasLocation" x="50" y="586"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="GJO-Y1-TFU">
@@ -60,11 +60,11 @@
                 <customObject id="O9Z-9B-G8u" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <splitViewController id="jNY-EA-KpC" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem id="dM0-KG-QNw"/>
+                        <splitViewItem holdingPriority="255" behavior="contentList" id="dM0-KG-QNw"/>
                         <splitViewItem id="MUx-kp-PKl"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="iO8-Bs-bfj">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="450"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <outlet property="delegate" destination="jNY-EA-KpC" id="MpR-rY-mK9"/>
@@ -88,6 +88,17 @@
                         <binding destination="yu9-Df-wva" name="contentArray" keyPath="self.contents" id="jma-qt-5v8"/>
                     </connections>
                 </treeController>
+                <menu title="Chapter Menu" id="8le-Xo-o8s">
+                    <items>
+                        <menuItem title="Open in Browser" id="hCY-ry-3M0" userLabel="Open In Browser">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="openChapterInBrowser:" target="yu9-Df-wva" id="YWY-dp-fBs"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
+                <customObject id="PNa-9G-2yx" customClass="ChapterTreeDelegate" customModule="Second_Brain" customModuleProvider="target"/>
                 <viewController storyboardIdentifier="ChapterTreeController" id="yu9-Df-wva" customClass="ChapterTreeViewController" customModule="Second_Brain" sceneMemberID="viewController">
                     <view key="view" id="BWh-tw-DEl">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -149,6 +160,8 @@
                                             <connections>
                                                 <binding destination="o0h-4c-Mp0" name="content" keyPath="arrangedObjects" id="Wb4-iL-syV"/>
                                                 <binding destination="o0h-4c-Mp0" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="Wb4-iL-syV" id="Wch-U3-hNl"/>
+                                                <outlet property="delegate" destination="PNa-9G-2yx" id="niq-Qn-Kt8"/>
+                                                <outlet property="menu" destination="8le-Xo-o8s" id="nva-Vk-IrT"/>
                                             </connections>
                                         </outlineView>
                                     </subviews>
@@ -171,6 +184,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="outlineView" destination="8co-DP-HPT" id="RPU-g9-9T8"/>
                         <outlet property="treeController" destination="o0h-4c-Mp0" id="BLU-7e-EEM"/>
                     </connections>
                 </viewController>

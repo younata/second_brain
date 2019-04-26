@@ -112,6 +112,7 @@
 		8933535B2268153400F29324 /* Foundation_PivotalSpecHelper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8933538E22681CAA00F29324 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; };
 		8933538F22681CAF00F29324 /* Foundation_PivotalCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		894FD076227171AA00EDE4FD /* ChapterTreeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -460,6 +461,7 @@
 		8933531C226810C600F29324 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		893353562268152F00F29324 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/Mac/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
 		893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalSpecHelper.framework; path = Carthage/Build/Mac/Foundation_PivotalSpecHelper.framework; sourceTree = "<group>"; };
+		894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTreeDelegate.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -830,6 +832,23 @@
 			name = "Mac Frameworks";
 			sourceTree = "<group>";
 		};
+		894FD07322716ED800EDE4FD /* Chapter List */ = {
+			isa = PBXGroup;
+			children = (
+				898E2031226BE274004852EA /* ChapterTreeViewController.swift */,
+				894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */,
+			);
+			path = "Chapter List";
+			sourceTree = "<group>";
+		};
+		894FD07422716EE500EDE4FD /* Chapter List */ = {
+			isa = PBXGroup;
+			children = (
+				898E203F226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift */,
+			);
+			path = "Chapter List";
+			sourceTree = "<group>";
+		};
 		8958C5CE22546C610081B6E0 /* HTML Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -933,7 +952,7 @@
 				898E1FEE226BD025004852EA /* AppDelegate.swift */,
 				898E203B226BE935004852EA /* InjectorModule.swift */,
 				898E203D226BE95C004852EA /* CocoaModels.swift */,
-				898E2031226BE274004852EA /* ChapterTreeViewController.swift */,
+				894FD07322716ED800EDE4FD /* Chapter List */,
 				898E204B226CD1CF004852EA /* ChapterViewController.swift */,
 				898E2060226D3299004852EA /* ChapterSelectionPublisher.swift */,
 				898E1FF2226BD028004852EA /* Assets.xcassets */,
@@ -949,7 +968,7 @@
 			isa = PBXGroup;
 			children = (
 				898E2003226BD028004852EA /* Info.plist */,
-				898E203F226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift */,
+				894FD07422716EE500EDE4FD /* Chapter List */,
 				898E204D226CD2B0004852EA /* ChapterViewControllerSpec.swift */,
 			);
 			path = "Second Brain MacTests";
@@ -1615,6 +1634,7 @@
 				898E203E226BE95C004852EA /* CocoaModels.swift in Sources */,
 				898E2032226BE274004852EA /* ChapterTreeViewController.swift in Sources */,
 				898E2051226CD3D5004852EA /* HTMLWrapper.swift in Sources */,
+				894FD076227171AA00EDE4FD /* ChapterTreeDelegate.swift in Sources */,
 				898E1FEF226BD025004852EA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
