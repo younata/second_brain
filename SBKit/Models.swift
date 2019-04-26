@@ -1,4 +1,5 @@
 import FutureHTTP
+import Foundation
 
 public struct Chapter: Equatable, Hashable {
     public let title: String
@@ -21,6 +22,63 @@ public struct Book: Equatable {
             chaptersToIterate += chapter.subchapters
         }
         return chaptersToReturn
+    }
+}
+
+public struct BookServiceNotification {
+    public static let didFetchBook = Notification.Name(rawValue: "BookServiceDidFetchBook")
+    public static let didFetchChapterContent = Notification.Name(rawValue: "BookServiceDidFetchChapterContent")
+
+    public let totalParts: Int
+    public let completedParts: Int
+    public let errorMessage: String?
+
+    public var isFinished: Bool {
+        return self.totalParts == self.completedParts
+    }
+
+    public init?(notification: Notification) {
+        let bookNotes: [Notification.Name] = [
+            BookServiceNotification.didFetchBook,
+            BookServiceNotification.didFetchChapterContent
+        ]
+        guard bookNotes.contains(notification.name),
+            let total = notification.userInfo?["total"] as? Int,
+            let completed = notification.userInfo?["completed"] as? Int
+            else { return nil }
+
+        self.totalParts = total
+        self.completedParts = completed
+        self.errorMessage = notification.userInfo?["error"] as? String
+    }
+
+    internal init(total: Int, completed: Int, errorMessage: String?) {
+        self.totalParts = total
+        self.completedParts = completed
+        self.errorMessage = errorMessage
+    }
+
+    internal func bookNotification() -> Notification {
+        return self.notification(name: BookServiceNotification.didFetchBook)
+    }
+
+    internal func chapterNotification() -> Notification {
+        return self.notification(name: BookServiceNotification.didFetchChapterContent)
+    }
+
+    private func notification(name: Notification.Name) -> Notification {
+        var info: [String: Any] = [
+            "total": self.totalParts,
+            "completed": self.completedParts
+        ]
+        if let error = self.errorMessage {
+            info["error"] = error
+        }
+        return Notification(
+            name: name,
+            object: nil,
+            userInfo: info
+        )
     }
 }
 

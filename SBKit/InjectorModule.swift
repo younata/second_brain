@@ -50,6 +50,14 @@ private func registerSync(_ container: Container) {
         return NetworkSyncService(httpClient: r.resolve(HTTPClient.self)!)
     }
 
+    container.register(NotificationCenter.self) { _ in
+        return NotificationCenter.default
+    }.inObjectScope(.container)
+
+    container.register(NotificationPoster.self) { r in
+        return QueuedNotificationPoster(queue: .main, center: r.resolve(NotificationCenter.self)!)
+    }
+
     container.register(BookService.self) { (r: Resolver, url: URL) in
         let cdBookService = CoreDataBookService(
             persistentStoreCoordinator: r.resolve(NSPersistentStoreCoordinator.self)!,
@@ -69,7 +77,8 @@ private func registerSync(_ container: Container) {
             bookService: cdBookService,
             searchIndexService: searchIndexService,
             operationQueue: workQueue,
-            queueJumper: r.resolve(OperationQueueJumper.self)!
+            queueJumper: r.resolve(OperationQueueJumper.self)!,
+            notificationPoster: r.resolve(NotificationPoster.self)!
         )
     }.inObjectScope(.container)
 }

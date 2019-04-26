@@ -12,6 +12,7 @@ final class SyncBookServiceSpec: QuickSpec {
         var queueJumper: OperationQueueJumper!
         var mainQueue: PSHKFakeOperationQueue!
         var searchIndexService: FakeSearchIndexService!
+        var notificationPoster: FakeNotificationPoster!
 
         var workQueue: PSHKFakeOperationQueue!
 
@@ -19,8 +20,8 @@ final class SyncBookServiceSpec: QuickSpec {
 
         beforeEach {
             bookService = FakeBookService()
-
             searchIndexService = FakeSearchIndexService()
+            notificationPoster = FakeNotificationPoster()
 
             workQueue = PSHKFakeOperationQueue()
 
@@ -31,7 +32,8 @@ final class SyncBookServiceSpec: QuickSpec {
                 bookService: bookService,
                 searchIndexService: searchIndexService,
                 operationQueue: workQueue,
-                queueJumper: queueJumper
+                queueJumper: queueJumper,
+                notificationPoster: notificationPoster
             )
         }
 
@@ -85,6 +87,21 @@ final class SyncBookServiceSpec: QuickSpec {
                     }
                     expect(workQueue.operations.last?.dependencies).to(equal(chapterOperations))
                 }
+
+                it("posts a fetched book notification") {
+                    expect(notificationPoster.notifications).to(haveCount(1))
+                    guard let notification = notificationPoster.notifications.last else { return }
+                    expect(notification.name).to(equal(BookServiceNotification.didFetchBook))
+
+                    guard let bookNotification = BookServiceNotification(notification: notification) else {
+                        fail("did not post a fetched book notification")
+                        return
+                    }
+
+                    expect(bookNotification.completedParts).to(equal(1))
+                    expect(bookNotification.totalParts).to(equal(1 + book.flatChapters.count))
+                    expect(bookNotification.errorMessage).to(beNil())
+                }
             }
 
             describe("when the book promise fails") {
@@ -106,6 +123,21 @@ final class SyncBookServiceSpec: QuickSpec {
                 it("does not add anything to the workQueue") {
                     expect(workQueue.operationCount).to(equal(0))
                 }
+
+                it("posts a fetched book notification with an error message") {
+                    expect(notificationPoster.notifications).to(haveCount(1))
+                    guard let notification = notificationPoster.notifications.last else { return }
+                    expect(notification.name).to(equal(BookServiceNotification.didFetchBook))
+
+                    guard let bookNotification = BookServiceNotification(notification: notification) else {
+                        fail("did not post a fetched book notification")
+                        return
+                    }
+
+                    expect(bookNotification.completedParts).to(equal(1))
+                    expect(bookNotification.totalParts).to(equal(1))
+                    expect(bookNotification.errorMessage).to(equal("Unknown error, try again later"))
+                }
             }
         }
 
@@ -114,7 +146,7 @@ final class SyncBookServiceSpec: QuickSpec {
 
             var future: Future<Result<String, ServiceError>>!
 
-            func itRunsTheOperation() {
+            func itRunsTheOperation(sendsNotification: Bool, expectedUnpostedNotificationCount: Int = 0) {
                 describe("when the operation runs") {
                     describe("when the operation succeeds") {
                         beforeEach {
@@ -143,6 +175,27 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(call.chapter).to(equal(chapter))
                             expect(call.content).to(equal("Content"))
                         }
+
+                        if sendsNotification {
+                            it("posts a fetched book notification") {
+                                expect(notificationPoster.notifications).to(haveCount(2))
+                                guard let notification = notificationPoster.notifications.last else { return }
+                                expect(notification.name).to(equal(BookServiceNotification.didFetchChapterContent))
+
+                                guard let bookNotification = BookServiceNotification(notification: notification) else {
+                                    fail("did not post a fetched book notification")
+                                    return
+                                }
+
+                                expect(bookNotification.completedParts).to(equal(2))
+                                expect(bookNotification.totalParts).to(equal(2))
+                                expect(bookNotification.errorMessage).to(beNil())
+                            }
+                        } else {
+                            it("does not post a notification") {
+                                expect(notificationPoster.notifications).to(haveCount(expectedUnpostedNotificationCount))
+                            }
+                        }
                     }
 
                     describe("when the operation fails") {
@@ -167,6 +220,27 @@ final class SyncBookServiceSpec: QuickSpec {
 
                         it("does not tell the searchIndexService anything") {
                             expect(searchIndexService.updateCalls).to(beEmpty())
+                        }
+
+                        if sendsNotification {
+                            it("posts a fetched book notification") {
+                                expect(notificationPoster.notifications).to(haveCount(2))
+                                guard let notification = notificationPoster.notifications.last else { return }
+                                expect(notification.name).to(equal(BookServiceNotification.didFetchChapterContent))
+
+                                guard let bookNotification = BookServiceNotification(notification: notification) else {
+                                    fail("did not post a fetched book notification")
+                                    return
+                                }
+
+                                expect(bookNotification.completedParts).to(equal(2))
+                                expect(bookNotification.totalParts).to(equal(2))
+                                expect(bookNotification.errorMessage).to(equal("Error fetching from cache"))
+                            }
+                        } else {
+                            it("does not post a notification") {
+                                expect(notificationPoster.notifications).to(haveCount(expectedUnpostedNotificationCount))
+                            }
                         }
                     }
                 }
@@ -233,7 +307,7 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(operation.qualityOfService).to(equal(.userInitiated))
                         }
 
-                        itRunsTheOperation()
+                        itRunsTheOperation(sendsNotification: false, expectedUnpostedNotificationCount: 2)
                     }
                 }
 
@@ -250,7 +324,7 @@ final class SyncBookServiceSpec: QuickSpec {
                         expect(operation.qualityOfService).to(equal(.userInitiated))
                     }
 
-                    itRunsTheOperation()
+                    itRunsTheOperation(sendsNotification: true)
                 }
             }
 
@@ -269,7 +343,7 @@ final class SyncBookServiceSpec: QuickSpec {
                     expect(operation.qualityOfService).to(equal(.userInitiated))
                 }
 
-                itRunsTheOperation()
+                itRunsTheOperation(sendsNotification: false)
             }
         }
     }

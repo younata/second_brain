@@ -4,6 +4,7 @@ import Result
 import CBGPromise
 import FutureHTTP
 import CoreSpotlight
+import UIKit_PivotalSpecHelperStubs
 
 @testable import Second_Brain
 @testable import SBKit
@@ -13,15 +14,17 @@ final class ChapterListViewControllerSpec: QuickSpec {
         var subject: ChapterListViewController!
 
         var bookService: FakeBookService!
+        var notificationCenter: NotificationCenter!
         var presentedChapters: [Chapter] = []
 
         beforeEach {
             bookService = FakeBookService()
+            notificationCenter = NotificationCenter()
             presentedChapters = []
 
             let activityService = SearchActivityService(searchIndex: FakeSearchIndex(), searchQueue: OperationQueue())
 
-            subject = ChapterListViewController(bookService: bookService, chapterViewControllerFactory: { chapter in
+            subject = ChapterListViewController(bookService: bookService, notificationCenter: notificationCenter, chapterViewControllerFactory: { chapter in
                 presentedChapters.append(chapter)
                 return ChapterViewController(bookService: bookService, htmlWrapper: SimpleHTMLWrapper(), activityService: activityService, chapter: chapter)
             })
@@ -144,6 +147,60 @@ final class ChapterListViewControllerSpec: QuickSpec {
                 }
 
                 itRefreshesTheBook(refreshCount: 2)
+            }
+
+            describe("when book service notifications are posted") {
+                beforeEach {
+                    notificationCenter.post(BookServiceNotification(total: 4, completed: 1, errorMessage: nil).bookNotification())
+                }
+
+                it("unhides the progress view") {
+                    expect(subject.bookLoadProgress.isHidden).to(beFalsy())
+                }
+
+                describe("if they arrive out of order") {
+                    beforeEach {
+                        let firstNotification = BookServiceNotification(
+                            total: 4,
+                            completed: 2,
+                            errorMessage: nil
+                        )
+
+                        let secondNotification = BookServiceNotification(
+                            total: 4,
+                            completed: 3,
+                            errorMessage: nil
+                        )
+
+                        notificationCenter.post(secondNotification.chapterNotification())
+                        notificationCenter.post(secondNotification.chapterNotification())
+                    }
+
+                    it("has the progress bar show the information for the more complete notification") {
+                        expect(expect(subject.bookLoadProgress.progress).to(beCloseTo(0.75)))
+                    }
+                }
+
+                describe("once the progress completes") {
+                    beforeEach {
+                        UIView.pauseAnimations()
+                        notificationCenter.post(BookServiceNotification(total: 4, completed: 4, errorMessage: nil).chapterNotification())
+                    }
+
+                    afterEach {
+                        UIView.resetAnimations()
+                        UIView.resumeAnimations()
+                    }
+
+                    it("fills up the progress bar") {
+                        expect(subject.bookLoadProgress.progress).to(beCloseTo(1.0))
+                    }
+
+                    it("hides the progress bar after a delay") {
+                        UIView.resumeAnimations()
+                        expect(subject.bookLoadProgress.isHidden).to(beTruthy())
+                    }
+                }
             }
         }
 

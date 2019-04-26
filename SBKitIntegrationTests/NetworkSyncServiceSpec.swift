@@ -12,7 +12,7 @@ final class NetworkSyncServiceSpec: QuickSpec {
         var subject: NetworkSyncService!
         var client: URLSession!
 
-        let bookURLString = URL(string: "https://knowledge.rachelbrindle.com")!
+        let bookURL = URL(string: "https://knowledge.rachelbrindle.com")!
 
         let pageURL = bookURL.appendingPathComponent("index.html", isDirectory: false)
 

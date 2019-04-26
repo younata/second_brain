@@ -113,6 +113,12 @@
 		8933538E22681CAA00F29324 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; };
 		8933538F22681CAF00F29324 /* Foundation_PivotalCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		894FD076227171AA00EDE4FD /* ChapterTreeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */; };
+		894FD0782272AC6200EDE4FD /* NotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0772272AC6200EDE4FD /* NotificationPoster.swift */; };
+		894FD07A2272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */; };
+		894FD07D2272B3DB00EDE4FD /* QueuedNotificationPosterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */; };
+		894FD07E2272B3E300EDE4FD /* NotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0772272AC6200EDE4FD /* NotificationPoster.swift */; };
+		894FD0802272B4C500EDE4FD /* FakeNotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */; };
+		894FD0812272B6C500EDE4FD /* FakeNotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -462,6 +468,9 @@
 		893353562268152F00F29324 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/Mac/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
 		893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalSpecHelper.framework; path = Carthage/Build/Mac/Foundation_PivotalSpecHelper.framework; sourceTree = "<group>"; };
 		894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTreeDelegate.swift; sourceTree = "<group>"; };
+		894FD0772272AC6200EDE4FD /* NotificationPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPoster.swift; sourceTree = "<group>"; };
+		894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuedNotificationPosterSpec.swift; sourceTree = "<group>"; };
+		894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationPoster.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -784,6 +793,7 @@
 				892A9CC2225A9FCB00C8A069 /* Models.swift */,
 				892A9CC6225AA02A00C8A069 /* Helpers.swift */,
 				4527D6AD225E383C00C78EFE /* ActivityService.swift */,
+				894FD0772272AC6200EDE4FD /* NotificationPoster.swift */,
 				892A9CD3225AE6BE00C8A069 /* Sync */,
 				8958C5E3225582F30081B6E0 /* Core Data */,
 				897B3CA6224FEF2F007F2E84 /* Book Service */,
@@ -801,6 +811,7 @@
 				8958C5E82255C4AC0081B6E0 /* SyncServiceSpec.swift */,
 				892A9CC8225AD22100C8A069 /* InjectorModuleSpec.swift */,
 				8931B8402265713D001BEE26 /* SearchIndexActivityServiceSpec.swift */,
+				894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */,
 				897B3CA5224FEF28007F2E84 /* Book Service */,
 				891E6930224F3771009F076A /* Info.plist */,
 			);
@@ -935,6 +946,7 @@
 				892A9CD6225AE8A000C8A069 /* matchers.swift */,
 				45041FB62266CF5800FB475A /* FakeSearchIndexService.swift */,
 				8931B8422266E3A1001BEE26 /* FakeSeachIndex.swift */,
+				894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1553,6 +1565,7 @@
 				4527D6AE225E383C00C78EFE /* ActivityService.swift in Sources */,
 				897B3CDE22508C76007F2E84 /* InjectorModule.swift in Sources */,
 				892A9CC3225A9FCB00C8A069 /* Models.swift in Sources */,
+				894FD0782272AC6200EDE4FD /* NotificationPoster.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1562,6 +1575,7 @@
 			files = (
 				8931B8432266E3A1001BEE26 /* FakeSeachIndex.swift in Sources */,
 				897B3CA8224FF076007F2E84 /* Matchers.swift in Sources */,
+				894FD0802272B4C500EDE4FD /* FakeNotificationPoster.swift in Sources */,
 				892A9CC12256EFE100C8A069 /* FakeSyncService.swift in Sources */,
 				45041FB72266CF5800FB475A /* FakeSearchIndexService.swift in Sources */,
 				892A9CC9225AD22100C8A069 /* InjectorModuleSpec.swift in Sources */,
@@ -1569,6 +1583,7 @@
 				892A9CBF2256EF9A00C8A069 /* CoreDataBookServiceSpec.swift in Sources */,
 				897B3CE522508E24007F2E84 /* OperationQueueJumperSpec.swift in Sources */,
 				8931B8412265713D001BEE26 /* SearchIndexActivityServiceSpec.swift in Sources */,
+				894FD07A2272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift in Sources */,
 				8958C5EB225690BF0081B6E0 /* sharedBehavior.swift in Sources */,
 				897B3CD2225071DF007F2E84 /* FakeBookService.swift in Sources */,
 				892A9CD7225AE8A000C8A069 /* matchers.swift in Sources */,
@@ -1591,6 +1606,7 @@
 				893352F42268101800F29324 /* InjectorModule.swift in Sources */,
 				893352FD2268104900F29324 /* SyncBookService.swift in Sources */,
 				893352F72268101800F29324 /* Helpers.swift in Sources */,
+				894FD07E2272B3E300EDE4FD /* NotificationPoster.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1600,6 +1616,7 @@
 			files = (
 				893353072268105C00F29324 /* Matchers.swift in Sources */,
 				8933530A2268105C00F29324 /* InjectorModuleSpec.swift in Sources */,
+				894FD0812272B6C500EDE4FD /* FakeNotificationPoster.swift in Sources */,
 				893353062268105C00F29324 /* FakeSeachIndex.swift in Sources */,
 				893353022268105C00F29324 /* sharedBehavior.swift in Sources */,
 				893353052268105C00F29324 /* FakeSearchIndexService.swift in Sources */,
@@ -1610,6 +1627,7 @@
 				8933530C2268106300F29324 /* CoreDataBookServiceSpec.swift in Sources */,
 				893353092268105C00F29324 /* SyncServiceSpec.swift in Sources */,
 				893353012268105C00F29324 /* factories.swift in Sources */,
+				894FD07D2272B3DB00EDE4FD /* QueuedNotificationPosterSpec.swift in Sources */,
 				8933530D2268106300F29324 /* SyncBookServiceSpec.swift in Sources */,
 				893353002268105C00F29324 /* FakeBookService.swift in Sources */,
 			);

@@ -6,6 +6,7 @@ import CoreSpotlight
 
 class ChapterListViewController: UIViewController {
     private let bookService: BookService
+    private let notificationCenter: NotificationCenter
     private let chapterViewControllerFactory: (Chapter) -> ChapterViewController
     private var bookFuture: Future<Result<Book, ServiceError>>!
 
@@ -14,6 +15,7 @@ class ChapterListViewController: UIViewController {
     @IBOutlet weak var warningView: WarningView!
     @IBOutlet var tableViewController: UITableViewController!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var bookLoadProgress: UIProgressView!
 
     private var refreshControl: UIRefreshControl {
         guard let refreshControl = self.tableViewController.refreshControl else {
@@ -24,9 +26,10 @@ class ChapterListViewController: UIViewController {
         return refreshControl
     }
 
-    init(bookService: BookService, chapterViewControllerFactory: @escaping (Chapter) -> ChapterViewController) {
+    init(bookService: BookService, notificationCenter: NotificationCenter, chapterViewControllerFactory: @escaping (Chapter) -> ChapterViewController) {
         self.bookService = bookService
         self.chapterViewControllerFactory = chapterViewControllerFactory
+        self.notificationCenter = notificationCenter
 
         super.init(nibName: "ChapterListViewController", bundle: Bundle(for: ChapterListViewController.self))
 
@@ -40,6 +43,19 @@ class ChapterListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.notificationCenter.addObserver(
+            self,
+            selector: #selector(ChapterListViewController.bookNotification(notification:)),
+            name: BookServiceNotification.didFetchBook,
+            object: nil
+        )
+        self.notificationCenter.addObserver(
+            self,
+            selector: #selector(ChapterListViewController.chapterNotification(notification:)),
+            name: BookServiceNotification.didFetchChapterContent,
+            object: nil
+        )
+
         if self.bookFuture.value == nil {
             self.refreshControl.beginRefreshing()
         }
@@ -50,6 +66,10 @@ class ChapterListViewController: UIViewController {
         self.refreshControl.addTarget(self, action: #selector(ChapterListViewController.requestChapters), for: .valueChanged)
 
         self.tableView.tableFooterView = UIView()
+    }
+
+    deinit {
+        self.notificationCenter.removeObserver(self)
     }
 
     override var keyCommands: [UIKeyCommand]? {
@@ -75,6 +95,32 @@ class ChapterListViewController: UIViewController {
             let urlString = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
             let url = URL(string: urlString) else { return false }
         return self.resume(url: url)
+    }
+
+    @objc
+    private func bookNotification(notification: Notification) {
+        guard let bookNote = BookServiceNotification(notification: notification) else { return }
+        self.bookLoadProgress.progress = 0
+        self.bookLoadProgress.isHidden = false
+
+        let progress = Float(bookNote.completedParts) / Float(bookNote.totalParts)
+
+        self.bookLoadProgress.setProgress(progress, animated: true)
+    }
+
+    @objc
+    private func chapterNotification(notification: Notification) {
+        guard let chapterNote = BookServiceNotification(notification: notification) else { return }
+        self.bookLoadProgress.isHidden = false
+
+        let progress = max(self.bookLoadProgress.progress, Float(chapterNote.completedParts) / Float(chapterNote.totalParts))
+
+        self.bookLoadProgress.setProgress(progress, animated: true)
+        if chapterNote.isFinished {
+            UIView.animate(withDuration: 0.25, animations: {}) { _ in
+                self.bookLoadProgress.isHidden = true
+            }
+        }
     }
 
     private func resume(url: URL) -> Bool {

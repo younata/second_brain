@@ -5,6 +5,7 @@ func register(_ container: Container) {
     container.register(ChapterListViewController.self) { (r: Resolver, url: URL) in
         return ChapterListViewController(
             bookService: r.resolve(BookService.self, argument: url)!,
+            notificationCenter: r.resolve(NotificationCenter.self)!,
             chapterViewControllerFactory: { chapter in
                 return r.resolve(ChapterViewController.self, arguments: url, chapter)!
             }

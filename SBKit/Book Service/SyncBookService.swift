@@ -10,19 +10,36 @@ final class SyncBookService: BookService {
     private let searchIndexService: SearchIndexService
     private let queueJumper: OperationQueueJumper
     private let operationQueue: OperationQueue
+    private let notificationPoster: NotificationPoster
 
     init(bookService: BookService, searchIndexService: SearchIndexService, operationQueue: OperationQueue,
-         queueJumper: OperationQueueJumper) {
+         queueJumper: OperationQueueJumper, notificationPoster: NotificationPoster) {
         self.bookService = bookService
         self.searchIndexService = searchIndexService
         self.operationQueue = operationQueue
         self.queueJumper = queueJumper
+        self.notificationPoster = notificationPoster
     }
 
     func book() -> Future<Result<Book, ServiceError>> {
         return self.queueJumper.jump(self.bookService.book().then { (bookResult: Result<Book, ServiceError>) in
-            guard let book = bookResult.value else { return }
-            self.enqueue(chapters: book.flatChapters)
+            let errorMessage: String?
+            let totalAmount: Int
+            switch bookResult {
+            case .failure(let error):
+                totalAmount = 1
+                errorMessage = error.localizedDescription
+            case .success(let book):
+                totalAmount = 1 + book.flatChapters.count
+                errorMessage = nil
+                self.enqueue(chapters: book.flatChapters)
+            }
+            let note = BookServiceNotification(
+                total: totalAmount,
+                completed: 1,
+                errorMessage: errorMessage
+            )
+            self.notificationPoster.post(notification: note.bookNotification())
         })
     }
 
@@ -46,6 +63,18 @@ final class SyncBookService: BookService {
 
     private func enqueue(chapters: [Chapter]) {
         let operations = chapters.map { ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: $0) }
+        let totalCount = chapters.count + 1
+        operations.enumerated().forEach { index, operation in
+            let chapterNumber = index + 2
+            operation.future.then { (result: Result<String, ServiceError>) in
+                let notification = BookServiceNotification(
+                    total: totalCount,
+                    completed: chapterNumber,
+                    errorMessage: result.error?.localizedDescription
+                )
+                self.notificationPoster.post(notification: notification.chapterNotification())
+            }
+        }
 
         let updateSearchOperation = BlockOperation {
             self.searchIndexService.endRefresh()
