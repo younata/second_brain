@@ -10,6 +10,9 @@ class ChapterViewController: UIViewController {
 
     @IBOutlet weak var warningView: WarningView!
     @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var progressBar: UIProgressView!
+
+    private var progressObserver: NSKeyValueObservation?
 
     init(bookService: BookService, htmlWrapper: HTMLWrapper, activityService: ActivityService, chapter: Chapter) {
         self.bookService = bookService
@@ -33,6 +36,12 @@ class ChapterViewController: UIViewController {
 
         self.title = self.chapter.title
 
+        self.progressObserver = self.webView.observe(\.estimatedProgress, options: [.new]) { _, _ in
+            self.progressBar.progress = Float(self.webView.estimatedProgress)
+        }
+
+        self.webView.navigationDelegate = self
+
         self.bookService.content(of: self.chapter).then { [weak self] result in
             switch result {
             case .success(let content):
@@ -46,6 +55,14 @@ class ChapterViewController: UIViewController {
     }
 
     private func display(html: String, url: URL) {
+        self.progressBar.isHidden = false
+        self.progressBar.progress = 0
         self.webView.loadHTMLString(self.htmlWrapper.wrap(html: html), baseURL: url)
+    }
+}
+
+extension ChapterViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.progressBar.isHidden = true
     }
 }

@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationController(rootViewController: self.injector.resolve(ChapterListViewController.self, argument: bookURL)!)
         ]
         splitController.preferredDisplayMode = .allVisible
+        splitController.view.backgroundColor = UIColor(named: "Ayu Background")
 
         window.rootViewController = splitController
 

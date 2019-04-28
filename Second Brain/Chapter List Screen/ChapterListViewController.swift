@@ -13,18 +13,10 @@ class ChapterListViewController: UIViewController {
     let tableDelesource = TreeTableDeleSource<Chapter>()
 
     @IBOutlet weak var warningView: WarningView!
-    @IBOutlet var tableViewController: UITableViewController!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bookLoadProgress: UIProgressView!
 
-    private var refreshControl: UIRefreshControl {
-        guard let refreshControl = self.tableViewController.refreshControl else {
-            let refreshControl = UIRefreshControl()
-            self.tableViewController.refreshControl = refreshControl
-            return refreshControl
-        }
-        return refreshControl
-    }
+    private let refreshControl = UIRefreshControl()
 
     init(bookService: BookService, notificationCenter: NotificationCenter, chapterViewControllerFactory: @escaping (Chapter) -> ChapterViewController) {
         self.bookService = bookService
@@ -42,6 +34,8 @@ class ChapterListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.tableView.refreshControl = self.refreshControl
 
         self.notificationCenter.addObserver(
             self,
@@ -111,15 +105,12 @@ class ChapterListViewController: UIViewController {
     @objc
     private func chapterNotification(notification: Notification) {
         guard let chapterNote = BookServiceNotification(notification: notification) else { return }
-        self.bookLoadProgress.isHidden = false
 
         let progress = max(self.bookLoadProgress.progress, Float(chapterNote.completedParts) / Float(chapterNote.totalParts))
 
         self.bookLoadProgress.setProgress(progress, animated: true)
         if chapterNote.isFinished {
-            UIView.animate(withDuration: 0.25, animations: {}) { _ in
-                self.bookLoadProgress.isHidden = true
-            }
+            self.bookLoadProgress.isHidden = true
         }
     }
 

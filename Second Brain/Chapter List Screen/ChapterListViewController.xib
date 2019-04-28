@@ -15,7 +15,6 @@
             <connections>
                 <outlet property="bookLoadProgress" destination="26d-mJ-6kH" id="Sug-bj-ekX"/>
                 <outlet property="tableView" destination="JFF-zQ-auD" id="N3F-1x-MiS"/>
-                <outlet property="tableViewController" destination="eFZ-dm-EGU" id="phE-8Z-iPa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="warningView" destination="hJu-i3-Nb2" id="X7U-w0-XMu"/>
             </connections>
@@ -28,10 +27,6 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JFF-zQ-auD">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" name="Ayu Background"/>
-                    <connections>
-                        <outlet property="dataSource" destination="eFZ-dm-EGU" id="CgY-1X-kk6"/>
-                        <outlet property="delegate" destination="eFZ-dm-EGU" id="A5k-yj-Z6W"/>
-                    </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJu-i3-Nb2" customClass="WarningView" customModule="Second_Brain" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="60" width="375" height="0.0"/>
@@ -66,9 +61,6 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
         </view>
-        <tableViewController id="eFZ-dm-EGU">
-            <point key="canvasLocation" x="-660" y="48"/>
-        </tableViewController>
     </objects>
     <resources>
         <namedColor name="Ayu Accent">

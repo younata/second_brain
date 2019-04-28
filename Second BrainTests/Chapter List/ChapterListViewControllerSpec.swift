@@ -36,7 +36,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
             }
 
             it("shows a spinner") {
-                expect(subject.tableViewController.refreshControl?.isRefreshing).to(beTruthy())
+                expect(subject.tableView.refreshControl?.isRefreshing).to(beTruthy())
             }
 
             it("asks for the book's contents") {
@@ -89,7 +89,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
                     }
 
                     it("hides the spinner") {
-                        expect(subject.tableViewController.refreshControl?.isRefreshing).to(beFalsy())
+                        expect(subject.tableView.refreshControl?.isRefreshing).to(beFalsy())
                     }
 
                     describe("selecting a chapter") {
@@ -143,7 +143,7 @@ final class ChapterListViewControllerSpec: QuickSpec {
                     // resolve the in-progress chapters promise here, rather than do it in response to the function.
                     bookService.bookPromises.last?.resolve(.success(Book(title: "", chapters: [])))
 
-                    subject.tableViewController.refreshControl?.sendActions(for: .valueChanged)
+                    subject.tableView.refreshControl?.sendActions(for: .valueChanged)
                 }
 
                 itRefreshesTheBook(refreshCount: 2)
@@ -173,31 +173,51 @@ final class ChapterListViewControllerSpec: QuickSpec {
                         )
 
                         notificationCenter.post(secondNotification.chapterNotification())
-                        notificationCenter.post(secondNotification.chapterNotification())
+                        notificationCenter.post(firstNotification.chapterNotification())
                     }
 
                     it("has the progress bar show the information for the more complete notification") {
-                        expect(expect(subject.bookLoadProgress.progress).to(beCloseTo(0.75)))
+                        expect(subject.bookLoadProgress.progress).to(beCloseTo(0.75))
+                    }
+                }
+
+                describe("if the last notification arrives before the a previous notification") {
+                    beforeEach {
+                        let lastNotification = BookServiceNotification(
+                            total: 4,
+                            completed: 4,
+                            errorMessage: nil
+                        )
+
+                        let thirdNotification = BookServiceNotification(
+                            total: 4,
+                            completed: 3,
+                            errorMessage: nil
+                        )
+
+                        notificationCenter.post(lastNotification.chapterNotification())
+                        notificationCenter.post(thirdNotification.chapterNotification())
+                    }
+
+                    it("has the progress bar show the information for the more complete notification") {
+                        expect(subject.bookLoadProgress.progress).to(beCloseTo(1.0))
+                    }
+
+                    it("hides the progress bar, still") {
+                        expect(subject.bookLoadProgress.isHidden).to(beTruthy())
                     }
                 }
 
                 describe("once the progress completes") {
                     beforeEach {
-                        UIView.pauseAnimations()
                         notificationCenter.post(BookServiceNotification(total: 4, completed: 4, errorMessage: nil).chapterNotification())
-                    }
-
-                    afterEach {
-                        UIView.resetAnimations()
-                        UIView.resumeAnimations()
                     }
 
                     it("fills up the progress bar") {
                         expect(subject.bookLoadProgress.progress).to(beCloseTo(1.0))
                     }
 
-                    it("hides the progress bar after a delay") {
-                        UIView.resumeAnimations()
+                    it("hides the progress bar") {
                         expect(subject.bookLoadProgress.isHidden).to(beTruthy())
                     }
                 }

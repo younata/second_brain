@@ -69,11 +69,25 @@ final class ChapterViewControllerSpec: QuickSpec {
                     bookService.contentsPromises.last?.resolve(.success(htmlString))
                 }
 
+                it("shows the progress bar") {
+                    expect(subject.progressBar.isHidden).to(beFalsy())
+                }
+
                 it("loads the html content") {
                     let expectedString = "<html><body>\(htmlString)</body></html>"
 
                     expect(subject.webView.lastHTMLStringLoaded).to(equal(expectedString))
                     expect(htmlWrapper.wrapCalls).to(equal([htmlString]))
+                }
+
+                describe("when the content loads") {
+                    beforeEach {
+                        subject.webView.navigationDelegate?.webView?(subject.webView, didFinish: nil)
+                    }
+
+                    it("hides the progressIndicator") {
+                        expect(subject.progressBar.isHidden) == true
+                    }
                 }
             }
 
