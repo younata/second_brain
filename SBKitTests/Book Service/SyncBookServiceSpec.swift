@@ -154,6 +154,7 @@ final class SyncBookServiceSpec: QuickSpec {
                                 workQueue.runNextOperation()
                             }
                             expect(bookService.contentsPromises).toEventually(haveCount(1))
+                            guard bookService.contentsPromises.last?.future.value == nil else { return }
                             bookService.contentsPromises.last?.resolve(.success("Content"))
                         }
 
@@ -204,6 +205,7 @@ final class SyncBookServiceSpec: QuickSpec {
                                 workQueue.runNextOperation()
                             }
                             expect(bookService.contentsPromises).toEventually(haveCount(1))
+                            guard bookService.contentsPromises.last?.future.value == nil else { return }
                             bookService.contentsPromises.last?.resolve(.failure(.cache))
                         }
 
@@ -259,24 +261,29 @@ final class SyncBookServiceSpec: QuickSpec {
                     context("successfully") {
                         beforeEach {
                             DispatchQueue.global().async {
+                                guard workQueue.operationCount > 0 else { return }
                                 workQueue.runNextOperation()
                             }
                             expect(bookService.contentsPromises).toEventually(haveCount(1))
                             bookService.contentsPromises.last?.resolve(.success("Content"))
 
+                            bookService.resetContents()
+                            searchIndexService.reset()
+                            workQueue.reset()
+
                             future = subject.content(of: chapter)
                         }
 
-                        it("resolves the future on the main thread") {
-                            expect(future.value).to(beNil())
+                        // Don't cache the resolved contents, this could lead to OOM issues.
+                        it("adds an operation to the work queue requesting the content, at a very high priority") {
+                            expect(workQueue.operations).to(haveCount(1), description: "Expected work queue to have queued up a ChapterContentOperation, got \(workQueue.operations)")
 
-                            expect(mainQueue.operationCount).to(equal(1))
-                            guard mainQueue.operationCount == 1 else { return }
-                            mainQueue.runNextOperation()
-
-                            expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                            expect(future.value?.value).to(equal("Content"))
+                            guard let operation = workQueue.operations.last else { return }
+                            expect(operation.queuePriority).to(equal(.veryHigh))
+                            expect(operation.qualityOfService).to(equal(.userInitiated))
                         }
+
+                        itRunsTheOperation(sendsNotification: false, expectedUnpostedNotificationCount: 2)
                     }
 
                     context("unsuccessfully") {

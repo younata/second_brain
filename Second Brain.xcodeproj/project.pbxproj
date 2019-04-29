@@ -119,6 +119,7 @@
 		894FD07E2272B3E300EDE4FD /* NotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0772272AC6200EDE4FD /* NotificationPoster.swift */; };
 		894FD0802272B4C500EDE4FD /* FakeNotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */; };
 		894FD0812272B6C500EDE4FD /* FakeNotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */; };
+		894FD0832276886900EDE4FD /* CoreDataBookServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0822276886900EDE4FD /* CoreDataBookServiceSpec.swift */; };
 		8958C5CD225308660081B6E0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8958C5CC225308660081B6E0 /* WebKit.framework */; };
 		8958C5D022546CE50081B6E0 /* HTMLWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */; };
 		8958C5D622546DD80081B6E0 /* general.css in Resources */ = {isa = PBXBuildFile; fileRef = 8958C5D522546DD80081B6E0 /* general.css */; };
@@ -471,6 +472,7 @@
 		894FD0772272AC6200EDE4FD /* NotificationPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPoster.swift; sourceTree = "<group>"; };
 		894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuedNotificationPosterSpec.swift; sourceTree = "<group>"; };
 		894FD07F2272B4C500EDE4FD /* FakeNotificationPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationPoster.swift; sourceTree = "<group>"; };
+		894FD0822276886900EDE4FD /* CoreDataBookServiceSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBookServiceSpec.swift; sourceTree = "<group>"; };
 		8958C5CC225308660081B6E0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8958C5CF22546CE50081B6E0 /* HTMLWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLWrapper.swift; sourceTree = "<group>"; };
 		8958C5D522546DD80081B6E0 /* general.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = general.css; sourceTree = "<group>"; };
@@ -932,6 +934,7 @@
 				897B3CBC22506EE5007F2E84 /* Info.plist */,
 				8958C5EE2256977B0081B6E0 /* helpers.swift */,
 				8958C5EC225696AD0081B6E0 /* NetworkSyncServiceSpec.swift */,
+				894FD0822276886900EDE4FD /* CoreDataBookServiceSpec.swift */,
 			);
 			path = SBKitIntegrationTests;
 			sourceTree = "<group>";
@@ -1639,6 +1642,7 @@
 			files = (
 				8958C5ED225696AD0081B6E0 /* NetworkSyncServiceSpec.swift in Sources */,
 				8958C5EF2256977B0081B6E0 /* helpers.swift in Sources */,
+				894FD0832276886900EDE4FD /* CoreDataBookServiceSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

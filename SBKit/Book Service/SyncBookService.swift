@@ -12,6 +12,8 @@ final class SyncBookService: BookService {
     private let operationQueue: OperationQueue
     private let notificationPoster: NotificationPoster
 
+    private let chapterOperationQueue = DispatchQueue(label: "SyncBookService Chapter Operation Syncing Queue")
+
     init(bookService: BookService, searchIndexService: SearchIndexService, operationQueue: OperationQueue,
          queueJumper: OperationQueueJumper, notificationPoster: NotificationPoster) {
         self.bookService = bookService
@@ -45,7 +47,10 @@ final class SyncBookService: BookService {
 
     func content(of chapter: Chapter) -> Future<Result<String, ServiceError>> {
         let contentOperation: ChapterContentOperation
-        if let operation = self.operations[chapter] {
+        let existingOperation: ChapterContentOperation? = self.chapterOperationQueue.sync {
+            return self.operations[chapter]
+        }
+        if let operation = existingOperation {
             if operation.future.value?.error != nil {
                 contentOperation = self.addSingleOperation(chapter: chapter)
             } else {
@@ -62,7 +67,7 @@ final class SyncBookService: BookService {
     }
 
     private func enqueue(chapters: [Chapter]) {
-        let operations = chapters.map { ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: $0) }
+        let operations = chapters.map { self.createOperation(for: $0) }
         let totalCount = chapters.count + 1
         operations.enumerated().forEach { index, operation in
             let chapterNumber = index + 2
@@ -79,9 +84,11 @@ final class SyncBookService: BookService {
         let updateSearchOperation = BlockOperation {
             self.searchIndexService.endRefresh()
         }
-        operations.forEach {
-            self.operations[$0.chapter] = $0
-            updateSearchOperation.addDependency($0)
+        self.chapterOperationQueue.sync {
+            operations.forEach {
+                self.operations[$0.chapter] = $0
+                updateSearchOperation.addDependency($0)
+            }
         }
 
         self.operationQueue.addOperations(operations, waitUntilFinished: false)
@@ -89,10 +96,22 @@ final class SyncBookService: BookService {
     }
 
     private func addSingleOperation(chapter: Chapter) -> ChapterContentOperation {
-        let contentOperation = ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: chapter)
+        let contentOperation = self.createOperation(for: chapter)
         self.operationQueue.addOperation(contentOperation)
-        self.operations[chapter] = contentOperation
+        self.chapterOperationQueue.sync {
+            self.operations[chapter] = contentOperation
+        }
         return contentOperation
+    }
+
+    private func createOperation(for chapter: Chapter) -> ChapterContentOperation {
+        let operation = ChapterContentOperation(bookService: self.bookService, searchIndexService: self.searchIndexService, chapter: chapter)
+        operation.future.then { _ in
+            self.chapterOperationQueue.sync {
+                self.operations.removeValue(forKey: chapter)
+            }
+        }
+        return operation
     }
 }
 

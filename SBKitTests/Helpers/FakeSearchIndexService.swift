@@ -11,4 +11,9 @@ final class FakeSearchIndexService: SearchIndexService {
     func endRefresh() {
         self.endRefreshingCallCount += 1
     }
+
+    func reset() {
+        self.updateCalls = []
+        self.endRefreshingCallCount = 0
+    }
 }
