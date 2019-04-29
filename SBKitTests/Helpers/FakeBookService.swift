@@ -19,7 +19,9 @@ final class FakeBookService: BookService {
         return promise.future
     }
 
-    func resetContents() {
+    func reset() {
+        self.bookPromises = []
+
         self.contentsCalls = []
         self.contentsPromises = []
     }

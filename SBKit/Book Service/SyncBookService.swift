@@ -11,20 +11,56 @@ final class SyncBookService: BookService {
     private let queueJumper: OperationQueueJumper
     private let operationQueue: OperationQueue
     private let notificationPoster: NotificationPoster
+    private let dateOracle: () -> Date
 
     private let chapterOperationQueue = DispatchQueue(label: "SyncBookService Chapter Operation Syncing Queue")
 
     init(bookService: BookService, searchIndexService: SearchIndexService, operationQueue: OperationQueue,
-         queueJumper: OperationQueueJumper, notificationPoster: NotificationPoster) {
+         queueJumper: OperationQueueJumper, notificationPoster: NotificationPoster, dateOracle: @escaping () -> Date) {
         self.bookService = bookService
         self.searchIndexService = searchIndexService
         self.operationQueue = operationQueue
         self.queueJumper = queueJumper
         self.notificationPoster = notificationPoster
+        self.dateOracle = dateOracle
     }
 
+    private var lastFetchedDate: Date?
+    private var bookFuture: Future<Result<Book, ServiceError>>?
     func book() -> Future<Result<Book, ServiceError>> {
-        return self.queueJumper.jump(self.bookService.book().then { (bookResult: Result<Book, ServiceError>) in
+        let future: Future<Result<Book, ServiceError>>
+        if shouldRefetch() {
+            future = self.fetchBook()
+        } else if let existingBookFuture = self.bookFuture {
+            future = existingBookFuture
+        } else {
+            future = self.fetchBook() // Can't happen, but still.
+        }
+        self.bookFuture = future
+        return self.queueJumper.jump(future)
+    }
+
+    private func shouldRefetch() -> Bool {
+        guard let future = self.bookFuture else {
+            // If we haven't fetched in the first place, then of course we should fetch!
+            return true
+        }
+        switch future.value {
+        case .failure?:
+            return true // Always refetch if we most recently got an error.
+        case .none:
+            return false // Never refetch if we're in the middle if a fetch.
+        case .success?:
+            // Only refetch if it's been more than a minute since we last fetched.
+            guard let previousDate = self.lastFetchedDate else { return false }
+            let interval = self.dateOracle().timeIntervalSince(previousDate)
+            return interval > 60
+        }
+    }
+
+    private func fetchBook() -> Future<Result<Book, ServiceError>> {
+        return self.bookService.book().then { (bookResult: Result<Book, ServiceError>) in
+            self.lastFetchedDate = self.dateOracle()
             let errorMessage: String?
             let totalAmount: Int
             switch bookResult {
@@ -42,7 +78,7 @@ final class SyncBookService: BookService {
                 errorMessage: errorMessage
             )
             self.notificationPoster.post(notification: note.bookNotification())
-        })
+        }
     }
 
     func content(of chapter: Chapter) -> Future<Result<String, ServiceError>> {

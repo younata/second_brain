@@ -5,4 +5,8 @@ final class FakeNotificationPoster: NotificationPoster {
     func post(notification: Notification) {
         self.notifications.append(notification)
     }
+
+    func reset() {
+        self.notifications = []
+    }
 }

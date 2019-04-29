@@ -78,7 +78,8 @@ private func registerSync(_ container: Container) {
             searchIndexService: searchIndexService,
             operationQueue: workQueue,
             queueJumper: r.resolve(OperationQueueJumper.self)!,
-            notificationPoster: r.resolve(NotificationPoster.self)!
+            notificationPoster: r.resolve(NotificationPoster.self)!,
+            dateOracle: Date.init
         )
     }.inObjectScope(.container)
 }

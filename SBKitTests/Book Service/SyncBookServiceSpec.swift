@@ -18,6 +18,8 @@ final class SyncBookServiceSpec: QuickSpec {
 
         var bookService: FakeBookService!
 
+        var currentDate: Date = Date()
+
         beforeEach {
             bookService = FakeBookService()
             searchIndexService = FakeSearchIndexService()
@@ -28,12 +30,15 @@ final class SyncBookServiceSpec: QuickSpec {
             mainQueue = PSHKFakeOperationQueue()
             queueJumper = OperationQueueJumper(queue: mainQueue)
 
+            currentDate = Date()
+
             subject = SyncBookService(
                 bookService: bookService,
                 searchIndexService: searchIndexService,
                 operationQueue: workQueue,
                 queueJumper: queueJumper,
-                notificationPoster: notificationPoster
+                notificationPoster: notificationPoster,
+                dateOracle: { currentDate }
             )
         }
 
@@ -102,6 +107,60 @@ final class SyncBookServiceSpec: QuickSpec {
                     expect(bookNotification.totalParts).to(equal(1 + book.flatChapters.count))
                     expect(bookNotification.errorMessage).to(beNil())
                 }
+
+                describe("asking again for the book") {
+                    beforeEach {
+                        mainQueue.runNextOperation()
+
+                        bookService.reset()
+                        notificationPoster.reset()
+                        workQueue.reset()
+                    }
+
+                    context("after a few minutes") {
+                        beforeEach {
+                            currentDate = Date(timeIntervalSinceNow: 5 * 60)
+                            future = subject.book()
+                        }
+
+                        it("returns an in-progress future") {
+                            expect(future.value).to(beNil())
+                        }
+
+                        it("asks the underlying book service for the book") {
+                            expect(bookService.bookPromises).to(haveCount(1))
+                        }
+                    }
+
+                    context("immediately") {
+                        beforeEach {
+                            future = subject.book()
+                        }
+
+                        it("returns the resolved content... on the main thread") {
+                            expect(future.value).to(beNil())
+
+                            expect(mainQueue.operationCount).to(equal(1))
+                            guard mainQueue.operationCount == 1 else { return }
+                            mainQueue.runNextOperation()
+
+                            expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
+                            expect(future.value?.value).to(equal(book))
+                        }
+
+                        it("does not ask the underlying book service for the book") {
+                            expect(bookService.bookPromises).to(beEmpty())
+                        }
+
+                        it("doesn't add any operations to the work queue") {
+                            expect(workQueue.operationCount).to(equal(0))
+                        }
+
+                        it("does not post a fetched book notification") {
+                            expect(notificationPoster.notifications).to(beEmpty())
+                        }
+                    }
+                }
             }
 
             describe("when the book promise fails") {
@@ -137,6 +196,24 @@ final class SyncBookServiceSpec: QuickSpec {
                     expect(bookNotification.completedParts).to(equal(1))
                     expect(bookNotification.totalParts).to(equal(1))
                     expect(bookNotification.errorMessage).to(equal("Unknown error, try again later"))
+                }
+
+                describe("asking again for the book") {
+                    beforeEach {
+                        bookService.reset()
+                        notificationPoster.reset()
+                        workQueue.reset()
+
+                        future = subject.book()
+                    }
+
+                    it("returns an in-progress future") {
+                        expect(future.value).to(beNil())
+                    }
+
+                    it("asks the underlying book service for the book") {
+                        expect(bookService.bookPromises).to(haveCount(1))
+                    }
                 }
             }
         }
@@ -267,7 +344,7 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(bookService.contentsPromises).toEventually(haveCount(1))
                             bookService.contentsPromises.last?.resolve(.success("Content"))
 
-                            bookService.resetContents()
+                            bookService.reset()
                             searchIndexService.reset()
                             workQueue.reset()
 
@@ -301,7 +378,7 @@ final class SyncBookServiceSpec: QuickSpec {
 
                             expect(workQueue.operations).toEventually(beEmpty())
 
-                            bookService.resetContents()
+                            bookService.reset()
 
                             future = subject.content(of: chapter)
                         }
