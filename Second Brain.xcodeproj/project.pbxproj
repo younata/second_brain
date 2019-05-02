@@ -112,6 +112,10 @@
 		8933535B2268153400F29324 /* Foundation_PivotalSpecHelper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8933538E22681CAA00F29324 /* Foundation_PivotalCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; };
 		8933538F22681CAF00F29324 /* Foundation_PivotalCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 893353562268152F00F29324 /* Foundation_PivotalCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		893F4A35227AB40F0056FA40 /* FakeNavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893F4A34227AB40F0056FA40 /* FakeNavigationAction.swift */; };
+		893F4A36227AB4630056FA40 /* FakeNavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893F4A34227AB40F0056FA40 /* FakeNavigationAction.swift */; };
+		893F4A39227AB5B60056FA40 /* FakeURLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893F4A38227AB5B60056FA40 /* FakeURLOpener.swift */; };
+		893F4A3B227AB6980056FA40 /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893F4A3A227AB6980056FA40 /* URLOpener.swift */; };
 		894FD076227171AA00EDE4FD /* ChapterTreeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */; };
 		894FD0782272AC6200EDE4FD /* NotificationPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0772272AC6200EDE4FD /* NotificationPoster.swift */; };
 		894FD07A2272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */; };
@@ -468,6 +472,9 @@
 		8933531C226810C600F29324 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		893353562268152F00F29324 /* Foundation_PivotalCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalCore.framework; path = Carthage/Build/Mac/Foundation_PivotalCore.framework; sourceTree = "<group>"; };
 		893353572268152F00F29324 /* Foundation_PivotalSpecHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation_PivotalSpecHelper.framework; path = Carthage/Build/Mac/Foundation_PivotalSpecHelper.framework; sourceTree = "<group>"; };
+		893F4A34227AB40F0056FA40 /* FakeNavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNavigationAction.swift; sourceTree = "<group>"; };
+		893F4A38227AB5B60056FA40 /* FakeURLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeURLOpener.swift; sourceTree = "<group>"; };
+		893F4A3A227AB6980056FA40 /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
 		894FD075227171AA00EDE4FD /* ChapterTreeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTreeDelegate.swift; sourceTree = "<group>"; };
 		894FD0772272AC6200EDE4FD /* NotificationPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPoster.swift; sourceTree = "<group>"; };
 		894FD0792272B0A500EDE4FD /* QueuedNotificationPosterSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuedNotificationPosterSpec.swift; sourceTree = "<group>"; };
@@ -845,6 +852,14 @@
 			name = "Mac Frameworks";
 			sourceTree = "<group>";
 		};
+		893F4A37227AB5A80056FA40 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				893F4A38227AB5B60056FA40 /* FakeURLOpener.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		894FD07322716ED800EDE4FD /* Chapter List */ = {
 			isa = PBXGroup;
 			children = (
@@ -967,6 +982,7 @@
 				898E1FEE226BD025004852EA /* AppDelegate.swift */,
 				898E203B226BE935004852EA /* InjectorModule.swift */,
 				898E203D226BE95C004852EA /* CocoaModels.swift */,
+				893F4A3A227AB6980056FA40 /* URLOpener.swift */,
 				894FD07322716ED800EDE4FD /* Chapter List */,
 				898E204B226CD1CF004852EA /* ChapterViewController.swift */,
 				898E2060226D3299004852EA /* ChapterSelectionPublisher.swift */,
@@ -983,6 +999,7 @@
 			isa = PBXGroup;
 			children = (
 				898E2003226BD028004852EA /* Info.plist */,
+				893F4A37227AB5A80056FA40 /* Helpers */,
 				894FD07422716EE500EDE4FD /* Chapter List */,
 				898E204D226CD2B0004852EA /* ChapterViewControllerSpec.swift */,
 			);
@@ -1031,6 +1048,7 @@
 				89F263B122518F1700B6991F /* PCKMethodRedirector.h */,
 				89F263AD22518DC500B6991F /* Second BrainTests-Bridging-Header.h */,
 				8958C5DB22546E830081B6E0 /* SimpleHTMLWrapper.swift */,
+				893F4A34227AB40F0056FA40 /* FakeNavigationAction.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1531,6 +1549,7 @@
 			files = (
 				8931B8442266E3B7001BEE26 /* FakeSeachIndex.swift in Sources */,
 				897B3CDA22508008007F2E84 /* WarningViewSpec.swift in Sources */,
+				893F4A35227AB40F0056FA40 /* FakeNavigationAction.swift in Sources */,
 				89F263AC22518CFD00B6991F /* UIViewController_SpecHelperSpec.swift in Sources */,
 				89F263B72251A48F00B6991F /* WKWebView+SpecHelper.m in Sources */,
 				891E6951224F3869009F076A /* ChapterListViewControllerSpec.swift in Sources */,
@@ -1657,6 +1676,7 @@
 				898E2032226BE274004852EA /* ChapterTreeViewController.swift in Sources */,
 				898E2051226CD3D5004852EA /* HTMLWrapper.swift in Sources */,
 				894FD076227171AA00EDE4FD /* ChapterTreeDelegate.swift in Sources */,
+				893F4A3B227AB6980056FA40 /* URLOpener.swift in Sources */,
 				898E1FEF226BD025004852EA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1665,8 +1685,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				893F4A39227AB5B60056FA40 /* FakeURLOpener.swift in Sources */,
 				898E2040226BE9DD004852EA /* ChapterTreeViewControllerSpec.swift in Sources */,
 				898E205A226CD42B004852EA /* FakeSeachIndex.swift in Sources */,
+				893F4A36227AB4630056FA40 /* FakeNavigationAction.swift in Sources */,
 				898E2059226CD3F8004852EA /* WKWebView+SpecHelper.m in Sources */,
 				898E2055226CD3DE004852EA /* WKWebView_SpecHelperSpec.swift in Sources */,
 				898E204E226CD2B0004852EA /* ChapterViewControllerSpec.swift in Sources */,

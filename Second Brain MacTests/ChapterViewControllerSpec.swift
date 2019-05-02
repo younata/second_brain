@@ -2,6 +2,7 @@ import Cocoa
 import Quick
 import Nimble
 import Result
+import WebKit
 import CBGPromise
 
 @testable import SBKit
@@ -14,6 +15,7 @@ final class ChapterViewControllerSpec: QuickSpec {
         var bookService: FakeBookService!
         var htmlWrapper: SimpleHTMLWrapper!
         var activityService: ActivityService!
+        var urlOpener: FakeURLOpener!
 
         var selectionPublisher: ChapterSelectorPubSub!
 
@@ -23,6 +25,7 @@ final class ChapterViewControllerSpec: QuickSpec {
             bookService = FakeBookService()
             htmlWrapper = SimpleHTMLWrapper()
             activityService = SearchActivityService(searchIndex: FakeSearchIndex(), searchQueue: OperationQueue())
+            urlOpener = FakeURLOpener()
 
             selectionPublisher = ChapterSelectorPubSub()
 
@@ -34,6 +37,7 @@ final class ChapterViewControllerSpec: QuickSpec {
             subject.htmlWrapper = htmlWrapper
             subject.activityService = activityService
             subject.chapterSelectionPublisher = selectionPublisher
+            subject.urlOpener = urlOpener
             subject.view.layout()
         }
 
@@ -93,6 +97,34 @@ final class ChapterViewControllerSpec: QuickSpec {
 
                 xit("displays an alert") {
                     fail("Add infrastructure to display the alert")
+                }
+            }
+        }
+
+        describe("the webview's ui delegate") {
+            describe("when the user clicks a link") {
+                let request = URLRequest(url: URL(string: "https://example.com/my_url")!)
+                let action = FakeNavigationAction(navigationType: .linkActivated, request: request)
+
+                var decisions: [WKNavigationActionPolicy] = []
+
+                beforeEach {
+                    decisions = []
+
+                    subject.webView.navigationDelegate?.webView?(
+                        subject.webView,
+                        decidePolicyFor: action
+                    ) { policy in
+                        decisions.append(policy)
+                    }
+                }
+
+                it("denies the navigation") {
+                    expect(decisions).to(equal([.cancel]))
+                }
+
+                it("opens the url in the user's browser") {
+                    expect(urlOpener.openedURLs).to(equal([request.url!]))
                 }
             }
         }

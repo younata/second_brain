@@ -13,6 +13,7 @@ class ChapterViewController: NSViewController, ChapterSelectionSubscriber {
             chapterSelectionPublisher?.add(subscriber: self)
         }
     }
+    var urlOpener: URLOpener?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,5 +37,18 @@ class ChapterViewController: NSViewController, ChapterSelectionSubscriber {
         alert.messageText = error.title
         alert.informativeText = error.localizedDescription
         alert.runModal()
+    }
+}
+
+extension ChapterViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            decisionHandler(.cancel)
+            guard let url = navigationAction.request.url else { return }
+            self.urlOpener?.open(url)
+        default:
+            decisionHandler(.allow)
+        }
     }
 }

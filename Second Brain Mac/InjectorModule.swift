@@ -13,6 +13,10 @@ func register(_ container: Container) {
         return BundleHTMLWrapper()
     }.inObjectScope(.container)
 
+    container.register(URLOpener.self) { _ in
+        return NSWorkspace.shared
+    }.inObjectScope(.container)
+
     container.register(ChapterSelectorPubSub.self) { _ in
         return ChapterSelectorPubSub()
     }.inObjectScope(.container)
@@ -27,5 +31,6 @@ func register(_ container: Container) {
         c.activityService = r.resolve(ActivityService.self)
         c.htmlWrapper = r.resolve(HTMLWrapper.self)
         c.chapterSelectionPublisher = r.resolve(ChapterSelectorPubSub.self)
+        c.urlOpener = r.resolve(URLOpener.self)
     }
 }
