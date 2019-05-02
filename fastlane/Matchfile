@@ -1,0 +1,8 @@
+
+git_url("git@github.com:younata/Certs.git")
+git_branch("second_brain")
+
+type("development")
+
+app_identifier(["com.younata.Second-Brain"])
+

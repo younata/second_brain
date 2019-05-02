@@ -42,6 +42,27 @@ final class SyncBookServiceSpec: QuickSpec {
             )
         }
 
+        @discardableResult func drainWorkQueue(line: UInt = #line) -> Bool {
+            let chapterContentOperationCount = workQueue.operations.filter { $0 is ChapterContentOperation }.count
+            expect(workQueue.operationCount, line: line).to(equal(chapterContentOperationCount + 1), description: "Expected to only have a single non-ChapterContentOperation, got \(workQueue.operations)")
+            for _ in 0..<chapterContentOperationCount {
+                DispatchQueue.global().async {
+                    workQueue.runNextOperation()
+                }
+                expect(bookService.contentsPromises, line: line).toEventually(haveCount(1), timeout: 10, description: "Expected to have made a single request for chapter content")
+                bookService.contentsPromises.last?.resolve(.success("Content"))
+                bookService.reset()
+            }
+
+            expect(workQueue.operationCount, line: line).to(equal(1), description: "Expected to only have a single operation left to run, got \(workQueue.operations)")
+
+            guard workQueue.operationCount == 1 else { return false }
+
+            workQueue.runNextOperation()
+
+            return true
+        }
+
         describe("book()") {
             var future: Future<Result<Book, ServiceError>>!
 
@@ -70,15 +91,9 @@ final class SyncBookServiceSpec: QuickSpec {
                     bookService.bookPromises.last?.resolve(.success(book))
                 }
 
-                it("resolves the future with the book, after jumping to the main queue") {
+                it("does not yet resolve the future") {
                     expect(future.value).to(beNil())
-
-                    expect(mainQueue.operationCount).to(equal(1))
-                    guard mainQueue.operationCount == 1 else { return }
-                    mainQueue.runNextOperation()
-
-                    expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
-                    expect(future.value?.value).to(equal(book))
+                    expect(mainQueue.operationCount).to(equal(0))
                 }
 
                 it("queues up an on the workQueue for each chapter in the book, plus an operation to update the search service") {
@@ -108,8 +123,27 @@ final class SyncBookServiceSpec: QuickSpec {
                     expect(bookNotification.errorMessage).to(beNil())
                 }
 
+                describe("when all the chapter content fetch operations finish") {
+                    beforeEach {
+                        drainWorkQueue()
+                    }
+
+                    it("resolves the future with the book, after jumping to the main queue") {
+                        expect(future.value).to(beNil())
+
+                        expect(mainQueue.operationCount).to(equal(1))
+                        guard mainQueue.operationCount == 1 else { return }
+                        mainQueue.runNextOperation()
+
+                        expect(future.value).toNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.value).to(equal(book))
+                    }
+                }
+
                 describe("asking again for the book") {
                     beforeEach {
+                        guard drainWorkQueue() else { return }
+
                         mainQueue.runNextOperation()
 
                         bookService.reset()
@@ -329,7 +363,6 @@ final class SyncBookServiceSpec: QuickSpec {
                 beforeEach {
                     _ = subject.book()
                     bookService.bookPromises.last?.resolve(.success(Book(title: "", chapters: [chapter])))
-                    mainQueue.runNextOperation()
 
                     expect(workQueue.operationCount).to(equal(2))
                 }
@@ -347,6 +380,7 @@ final class SyncBookServiceSpec: QuickSpec {
                             bookService.reset()
                             searchIndexService.reset()
                             workQueue.reset()
+                            mainQueue.reset()
 
                             future = subject.content(of: chapter)
                         }
@@ -379,6 +413,7 @@ final class SyncBookServiceSpec: QuickSpec {
                             expect(workQueue.operations).toEventually(beEmpty())
 
                             bookService.reset()
+                            mainQueue.reset()
 
                             future = subject.content(of: chapter)
                         }

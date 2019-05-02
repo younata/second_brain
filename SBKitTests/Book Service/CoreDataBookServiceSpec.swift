@@ -188,6 +188,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
                     it("resolves the future with a cache error") {
                         expect(future.value).toEventuallyNot(beNil(), description: "Expected future to be resolved")
+                        expect(future.value?.value).to(beNil())
                         expect(future.value?.error).to(equal(ServiceError.cache))
                     }
                 }

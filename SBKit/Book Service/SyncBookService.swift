@@ -59,7 +59,8 @@ final class SyncBookService: BookService {
     }
 
     private func fetchBook() -> Future<Result<Book, ServiceError>> {
-        return self.bookService.book().then { (bookResult: Result<Book, ServiceError>) in
+        let promise = Promise<Result<Book, ServiceError>>()
+        self.bookService.book().then { (bookResult: Result<Book, ServiceError>) in
             self.lastFetchedDate = self.dateOracle()
             let errorMessage: String?
             let totalAmount: Int
@@ -67,10 +68,11 @@ final class SyncBookService: BookService {
             case .failure(let error):
                 totalAmount = 1
                 errorMessage = error.localizedDescription
+                promise.resolve(bookResult)
             case .success(let book):
                 totalAmount = 1 + book.flatChapters.count
                 errorMessage = nil
-                self.enqueue(chapters: book.flatChapters)
+                self.enqueue(chapters: book.flatChapters, promise: promise, book: book)
             }
             let note = BookServiceNotification(
                 total: totalAmount,
@@ -79,6 +81,7 @@ final class SyncBookService: BookService {
             )
             self.notificationPoster.post(notification: note.bookNotification())
         }
+        return promise.future
     }
 
     func content(of chapter: Chapter) -> Future<Result<String, ServiceError>> {
@@ -102,7 +105,7 @@ final class SyncBookService: BookService {
         return self.queueJumper.jump(contentOperation.future)
     }
 
-    private func enqueue(chapters: [Chapter]) {
+    private func enqueue(chapters: [Chapter], promise: Promise<Result<Book, ServiceError>>, book: Book) {
         let operations = chapters.map { self.createOperation(for: $0) }
         let totalCount = chapters.count + 1
         operations.enumerated().forEach { index, operation in
@@ -119,6 +122,7 @@ final class SyncBookService: BookService {
 
         let updateSearchOperation = BlockOperation {
             self.searchIndexService.endRefresh()
+            promise.resolve(.success(book))
         }
         self.chapterOperationQueue.sync {
             operations.forEach {
