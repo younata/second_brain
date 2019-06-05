@@ -15,11 +15,14 @@ class ChapterViewController: NSViewController, ChapterSelectionSubscriber {
     }
     var urlOpener: URLOpener?
 
+    fileprivate var currentChapter: Chapter?
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
     func didSelect(chapter: Chapter) {
+        self.currentChapter = chapter
         self.userActivity = self.activityService?.activity(for: chapter)
         self.bookService?.content(of: chapter).then { [weak self] result in
             switch result {
@@ -44,11 +47,35 @@ extension ChapterViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         switch navigationAction.navigationType {
         case .linkActivated:
-            decisionHandler(.cancel)
-            guard let url = navigationAction.request.url else { return }
-            self.urlOpener?.open(url)
+            guard let url = navigationAction.request.url else {
+                decisionHandler(.allow)
+                return
+            }
+            self.shouldAllowLink(to: url) { policy in
+                decisionHandler(policy)
+                if policy == .cancel {
+                    self.urlOpener?.open(url)
+                }
+            }
         default:
             decisionHandler(.allow)
         }
+    }
+
+    private func shouldAllowLink(to url: URL, callback: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let chapterURL = self.currentChapter?.contentURL, self.baseURL(from: url) == chapterURL {
+            callback(.allow)
+            return
+        }
+        callback(.cancel)
+    }
+
+    private func baseURL(from url: URL) -> URL {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            return url
+        }
+        components.query = nil
+        components.fragment = nil
+        return components.url ?? url
     }
 }

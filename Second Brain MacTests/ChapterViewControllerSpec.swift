@@ -99,32 +99,98 @@ final class ChapterViewControllerSpec: QuickSpec {
                     fail("Add infrastructure to display the alert")
                 }
             }
-        }
 
-        describe("the webview's ui delegate") {
-            describe("when the user clicks a link") {
-                let request = URLRequest(url: URL(string: "https://example.com/my_url")!)
-                let action = FakeNavigationAction(navigationType: .linkActivated, request: request)
+            describe("the webview's ui delegate") {
+                describe("when the user clicks a link") {
+                    var decisions: [WKNavigationActionPolicy] = []
 
-                var decisions: [WKNavigationActionPolicy] = []
-
-                beforeEach {
-                    decisions = []
-
-                    subject.webView.navigationDelegate?.webView?(
-                        subject.webView,
-                        decidePolicyFor: action
-                    ) { policy in
-                        decisions.append(policy)
+                    beforeEach {
+                        decisions = []
                     }
-                }
 
-                it("denies the navigation") {
-                    expect(decisions).to(equal([.cancel]))
-                }
+                    context("to an external site") {
+                        let request = URLRequest(url: URL(string: "https://example.com/my_url")!)
+                        let action = FakeNavigationAction(navigationType: .linkActivated, request: request)
 
-                it("opens the url in the user's browser") {
-                    expect(urlOpener.openedURLs).to(equal([request.url!]))
+                        beforeEach {
+                            subject.webView.navigationDelegate?.webView?(
+                                subject.webView,
+                                decidePolicyFor: action
+                            ) { policy in
+                                decisions.append(policy)
+                            }
+                        }
+
+                        it("asks if the url is to an external site or another chapter") {
+                            fail("Create a service to do this")
+                        }
+
+                        it("denies the navigation") {
+                            expect(decisions).to(equal([.cancel]))
+                        }
+
+                        it("opens the url in the user's browser") {
+                            expect(urlOpener.openedURLs).to(equal([request.url!]))
+                        }
+                    }
+
+                    context("to a different chapter") {
+                        let request = URLRequest(url: URL(string: "https://example.com/other_chapter")!)
+                        let action = FakeNavigationAction(navigationType: .linkActivated, request: request)
+
+                        beforeEach {
+                            subject.webView.navigationDelegate?.webView?(
+                                subject.webView,
+                                decidePolicyFor: action
+                            ) { policy in
+                                decisions.append(policy)
+                            }
+                        }
+
+                        it("asks if the url is to an external site or another chapter") {
+                            fail("Create a service to do this")
+                        }
+
+                        it("allows the navigation") {
+                            expect(decisions).to(equal([.allow]))
+                        }
+
+                        it("sends a select chapter notification") {
+                            fail("send a select chapter notification")
+                        }
+
+                        it("doesn't open the url in the user's browser") {
+                            expect(urlOpener.openedURLs).to(beEmpty())
+                        }
+                    }
+
+                    context("within the same chapter") { // like an anchor link.
+                        var urlComponents = URLComponents(url: chapter.contentURL, resolvingAgainstBaseURL: true)!
+                        urlComponents.fragment = "some_point"
+                        let request = URLRequest(url: urlComponents.url!)
+                        let action = FakeNavigationAction(navigationType: .linkActivated, request: request)
+
+                        beforeEach {
+                            subject.webView.navigationDelegate?.webView?(
+                                subject.webView,
+                                decidePolicyFor: action
+                            ) { policy in
+                                decisions.append(policy)
+                            }
+                        }
+
+                        it("allows the navigation") {
+                            expect(decisions).to(equal([.allow]))
+                        }
+
+                        it("does not send a select chapter notification") {
+                            fail("don't send a select chapter notification")
+                        }
+
+                        it("doesn't open the url in the user's browser") {
+                            expect(urlOpener.openedURLs).to(beEmpty())
+                        }
+                    }
                 }
             }
         }
