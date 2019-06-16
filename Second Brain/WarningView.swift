@@ -32,10 +32,12 @@ class WarningView: UIView {
         self.addSubview(self.imageView)
         self.addSubview(self.label)
 
-        self.backgroundColor = UIColor.yellow
+        self.backgroundColor = UIColor.tertiarySystemFill
 
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         self.label.translatesAutoresizingMaskIntoConstraints = false
+
+        self.label.textColor = UIColor.systemRed
 
         let margins = self.layoutMarginsGuide
         let inset: CGFloat = 8

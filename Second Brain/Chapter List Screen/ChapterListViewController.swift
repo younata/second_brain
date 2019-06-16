@@ -16,7 +16,11 @@ class ChapterListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bookLoadProgress: UIProgressView!
 
-    private let refreshControl = UIRefreshControl()
+    private let refreshControl: UIRefreshControl = {
+        let control = UIRefreshControl()
+        control.tintColor = .white
+        return control
+    }()
 
     init(bookService: BookService, notificationCenter: NotificationCenter, chapterViewControllerFactory: @escaping (Chapter) -> ChapterViewController) {
         self.bookService = bookService
@@ -68,10 +72,12 @@ class ChapterListViewController: UIViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         let refresh = UIKeyCommand(
-            input: "r",
-            modifierFlags: UIKeyModifierFlags.command,
+            __title: "Refresh Repository",
             action: #selector(ChapterListViewController.refreshBook),
-            discoverabilityTitle: "Refresh Repository"
+            input: "r",
+            modifierFlags: .command,
+            propertyList: nil,
+            alternates: []
         )
         return [refresh]
     }

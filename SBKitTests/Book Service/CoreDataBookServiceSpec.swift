@@ -169,7 +169,7 @@ final class CoreDataBookServiceSpec: QuickSpec {
 
                     guard let call = syncService.checkCalls.last else { return }
 
-                    expect(call.url).to(equal(subpage(named: "api/book.json")))
+                    expect(call.url).to(equal(subpage(named: "api/markdown.json")))
                     expect(call.etag).to(equal(""))
                 }
 

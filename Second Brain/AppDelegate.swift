@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.makeKeyAndVisible()
-        window.backgroundColor = UIColor(named: "Ayu Background")
 
         guard !isTest() else {
             window.rootViewController = UIViewController()
@@ -40,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationController(rootViewController: self.injector.resolve(ChapterListViewController.self, argument: bookURL)!)
         ]
         splitController.preferredDisplayMode = .allVisible
-        splitController.view.backgroundColor = UIColor(named: "Ayu Background")
+        splitController.view.backgroundColor = UIColor.systemBackground
 
         window.rootViewController = splitController
 
@@ -60,14 +59,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 func applyTheme() {
-    guard let navColor = UIColor(named: "Ayu Navigation"),
-        let navButtonColor = UIColor(named: "Ayu NavColor"),
-        let textColor = UIColor(named: "Ayu Text")
-        else { return }
-    UINavigationBar.appearance().barTintColor = navColor
-    UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: textColor]
-    UINavigationBar.appearance().tintColor = navButtonColor
-
-    UIApplication.shared.statusBarStyle = .lightContent
+    UINavigationBar.appearance().barTintColor = UIColor.secondarySystemBackground
+    UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.label]
+    UINavigationBar.appearance().tintColor = UIColor.secondaryLabel
 }
 

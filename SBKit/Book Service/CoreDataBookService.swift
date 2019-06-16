@@ -56,7 +56,7 @@ final class CoreDataBookService: BookService {
     }
 
     // MARK: Getting Book
-    private lazy var bookAPIURL: URL = { return bookURL.appendingPathComponent("api/book.json", isDirectory: false) }()
+    private lazy var bookAPIURL: URL = { return bookURL.appendingPathComponent("api/markdown.json", isDirectory: false) }()
     private func book(with book: CoreDataBook) -> Future<Result<Book, ServiceError>> {
         guard let etag = book.etag else {
             return self.bookNoCache()
