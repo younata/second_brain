@@ -70,6 +70,18 @@ class TreeTableCell: UITableViewCell {
             completionHandler(true)
         }
     }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+
+        let color: UIColor
+        if highlighted {
+            color = UIColor.secondarySystemBackground
+        } else {
+            color = UIColor.systemBackground
+        }
+        self.contentView.backgroundColor = color
+    }
 }
 
 class BlockAnimationDelegate: NSObject, CAAnimationDelegate {
